@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_subscriber_form" model="ir.ui.view">
+        <field name="name">view.subscriber.form</field>
+        <field name="model">subscription.subscriber</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <h1>Welcome to Our Channel Skyscend.com</h1>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                    <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>
+                    <label for="name"/>
+                    <h1 colspan="4">
+                        <field name="name" placeholder="Enter your Name"/>
+                    </h1>
+                    <div class="row">
+                        <div class="col col-md-6">
+                            <group>
+                                <field name="age"/>
+                                <field name="active" nolabel="1"/>
+                                <br/>
+                                <field name ="recurring_rule_type" widget ="checkbox"/>
+                                <field name="price" string="Subscription Price"/>
+                                <field name="email" widget="email"/>
+                                <field name="url" string="Website" widget="url"/>
+                                <field name="review" widget="priority"/>
+                            </group>
+                        </div>
+                        <div class="col col-md-6">
+                            <group>
+                                <field name="birthdate"/>
+                                <field name="start_date" />
+                                <field name="gender" required="1" widget="radio"/>
+                                <field name="password" password="*"/>
+                                <field name="subscriber_code" readonly="1"/>
+                                <field name="phone" widget="phone"/>
+                                <field name="sign_in" widget="float_time"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <notebook>
+                        <page name="pg_description" string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page name="pg_temp" string="Template">
+                            <field name="template"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <h1> This is the Footer Part for Subscriber</h1>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view / List view of SUbscribers -->
+    <record id="view_subscriber_tree" model="ir.ui.view">
+        <field name="name">view.subscriber.tree</field>
+        <field name="model">subscription.subscriber</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="age"/>
+                <field name="active"/>
+                <field name="birthdate"/>
+                <field name="gender"/>
+                <field name="recurring_rule_type"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_subscriber" model="ir.actions.act_window">
+        <field name="name">Subscribers</field>
+        <field name="res_model">subscription.subscriber</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_subscription" name="Subscription"/>
+
+    <menuitem id="menu_subscriber" name="All Subscribers" parent="menu_subscription"/>
+
+    <menuitem id="menu_subscriber_subscriber" action="action_subscriber" parent="menu_subscriber"/>
+
+</odoo>
