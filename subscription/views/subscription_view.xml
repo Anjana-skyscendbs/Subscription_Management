@@ -3,15 +3,15 @@
 
     <record id="view_subscriber_form" model="ir.ui.view">
         <field name="name">view.subscriber.form</field>
-        <field name="model">subscription.subscriber</field>
+        <field name="model">subscriber.plan</field>
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <h1>Welcome to Our Channel Skyscend.com</h1>
+                    <h1>Welcome to Our Channel</h1>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
-                    <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>
+                    <widget name="web_ribbon" title="Expired" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Active" bg_color="bg-success" attrs="{'invisible': [('active', '=', False)]}"/>
                     <label for="name"/>
                     <h1 colspan="4">
                         <field name="name" placeholder="Enter your Name"/>
@@ -22,11 +22,12 @@
                                 <field name="age"/>
                                 <field name="active" nolabel="1"/>
                                 <br/>
-                                <field name ="recurring_rule_type" widget ="checkbox"/>
+<!--                                <field name ="recurring_rule_type" widget ="checkbox"/>-->
                                 <field name="price" string="Subscription Price"/>
                                 <field name="email" widget="email"/>
                                 <field name="url" string="Website" widget="url"/>
                                 <field name="review" widget="priority"/>
+                                <field name="template" />
                             </group>
                         </div>
                         <div class="col col-md-6">
@@ -41,6 +42,8 @@
                             </group>
                         </div>
                     </div>
+                    <separator string="Template"/>
+                    <field name="template"/>
 
                     <notebook>
                         <page name="pg_description" string="Description">
@@ -61,7 +64,7 @@
     <!-- Tree view / List view of SUbscribers -->
     <record id="view_subscriber_tree" model="ir.ui.view">
         <field name="name">view.subscriber.tree</field>
-        <field name="model">subscription.subscriber</field>
+        <field name="model">subscriber.plan</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
@@ -69,19 +72,21 @@
                 <field name="active"/>
                 <field name="birthdate"/>
                 <field name="gender"/>
-                <field name="recurring_rule_type"/>
+<!--                <field name="recurring_rule_type"/>-->
             </tree>
         </field>
     </record>
     <record id="action_subscriber" model="ir.actions.act_window">
         <field name="name">Subscribers</field>
-        <field name="res_model">subscription.subscriber</field>
+        <field name="res_model">subscriber.plan</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <menuitem id="menu_subscription" name="Subscription"/>
 
     <menuitem id="menu_subscriber" name="All Subscribers" parent="menu_subscription"/>
+
+    <menuitem id="menu_configuration" name="Configuration" parent="menu_subscription"/>
 
     <menuitem id="menu_subscriber_subscriber" action="action_subscriber" parent="menu_subscriber"/>
 

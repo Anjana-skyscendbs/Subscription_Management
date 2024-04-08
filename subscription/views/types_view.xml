@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Form view of Subject -->
+    <record id="view_types_form" model="ir.ui.view">
+        <field name="name">view.types.form</field>
+        <field name="model">subscription.types</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="sub_name"/>
+                        <field name="code"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of Subject -->
+    <record id="view_types_tree" model="ir.ui.view">
+        <field name="name">view.types.tree</field>
+        <field name="model">subscription.types</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sub_name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action of Subject -->
+    <record id="action_types" model="ir.actions.act_window">
+        <field name="name">Types</field>
+        <field name="res_model">subscription.types</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu of Subjects -->
+    <menuitem id="menu_types" action="action_types" parent="subscription.menu_configuration"/>
+
+    <!-- From view of Exam -->
+    <record id="view_subtype_form" model="ir.ui.view">
+        <field name="name">view.subtype.form</field>
+        <field name="model">subscription.subtype</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="type_id"/>
+                    <field name="month"/>
+                    <field name="year"/>
+                    <field name="day"/>
+                    <field name="week"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of Exam -->
+    <record id="view_subtype_tree" model="ir.ui.view">
+        <field name="name">view.subtype.tree</field>
+        <field name="model">subscription.subtype</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="type_id"/>
+                <field name="month"/>
+                <field name="year"/>
+                <field name="day"/>
+                <field name="week"/>
+            </tree>
+        </field>
+    </record>
+
+
+</odoo>
