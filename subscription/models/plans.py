@@ -1,6 +1,6 @@
 from odoo import models, fields
 
-class SchoolStandard(models.Model):
+class Subscriptionplan(models.Model):
     _name = 'subscription.plans'
     _description = 'Plans'
 

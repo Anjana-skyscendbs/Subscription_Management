@@ -1,7 +1,7 @@
 from odoo import fields,models
 
 
-class SchoolActivity(models.Model):
+class Subscriptionpremium(models.Model):
     _name = 'subscription.premium'
     _description = 'Premium'
 

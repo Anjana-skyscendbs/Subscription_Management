@@ -1,7 +1,7 @@
 from odoo import fields,models
 
 
-class Subject(models.Model):
+class Types(models.Model):
     _name = 'subscription.types'
     _description = 'Types'
 
@@ -11,7 +11,7 @@ class Subject(models.Model):
     code = fields.Char('Code')
 
 
-class SchoolExam(models.Model):
+class Subtype(models.Model):
     _name ='subscription.subtype'
     _description = 'Sub Type'
 
@@ -20,7 +20,7 @@ class SchoolExam(models.Model):
     year = fields.Float('Yearly Price')
     day = fields.Float('Daily Price')
     week =fields.Float('Weekly Price')
-    student_id = fields.Many2one('subscriber.plan', 'Subscriber', ondelete='cascade')
+    subscriber_id = fields.Many2one('subscriber.plan', 'Subscriber', ondelete='cascade')
     # student_id is the inverse field for O2M field exam_ids in student
     # ondelete='cascade' will delete all (current model)exam records if (comodel) student record is deleted.
 

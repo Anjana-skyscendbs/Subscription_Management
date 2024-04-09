@@ -29,6 +29,25 @@ class Subscription(models.Model):
     sign_in = fields.Float('Sign In')
     review = fields.Selection([(str(ele), str(ele)) for ele in range(5)], 'Review')
 
+    plans_id = fields.Many2one('subscription.plans', 'Plans', ondelete='restrict')
+
+    # subtypes_ids = fields.One2many('subscription.subtypes', 'subscriber_id', 'Types', limit=2)
+
+    premium_ids = fields.Many2many('subscription.premium', string='Premiums')
+
+    ref = fields.Reference([('subscriber.plan', ' Subscribers'),
+                            ('res.users', 'Users'),
+                            ('res.partner', 'Contacts')], 'Reference')
+
+
+    currency_id = fields.Many2one('res.currency', 'Currency')
+    final_price_amount = fields.Monetary(currency_field='currency_id', string='Price Amount')
+    document = fields.Binary('Document')
+    file_name = fields.Char('File Name')
+    photo = fields.Image('Photo')
+
+
+
 
 
 
