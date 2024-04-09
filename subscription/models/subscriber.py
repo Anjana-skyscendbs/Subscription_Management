@@ -29,9 +29,9 @@ class Subscription(models.Model):
     sign_in = fields.Float('Sign In')
     review = fields.Selection([(str(ele), str(ele)) for ele in range(5)], 'Review')
 
-    plans_id = fields.Many2one('subscription.plans', 'Plans', ondelete='restrict')
+    type_id = fields.Many2one('subscription.plans', 'Plans', ondelete='restrict')
 
-    # subtypes_ids = fields.One2many('subscription.subtypes', 'subscriber_id', 'Types', limit=2)
+    subtypes_ids = fields.One2many('subscription.subtype', 'subscriber_id', 'Types', limit=2)
 
     premium_ids = fields.Many2many('subscription.premium', string='Premiums')
 

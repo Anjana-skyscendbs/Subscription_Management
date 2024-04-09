@@ -41,7 +41,7 @@
                                 <field name="subscriber_code" readonly="1"/>
                                 <field name="phone" widget="phone"/>
                                 <field name="sign_in" widget="float_time"/>
-<!--                                <field name="type_id"/>-->
+                                <field name="type_id"/>
                                 <field name="ref"/>
                                 <field name="file_name" invisible="1"/>
                                 <field name="document" filename="file_name"/>
@@ -53,9 +53,9 @@
                     <field name="template"/>
 
                     <notebook>
-<!--                        <page name="pg_subtypes" string="Subscriptions">-->
-<!--                            <field name="subtypes_ids"/>-->
-<!--                        </page>-->
+                        <page name="pg_subtypes" string="Subscriptions">
+                            <field name="subtypes_ids"/>
+                        </page>
                         <page name="pg_pre" string="Premiums">
 <!--                            <field name="premium_ids"/>-->
 <!--                            <field name="premium_ids" widget="many2many_tags"/>-->
