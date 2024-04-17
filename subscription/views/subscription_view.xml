@@ -7,7 +7,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <h1>Welcome to Our Channel</h1>
+<!--                    <h1>Welcome to Our Channel</h1>-->
+                    <field name="state" widget="statusbar" options="{'clickable':1}" statusbar_visible="applied,confirmed,draft"/>
                 </header>
                 <sheet>
                     <widget name="web_ribbon" title="Expired" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
@@ -46,6 +47,7 @@
                                 <field name="file_name" invisible="1"/>
                                 <field name="document" filename="file_name"/>
                                 <field name="photo" widget="image"/>
+                                <field name="sequence"/>
                             </group>
                         </div>
                     </div>
@@ -55,6 +57,10 @@
                     <notebook>
                         <page name="pg_subtypes" string="Subscriptions">
                             <field name="subtypes_ids"/>
+                            <group>
+                                <field name="total_obt_prices"/>
+                                <field name="total_prices"/>
+                            </group>
                         </page>
                         <page name="pg_pre" string="Premiums">
 <!--                            <field name="premium_ids"/>-->
@@ -82,6 +88,7 @@
         <field name="model">subscriber.plan</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="age"/>
                 <field name="active"/>
@@ -92,14 +99,14 @@
         </field>
     </record>
     <record id="action_subscriber" model="ir.actions.act_window">
-        <field name="name">Subscribers</field>
+        <field name="name">All Subscribers</field>
         <field name="res_model">subscriber.plan</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <menuitem id="menu_subscription" name="Subscription"/>
 
-    <menuitem id="menu_subscriber" name="All Subscribers" parent="menu_subscription"/>
+    <menuitem id="menu_subscriber" name="Subscribers" parent="menu_subscription"/>
 
     <menuitem id="menu_configuration" name="Configuration" parent="menu_subscription"/>
 

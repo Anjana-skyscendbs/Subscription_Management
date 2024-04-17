@@ -47,6 +47,46 @@ class Subscription(models.Model):
     photo = fields.Image('Photo')
 
 
+    total_obt_prices = fields.Float(compute='_calc_total_prices', string='Total Obtained Prices')
+    total_prices = fields.Float(compute='_calc_total_prices', string='Total prices')
+    # NOTE : You can calculate multiple values in a single compute method as well.
+    # Usually the compute method is called when you open the record or you save the record.
+
+    state = fields.Selection([('applied', 'Applied'),
+                              ('draft', 'draft'),
+                              ('confirmed', 'Confirmed'),
+                              ('joined', 'Joined'),
+                              ('left', 'Left')], 'State', default='applied')
+
+    sequence = fields.Integer('Sequence')
+
+    def _calc_total_prices(self):
+        """
+        This method will calculate multiple fields.
+        -------------------------------------------
+        @param self : object pointer / recordset
+        """
+        for subscriber in self:
+            print("NORMAL FIELD", subscriber.name)
+            print("M2O FIELD", subscriber.type_id)
+            print("O2M FIELD", subscriber.subtypes_ids)
+            print("M2M FIELD", subscriber.premium_ids)
+            print("REF FUELD", subscriber.ref)
+            total = 0.0
+            total_obt = 0.0
+            for subtypes in subscriber.subtypes_ids:
+                total += subtypes.month  # total = total + exam.total_marks
+                total_obt += subtypes.year
+            subscriber.total_obt_prices = total_obt
+            subscriber.total_prices = total
+
+# RESERVED FIELDS
+# name - It is used as the recognized name of the record and gets displayed in the relational fields such as M2O and M2M.
+# active - This defined whether the recrod is active or archived. By default only active recrods are displayed.
+# state - This field is used for the process flow of your model
+# sequence - This is a reserved filed which is used for priority or preference.
+
+
 
 
 

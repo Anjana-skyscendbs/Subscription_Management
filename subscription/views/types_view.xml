@@ -50,6 +50,7 @@
                     <field name="year"/>
                     <field name="day"/>
                     <field name="week"/>
+                    <field name="perc"  widget="percentpie"/>
                 </group>
             </form>
         </field>
