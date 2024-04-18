@@ -1,11 +1,10 @@
 {
     'name': 'Subscription Management',
-    'author': 'anjana dafda',
+    'description': 'This module is used to manage subscribers of Channel and Its Information',
+    'author': 'Skyscend Trainee Solutions Pvt. Ltd.',
+    'website': 'https://www.skyscendbstrainee.com',
     'version': '1.0',
-    'category': 'Sales/Subscriptions',
-    'sequnce': -100,
     'summary': 'Manage subscription plans and customer subscriptions',
-    'website': 'https://www.skyscendbs.com',
     'depends': ['base'],
     'data': [
         'security/subscription_security.xml',
@@ -15,7 +14,7 @@
         'views/types_view.xml',
         'views/premium_view.xml',
     ],
-    'installable': True,
-    'application': True,
     'auto_install': False,
+    'installable':True,
+    'application': True,
 }

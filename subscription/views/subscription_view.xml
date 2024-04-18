@@ -7,13 +7,12 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-<!--                    <h1>Welcome to Our Channel</h1>-->
-                    <field name="state" widget="statusbar" options="{'clickable':1}" statusbar_visible="applied,confirmed,draft"/>
+                    <h1>Welcome to Our Channel Skyscend.com</h1>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" title="Expired" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
-                    <widget name="web_ribbon" title="Active" bg_color="bg-success" attrs="{'invisible': [('active', '=', False)]}"/>
-                    <label for="name"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                    <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>
+                     <label for="name"/>
                     <h1 colspan="4">
                         <field name="name" placeholder="Enter your Name"/>
                     </h1>
@@ -48,6 +47,7 @@
                                 <field name="document" filename="file_name"/>
                                 <field name="photo" widget="image"/>
                                 <field name="sequence"/>
+                                 <field name="parent_id"/>
                             </group>
                         </div>
                     </div>
@@ -64,8 +64,11 @@
                         </page>
                         <page name="pg_pre" string="Premiums">
 <!--                            <field name="premium_ids"/>-->
-<!--                            <field name="premium_ids" widget="many2many_tags"/>-->
-                            <field name="premium_ids" widget="many2many_checkboxes"/>
+                            <field name="premium_ids" widget="many2many_tags"/>
+<!--                            <field name="premium_ids" widget="many2many_checkboxes"/>-->
+                        </page>
+                        <page name="pg_sub" string="Subordinates">
+                            <field name="child_ids" readonly="1"/>
                         </page>
                         <page name="pg_description" string="Description">
                             <field name="description"/>

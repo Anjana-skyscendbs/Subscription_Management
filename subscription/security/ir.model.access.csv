@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_subscriber_plan_manager,access.subscriber.plan.manager,model_subscriber_plan,group_subscriber_plan_admin,1,1,1,1
-access_subscriber_plan_user,access.subscriber.plan.user,model_subscriber_plan,group_subscriber_plan_user,1,1,0,0
+access_subscription_subscriber_manager,access.subscription.subscriber.manager,model_subscriber_plan,group_subscriber_plan_admin,1,1,1,1
+access_subscription_subscriber_user,access.subscription.subscriber.user,model_subscriber_plan,group_subscriber_plan_user,1,1,0,0
 
 access_subscription_plans_manager,access.subscription.plans.manager,model_subscription_plans,group_subscriber_plan_admin,1,1,1,1
 access_subscription_plans_user,access.subscription.plans.user,model_subscription_plans,group_subscriber_plan_user,1,1,0,0

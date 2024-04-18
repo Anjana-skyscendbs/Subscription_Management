@@ -36,6 +36,6 @@
     </record>
 
     <!-- Menu of Standards -->
-    <menuitem id="menu_plans" action="action_plans" parent="subscription.menu_configuration"/>
+    <menuitem id="menu_plans" action="action_plans" parent="menu_configuration"/>
 
 </odoo>
