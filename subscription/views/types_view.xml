@@ -67,6 +67,7 @@
                 <field name="year"/>
                 <field name="day"/>
                 <field name="week"/>
+                <field name="perc" widget="progressbar"/>
             </tree>
         </field>
     </record>

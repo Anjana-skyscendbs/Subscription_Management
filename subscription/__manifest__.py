@@ -12,7 +12,7 @@
         'views/subscription_view.xml',
         'views/plans_view.xml',
         'views/types_view.xml',
-        'views/premium_view.xml',
+        'views/services_view.xml',
     ],
     'auto_install': False,
     'installable':True,

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- Form view of Standard -->
+    <!-- Form view of Plan -->
     <record id="view_plans_form" model="ir.ui.view">
         <field name="name">view.plans.form</field>
         <field name="model">subscription.plans</field>
@@ -16,7 +16,7 @@
         </field>
     </record>
 
-    <!-- Tree view of Standard -->
+    <!-- Tree view of Plan -->
     <record id="view_plans_tree" model="ir.ui.view">
         <field name="name">view.plans.tree</field>
         <field name="model">subscription.plans</field>
@@ -28,14 +28,14 @@
         </field>
     </record>
 
-    <!-- Action of Standard -->
+    <!-- Action of Plan -->
     <record id="action_plans" model="ir.actions.act_window">
         <field name="name">Plans</field>
         <field name="res_model">subscription.plans</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- Menu of Standards -->
+    <!-- Menu of Plan -->
     <menuitem id="menu_plans" action="action_plans" parent="menu_configuration"/>
 
 </odoo>

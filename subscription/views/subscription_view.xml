@@ -7,10 +7,11 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <h1>Welcome to Our Channel Skyscend.com</h1>
+<!--                    <h1>Welcome This is the Header Part of Subscription</h1>-->
+                    <field name="state" widget="statusbar" options="{'clickable':1}" statusbar_visible="applied,confirmed,draft"/>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                    <widget name="web_ribbon" title="Expired" bg_color="bg-danger" invisible="active"/>
                     <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>
                      <label for="name"/>
                     <h1 colspan="4">
@@ -23,13 +24,16 @@
                                 <field name="active" nolabel="1"/>
                                 <br/>
 <!--                                <field name ="recurring_rule_type" widget ="checkbox"/>-->
-                                <field name="price" string="Subscription Price"/>
+<!--                                <field name="price" string="Subscription Price"/>-->
                                 <field name="email" widget="email"/>
                                 <field name="url" string="Website" widget="url"/>
+                                <field name="file_name" invisible="1"/>
+                                <field name="document" filename="file_name"/>
+                                <field name="photo" widget="image"/>
                                 <field name="review" widget="priority"/>
-                                <field name="template" />
-                                <field name="currency_id"/>
-                                <field name="final_price_amount"/>
+<!--                                <field name="template" />-->
+<!--                                <field name="currency_id"/>-->
+<!--                                <field name="final_price_amount"/>-->
                             </group>
                         </div>
                         <div class="col col-md-6">
@@ -43,9 +47,6 @@
                                 <field name="sign_in" widget="float_time"/>
                                 <field name="type_id"/>
                                 <field name="ref"/>
-                                <field name="file_name" invisible="1"/>
-                                <field name="document" filename="file_name"/>
-                                <field name="photo" widget="image"/>
                                 <field name="sequence"/>
                                  <field name="parent_id"/>
                             </group>
@@ -62,9 +63,9 @@
                                 <field name="total_prices"/>
                             </group>
                         </page>
-                        <page name="pg_pre" string="Premiums">
+                        <page name="pg_pre" string="Lines">
 <!--                            <field name="premium_ids"/>-->
-                            <field name="premium_ids" widget="many2many_tags"/>
+                            <field name="services_ids" widget="many2many_tags"/>
 <!--                            <field name="premium_ids" widget="many2many_checkboxes"/>-->
                         </page>
                         <page name="pg_sub" string="Subordinates">

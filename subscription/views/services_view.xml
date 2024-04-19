@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Form view of Services -->
+    <record id="view_services_form" model="ir.ui.view">
+        <field name="name">view.services.form</field>
+        <field name="model">subscription.services</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of Services -->
+    <record id="view_services_tree" model="ir.ui.view">
+        <field name="name">view.services.tree</field>
+        <field name="model">subscription.services</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action of Services -->
+    <record id="action_services" model="ir.actions.act_window">
+        <field name="name">Services</field>
+        <field name="res_model">subscription.services</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu of Services -->
+    <menuitem id="menu_services" action="action_services" parent="subscription.menu_configuration"/>
+
+</odoo>

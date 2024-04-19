@@ -10,5 +10,5 @@ access_subscription_types_user,access.subscription.types.user,model_subscription
 access_subscription_subtype_manager,access.subscription.subtype.manager,model_subscription_subtype,group_subscriber_plan_admin,1,1,1,1
 access_subscription_subtype_user,access.subscription.subtype.user,model_subscription_subtype,group_subscriber_plan_user,1,1,1,0
 
-access_subscription_premium_manager,access.subscription.premium.manager,model_subscription_premium,group_subscriber_plan_admin,1,1,1,1
-access_subscription_premium_user,access.subscription.premium.user,model_subscription_premium,group_subscriber_plan_user,1,1,1,0
+access_subscription_services_manager,access.subscription.services.manager,model_subscription_services,group_subscriber_plan_admin,1,1,1,1
+access_subscription_services_user,access.subscription.services.user,model_subscription_services,group_subscriber_plan_user,1,1,1,0

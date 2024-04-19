@@ -8,7 +8,7 @@ class Subscription(models.Model):
     name = fields.Char(string='Name', required=True)
     age = fields.Integer('Age', default=20)
     active = fields.Boolean('Active', help='This field is used to activate or deactivate a record', default=True)
-    price = fields.Float('Price', digits=(16, 2))
+    # price = fields.Float('Price', digits=(16, 2))
     description = fields.Text(string='Description')
     template = fields.Html('Template')
     birthdate = fields.Date('Birthdate')
@@ -33,14 +33,14 @@ class Subscription(models.Model):
 
     subtypes_ids = fields.One2many('subscription.subtype', 'subscriber_id', 'Types', limit=2)
 
-    premium_ids = fields.Many2many('subscription.premium', string='Premiums')
+    services_ids = fields.Many2many('subscription.services', string='Lines')
 
     ref = fields.Reference([('subscriber.plan', ' Subscribers'),
                             ('res.users', 'Users'),
                             ('res.partner', 'Contacts')], 'Reference')
 
-    currency_id = fields.Many2one('res.currency', 'Currency')
-    final_price_amount = fields.Monetary(currency_field='currency_id', string='Price Amount')
+    # currency_id = fields.Many2one('res.currency', 'Currency')
+    # final_price_amount = fields.Monetary(currency_field='currency_id', string='Price Amount')
     document = fields.Binary('Document')
     file_name = fields.Char('File Name')
     photo = fields.Image('Photo')
@@ -86,7 +86,7 @@ class Subscription(models.Model):
             print("NORMAL FIELD", subscriber.name)
             print("M2O FIELD", subscriber.type_id)
             print("O2M FIELD", subscriber.subtypes_ids)
-            print("M2M FIELD", subscriber.premium_ids)
+            print("M2M FIELD", subscriber.services_ids)
             print("REF FUELD", subscriber.ref)
             total = 0.0
             total_obt = 0.0
