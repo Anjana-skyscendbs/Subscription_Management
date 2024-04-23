@@ -9,6 +9,10 @@ class Types(models.Model):
 
     sub_name = fields.Char('Name')
     code = fields.Char('Code')
+    month = fields.Float('Monthly Price')
+    year = fields.Float('Yearly Price')
+    day = fields.Float('Daily Price')
+    week = fields.Float('Weekly Price')
 
 
 class Subtype(models.Model):
@@ -19,7 +23,7 @@ class Subtype(models.Model):
     month = fields.Float('Monthly Price')
     year = fields.Float('Yearly Price')
     day = fields.Float('Daily Price')
-    week =fields.Float('Weekly Price')
+    week = fields.Float('Weekly Price')
     subscriber_id = fields.Many2one('subscriber.plan', 'Subscriber', ondelete='cascade')
     # student_id is the inverse field for O2M field exam_ids in student
     # ondelete='cascade' will delete all (current model)exam records if (comodel) student record is deleted.

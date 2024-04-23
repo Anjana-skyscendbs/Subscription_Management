@@ -33,7 +33,7 @@ class Subscription(models.Model):
 
     subtypes_ids = fields.One2many('subscription.subtype', 'subscriber_id', 'Types', limit=2)
 
-    services_ids = fields.Many2many('subscription.services', string='Lines')
+    services_ids = fields.Many2many('subscription.services', string='Services')
 
     ref = fields.Reference([('subscriber.plan', ' Subscribers'),
                             ('res.users', 'Users'),
@@ -95,6 +95,16 @@ class Subscription(models.Model):
                 total_obt += subtypes.year
             subscriber.total_obt_prices = total_obt
             subscriber.total_prices = total
+
+    def print_subscriber(self):
+        """
+        This is a method of the button to demonstrate the usage of button
+        -----------------------------------------------------------------
+        @param self: object pointer / recordset
+        """
+        # TODO: Future development
+        print("PRINT")
+        print("SELFFFFFF", self)
 
 # RESERVED FIELDS
 # name - It is used as the recognized name of the record and gets displayed in the relational fields such as M2O and M2M.

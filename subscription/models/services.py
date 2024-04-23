@@ -6,3 +6,4 @@ class Subscriptionpremium(models.Model):
     _description = 'Services'
 
     name = fields.Char('Name')
+    type_id = fields.Many2one('subscription.plans', 'Plans')

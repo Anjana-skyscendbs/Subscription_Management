@@ -63,9 +63,9 @@
                                 <field name="total_prices"/>
                             </group>
                         </page>
-                        <page name="pg_pre" string="Lines">
+                        <page name="pg_pre" string="Services">
 <!--                            <field name="premium_ids"/>-->
-                            <field name="services_ids" widget="many2many_tags"/>
+                            <field name="services_ids" widget="many2many_tags" domain="[('type_id','=',type_id)]"/>
 <!--                            <field name="premium_ids" widget="many2many_checkboxes"/>-->
                         </page>
                         <page name="pg_sub" string="Subordinates">
@@ -81,6 +81,7 @@
                 </sheet>
                 <footer>
                     <h1> This is the Footer Part for Subscriber</h1>
+                    <button name="print_subscriber" string="Print" type="object"/>
                 </footer>
             </form>
         </field>
@@ -95,25 +96,89 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="age"/>
-                <field name="active"/>
+                <field name="active" widget="boolean_toggle"/>
                 <field name="birthdate"/>
                 <field name="gender"/>
 <!--                <field name="recurring_rule_type"/>-->
             </tree>
         </field>
     </record>
+
+    <!-- Search view -->
+    <record id="view_subscriber_search" model="ir.ui.view">
+        <field name="name">view.subscriber.search</field>
+        <field name="model">subscriber.plan</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="age"/>
+                <!-- Adding Filters in the Search view -->
+                <filter name="fil_gender_male" string="Male" domain="[('gender','=','male')]"/>
+                <filter name="fil_gender_female" string="Female" domain="[('gender','=','female')]"/>
+                <filter name="fil_active_subscribers" string="Active Subscribers" domain="[('active','=',True)]"/>
+                <filter name="fil_archive_subscribers" string="Archived Subscribers" domain="[('active','=',False)]"/>
+                <!-- Adding Group By in the Search View -->
+                <filter name="grp_by_gender" string="Gender" context="{'group_by':'gender'}"/>
+                <filter name="grp_by_plan" string="Plan" context="{'group_by':'type_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action of Students -->
+    <!-- To bind views to a menu or anything else we need to create an action -->
+    <!-- To create an action we will use the record tag -->
+    <!-- XML ID will be meaning the same as view but here you can see it starts with action rather than view -->
+    <!-- model for action is ir.actions.act_window -->
+    <!-- Action also has 3 fields -->
+    <!-- The name is the name of the action -->
+    <!-- Here for model the field is res_model unlike view -->
+    <!-- The view_mode we need to mention views in which you want to switch -->
+    <!-- The first view will be the view which will be loaded when this action is triggerred -->
+
+
     <record id="action_subscriber" model="ir.actions.act_window">
         <field name="name">All Subscribers</field>
         <field name="res_model">subscriber.plan</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_age':20}</field>
+    </record>
+
+    <!-- search_default_<field_name> or search_default_<filter_name>
+         This is used to add a search by default when we open the view or set a filter or group by by default when you open the view -->
+
+    <!-- Action of Male Students -->
+    <record id="action_subscriber_male" model="ir.actions.act_window">
+        <field name="name">Males</field>
+        <field name="res_model">subscriber.plan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('gender','=','male')]</field>
+        <field name="context">{'default_gender':'male'}</field>
+    </record>
+    <!-- Using a domain on the action to filter the records -->
+    <!--default_<field_name>
+        It gives the default value on the form view for a specific field when opened from this action -->
+
+    <!-- Action of Female Students -->
+    <record id="action_subscriber_female" model="ir.actions.act_window">
+        <field name="name">Females</field>
+        <field name="res_model">subscriber.plan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('gender','=','female')]</field>
+        <field name="context">{'default_gender':'female'}</field>
     </record>
 
     <menuitem id="menu_subscription" name="Subscription"/>
 
-    <menuitem id="menu_subscriber" name="Subscribers" parent="menu_subscription"/>
+    <menuitem id="menu_subscriber" name="All Subscribers" parent="menu_subscription"/>
 
     <menuitem id="menu_configuration" name="Configuration" parent="menu_subscription"/>
 
     <menuitem id="menu_subscriber_subscriber" action="action_subscriber" parent="menu_subscriber"/>
+    <!-- Menu of Females -->
+    <menuitem id="menu_subscriber_subscriber_female" action="action_subscriber_female" parent="menu_subscriber"/>
+
+    <!-- Menu of Males -->
+    <menuitem id="menu_subscriber_subscriber_male" action="action_subscriber_male" parent="menu_subscriber"/>
 
 </odoo>
