@@ -10,6 +10,8 @@ class AddSubscription(models.Model):
     price_depend = fields.Float(compute='_compute_price_depend', string='Price')
     user_id = fields.Many2one('subscription.user', 'User', ondelete='cascade')
 
+
+
     @api.depends('type_id', 'plan_id')
     def _compute_price_depend(self):
         for user in self:
@@ -24,6 +26,8 @@ class AddSubscription(models.Model):
                 elif plan_code == 'yearly':
                     user.price_depend = user.type_id.yearly_price
                 else:
+                    user.total_price = total
                     user.price_depend = 0.0
             else:
                 user.price_depend = 0.0
+

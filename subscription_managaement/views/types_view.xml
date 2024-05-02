@@ -10,9 +10,9 @@
                     <group>
                         <field name="name"/>
                         <field name="code"/>
-                        <field name="monthly_price"/>
                         <field name="daily_price"/>
                         <field name="weekly_price"/>
+                        <field name="monthly_price"/>
                         <field name="yearly_price"/>
                     </group>
                 </sheet>
@@ -28,9 +28,9 @@
             <tree>
                 <field name="name"/>
                 <field name="code"/>
-                <field name="monthly_price"/>
                 <field name="daily_price"/>
                 <field name="weekly_price"/>
+                <field name="monthly_price"/>
                 <field name="yearly_price"/>
             </tree>
         </field>

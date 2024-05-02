@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields,api
 
 
 class Subscriber(models.Model):
@@ -11,35 +11,34 @@ class Subscriber(models.Model):
     age = fields.Integer('Age', default=18, group_operator='avg')
     active = fields.Boolean('Active', help='This field is used to activate or deactivate a record', default=True)
     notes = fields.Text('Notes')
-    template = fields.Html('Template')
     birthdate = fields.Date('Birthdate')
-    timestamp = fields.Datetime('Timestamp', readonly=True)
+    timestamp = fields.Datetime('Start Date')
     gender = fields.Selection(selection=[('male', 'Male'),
                                          ('female', 'Female')], string='Gender')
-    # student_code = fields.Char('Student Code', size=4)
+    user_code = fields.Char('User Code', size=4)
     password = fields.Char('Password')
     email = fields.Char('Email')
-    url = fields.Char('URL')
     phone = fields.Char('Phone')
-
-    sign_in = fields.Float('Sign In')
-    priority = fields.Selection([(str(ele), str(ele)) for ele in range(6)], 'Priority')
     ref = fields.Reference([('subscription.user', ' Subscribers'),
                             ('res.users', 'Users'),
                             ('res.partner', 'Contacts')], 'Reference')
 
-    document = fields.Binary('Document')
-    file_name = fields.Char('File Name')
     photo = fields.Image('Photo')
 
     state = fields.Selection([('applied', 'Applied'),
+                              ('draft', 'Draft'),
                               ('done', 'Done'),
-                              ('joined', 'Joined'),
                               ('left', 'Left')], 'State', default='applied')
     plan_id = fields.Many2one('subscription.plan', 'Plan')
     type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions')
     service_ids = fields.Many2many('subscription.service', string='Services')
     sequence = fields.Integer('Sequence')
-    parent_id = fields.Many2one('subscription.user', 'Monitor')
 
-    child_ids = fields.One2many('subscription.user', 'parent_id', 'Subordinates')
+
+    total_subscription_price = fields.Float(string='Total Price',
+                                            compute='_compute_total_subscription_price', store=True)
+
+    @api.depends('type_ids.price_depend')
+    def _compute_total_subscription_price(self):
+        for user in self:
+            user.total_subscription_price = sum(subscription.price_depend for subscription in user.type_ids)
