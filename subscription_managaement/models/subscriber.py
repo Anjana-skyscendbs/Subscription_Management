@@ -19,17 +19,13 @@ class Subscriber(models.Model):
     password = fields.Char('Password')
     email = fields.Char('Email')
     phone = fields.Char('Phone')
-    ref = fields.Reference([('subscription.user', ' Subscribers'),
-                            ('res.users', 'Users'),
-                            ('res.partner', 'Contacts')], 'Reference')
-
     photo = fields.Image('Photo')
 
     state = fields.Selection([('applied', 'Applied'),
                               ('draft', 'Draft'),
                               ('done', 'Done'),
                               ('left', 'Left')], 'State', default='applied')
-    plan_id = fields.Many2one('subscription.plan', 'Plan')
+    plan_id = fields.Many2one('subscription.plan', 'Plan' ,domain=[('name','=','Monthly')])
     type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions')
     service_ids = fields.Many2many('subscription.service', string='Services')
     sequence = fields.Integer('Sequence')
