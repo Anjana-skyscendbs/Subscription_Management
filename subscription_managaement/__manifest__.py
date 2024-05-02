@@ -1,0 +1,20 @@
+{
+    'name': 'Subscription Management',
+    'description': 'This module is used to manage student Information',
+    'author': 'Skyscend Business Solutions Pvt. Ltd.',
+    'website': 'https://www.skyscendbs.com',
+    'version': '1.0',
+    'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+        'security/sub_manage_security.xml',
+        'views/subscriber_view.xml',
+        'views/plans_view.xml',
+        'views/types_view.xml',
+        'views/services_view.xml',
+        'views/addsubscription_view.xml',
+    ],
+    'auto_install': False,
+    'installable':True,
+    'application': True,
+}

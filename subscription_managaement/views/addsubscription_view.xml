@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+     <!-- From view of Add Subscription -->
+    <record id="view_addsub_form" model="ir.ui.view">
+        <field name="name">view.addsub.form</field>
+        <field name="model">subscription.addsubscription</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="type_id"/>
+                    <field name="plan_id"/>
+                    <field name="price_depend"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of Add Subscription -->
+    <record id="view_addsub_tree" model="ir.ui.view">
+        <field name="name">view.addsub.tree</field>
+        <field name="model">subscription.addsubscription</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="type_id"/>
+                <field name="plan_id"/>
+                <field name="price_depend"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

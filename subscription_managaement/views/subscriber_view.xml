@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_user_form" model="ir.ui.view">
+        <field name="name">view.user.form</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+            <!-- If you're creating a form view it would start with form -->
+            <form>
+                <header>
+<!--                    <h1>This is the Header!!</h1>-->
+                    <field name="state" widget="statusbar" options="{'clickable':1}" statusbar_visible="applied,joined,left"/>
+                </header>
+                <sheet>
+                   <widget name="web_ribbon" title="Expired" bg_color="bg-danger" invisible="active"/>
+                    <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>
+                    <label for="name"/>
+                    <h1 colspan="4">
+                        <field name="name"/>
+                    </h1>
+                    <div class="row">
+                        <div class="col col-md-6">
+                            <group>
+                                <field name="age"/>
+                                <field name="active"/>
+<!--                                <field name="price" string="Price"/>-->
+
+                                <field name="url" string="Website" widget="url"/>
+                                <field name="photo" widget="image" class="oe_avatar"/>
+                                <field name="priority" widget="priority"/>
+                                <field name="ref"/>
+                                <field name="file_name" invisible="1"/>
+                                <field name="parent_id"/>
+<!--                                <field name="final_fees_amount"/>-->
+                            </group>
+                        </div>
+                        <div class="col col-md-6">
+                            <group>
+                                <field name="email" widget="email"/>
+                                 <field name="password" password="*"/>
+                                <field name="birthdate"/>
+                                <field name="timestamp"/>
+                                <field name="gender" widget="radio"/>
+<!--                                <field name="student_code"/>-->
+                                <field name="phone" widget="phone"/>
+                                <field name="sign_in" widget="float_time"/>
+<!--                                <field name="standard_id" widget="selection"/>-->
+<!--                                <field name="standard_id" options="{'no_create':1, 'no_open':1}"/>-->
+
+                                <field name="document" filename="file_name"/>
+
+                                <field name="sequence"/>
+<!--                                <field name="parent_id"/>-->
+                            </group>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page name="pg_type" string="Type">
+                            <field name="type_ids"/>
+                        </page>
+                        <page name="pg_ser" string="Services">
+                            <field name="service_ids" widget="many2many_checkboxes" />
+                        </page>
+                        <page name="pg_sub" string="Subordinates">
+                            <field name="child_ids" readonly="1"/>
+                        </page>
+                        <page name="pg_notes" string="Notes">
+                            <field name="notes"/>
+                        </page>
+                        <page name="pg_temp" string="Template">
+                            <field name="template"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <h1> This is the Footer....</h1>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view / List view of Student -->
+    <record id="view_user_tree" model="ir.ui.view">
+        <field name="name">view.user.tree</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+            <!-- Here if you're creating a tree view we will start with tree tag -->
+            <!-- It is not necessary ot put all the fields in the tree / list view -->
+            <!-- In any view only the fields you have added will be displayed others will be ignored -->
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="age"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="birthdate"/>
+<!--                <field name="standard_id"/>-->
+                <field name="gender"/>
+            </tree>
+        </field>
+    </record>
+
+      <record id="action_user" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="res_model">subscription.user</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+
+    <menuitem id="menu_subscription" name="Subcription Management"/>
+    <menuitem id="menu_configuration" name="Configuration" parent="menu_subscription" sequence="100"/>
+
+    <menuitem id="menu_user" name="All Users" parent="menu_subscription"/>
+     <menuitem id="menu_user_user" action="action_user" parent="menu_subscription"/>
+
+</odoo>
