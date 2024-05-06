@@ -11,8 +11,8 @@ class Subscriber(models.Model):
     age = fields.Integer('Age', default=18, group_operator='avg')
     active = fields.Boolean('Active', help='This field is used to activate or deactivate a record', default=True)
     notes = fields.Text('Notes')
-    birthdate = fields.Date('Birthdate')
-    timestamp = fields.Datetime('Start Date')
+    birthdxate = fields.Date('Birthdate')
+    # timestamp = fields.Datetime('Start Date')
     gender = fields.Selection(selection=[('male', 'Male'),
                                          ('female', 'Female')], string='Gender')
     user_code = fields.Char('User Code', size=4)
