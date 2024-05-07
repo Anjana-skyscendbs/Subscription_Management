@@ -7,7 +7,9 @@
 
             <form>
                 <header>
-                    <h1>Welcome to Our Channel!!</h1>
+<!--                    <h1>Welcome to Our Channel!!</h1>-->
+                    <button name="print_user" string="Print" type="object"/>
+                     <button name="create_rec" string="Create" type="object"/>
                     <field name="state" widget="statusbar" options="{'clickable':1}"
                            statusbar_visible="applied,draft,done,left"/>
                 </header>
@@ -86,6 +88,7 @@
                 <field name="name"/>
                 <field name="gender"/>
                 <field name="age"/>
+<!--                <field name="plan_id"/>-->
                 <!-- Adding Filters in the Search view -->
                 <filter name="fil_gender_male" string="Male" domain="[('gender','=','male')]"/>
                 <filter name="fil_gender_female" string="Female" domain="[('gender','=','female')]"/>
@@ -94,6 +97,7 @@
                 <!-- Adding Group By in the Search View -->
                 <filter name="grp_by_gender" string="Gender" context="{'group_by':'gender'}"/>
                 <filter name="grp_by_plan" string="Plan" context="{'group_by':'plan_id'}"/>
+
             </search>
         </field>
     </record>
@@ -102,7 +106,7 @@
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_age':22}</field>
+        <field name="context">{'search_default_age':22  'search_default_grp_by_plan':'Monthly'}</field>
     </record>
 
 
@@ -133,6 +137,8 @@
     <menuitem id="menu_configuration" name="Configuration" parent="menu_subscription" sequence="100"/>
 
     <menuitem id="menu_user_user" action="action_user" parent="menu_user"/>
+
+
     <!-- Menu of Females -->
     <menuitem id="menu_user_user_female" action="action_user_female" parent="menu_user"/>
 
