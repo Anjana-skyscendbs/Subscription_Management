@@ -25,7 +25,7 @@ class Subscriber(models.Model):
                               ('draft', 'Draft'),
                               ('done', 'Done'),
                               ('left', 'Left')], 'State', default='applied')
-    plan_id = fields.Many2one('subscription.plan', 'Plan' ,domain=[('name','=','Monthly')])
+    plan_id = fields.Many2one('subscription.plan', 'Plan')#,domain=[('name','=','Monthly')]
     type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions')
     service_ids = fields.Many2many('subscription.service', string='Services')
     sequence = fields.Integer('Sequence')
@@ -162,8 +162,8 @@ class Subscriber(models.Model):
         print("STD OBJ", std_obj)
 
 
-        form_view_user = self.env.ref('subscription.view_user_form')
-        print("FORM VIEW USER", form_view_user)
+        # form_view_user = self.env.ref('subscription.view_user_form')
+        # print("FORM VIEW USER", form_view_user)
 
     def create_rec(self):
         """

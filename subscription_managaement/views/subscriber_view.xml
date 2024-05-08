@@ -38,6 +38,7 @@
                                 <field name="phone" widget="phone"/>
                                 <field name="photo" widget="image" class="oe_avatar"/>
                                 <field name="sequence"/>
+<!--                                <field name="plan_id"/>-->
                             </group>
                         </div>
                     </div>
@@ -75,6 +76,8 @@
                 <field name="active" widget="boolean_toggle"/>
                 <field name="birthdate"/>
                 <field name="gender"/>
+<!--                <field name="plan_id"/>-->
+
             </tree>
         </field>
     </record>
@@ -92,11 +95,13 @@
                 <!-- Adding Filters in the Search view -->
                 <filter name="fil_gender_male" string="Male" domain="[('gender','=','male')]"/>
                 <filter name="fil_gender_female" string="Female" domain="[('gender','=','female')]"/>
-                <filter name="fil_active_students" string="Active Users" domain="[('active','=',True)]"/>
-                <filter name="fil_archive_students" string="Expired Users" domain="[('active','=',False)]"/>
+                <filter name="fil_active_users" string="Active Users" domain="[('active','=',True)]"/>
+                <filter name="fil_archive_users" string="Expired Users" domain="[('active','=',False)]"/>
+<!--                <filter name="fil_plan_users" string="Plan Users" domain="[('plan_id','=','monthly')]"/>-->
+
                 <!-- Adding Group By in the Search View -->
                 <filter name="grp_by_gender" string="Gender" context="{'group_by':'gender'}"/>
-                <filter name="grp_by_plan" string="Plan" context="{'group_by':'plan_id'}"/>
+                <filter name="grp_by_birthdate" string="Birthdate" context="{'group_by':'birthdate'}"/>
 
             </search>
         </field>
@@ -106,7 +111,7 @@
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_age':22  'search_default_grp_by_plan':'Monthly'}</field>
+        <field name="context">{'search_default_age':22  'search_default_grp_by_birthdate':'02/12/2001'}</field>
     </record>
 
 

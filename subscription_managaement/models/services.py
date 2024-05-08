@@ -7,3 +7,4 @@ class SubscriptionServices(models.Model):
 
     name = fields.Char('Name')
     plan_id = fields.Many2one('subscription.plan','Plan')
+    type_id = fields.Many2one('subscription.type', 'Type')
