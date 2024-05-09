@@ -4,7 +4,7 @@
     'author': 'Skyscend Business Solutions Pvt. Ltd.',
     'website': 'https://www.skyscendbs.com',
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'data': [
         'security/ir.model.access.csv',
         'security/sub_manage_security.xml',

@@ -8,8 +8,9 @@
             <form>
                 <header>
 <!--                    <h1>Welcome to Our Channel!!</h1>-->
-                    <button name="print_user" string="Print" type="object"/>
-                     <button name="create_rec" string="Create" type="object"/>
+                    <button name="print_user" string="Print" type="object" class="oe_highlight"/>
+                    <button name="create_rec" string="Create" type="object" class="oe_highlight"/>
+                    <button name="check_orm" string="Check ORM" type="object" class="oe_highlight"/>
                     <field name="state" widget="statusbar" options="{'clickable':1}"
                            statusbar_visible="applied,draft,done,left"/>
                 </header>
@@ -57,6 +58,11 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 <footer>
                     <h1>This is the Footer....</h1>
                 </footer>
@@ -69,10 +75,10 @@
         <field name="name">view.user.tree</field>
         <field name="model">subscription.user</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-success = "active==True" decoration-danger="active==False">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
-                <field name="age"/>
+                <field name="age" avg ="Avg "/><!-- sum="Sum of total Age"-->
                 <field name="active" widget="boolean_toggle"/>
                 <field name="birthdate"/>
                 <field name="gender"/>
@@ -107,10 +113,48 @@
         </field>
     </record>
 
+    <!-- Kanban view -->
+    <record id="view_user_kanban" model="ir.ui.view">
+        <field name="name">view.user.kanban</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+            <kanban string ="Subscription Kanban" class ="o_res_partner_kanban">
+                <field name ="id"/>
+                <templates>
+                    <t t-name ="kanban-box">
+                        <div class="oe_kanban_global_click" style="height:135px;background-color:#ccff99;color:#006600;">
+                            <div style="width:30%;float:left;display:inline-block;">
+                                <img alt="Avatar" t-att-src="kanban_image('subscription.user','image',record.id.raw_value)" style="width:100px;height:120px;"/>
+                            </div>
+                            <div style="width:70%;float:right;display:inline-block;">
+                                <ul style ="list-style-type:none;">
+                                    <li>
+                                        <b> Name : </b>
+                                        <field name="name"/>
+                                    </li>
+                                    <li>
+                                        <b> Age : </b>
+                                        <field name="age"/>
+                                    </li>
+                                    <li>
+                                        <b> Gender : </b>
+                                        <field name="gender"/>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+
+            </kanban>
+        </field>
+    </record>
+
     <record id="action_user" model="ir.actions.act_window">
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,search,kanban</field>
         <field name="context">{'search_default_age':22  'search_default_grp_by_birthdate':'02/12/2001'}</field>
     </record>
 

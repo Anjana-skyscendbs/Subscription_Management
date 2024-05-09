@@ -1,13 +1,15 @@
-from odoo import models, fields,api
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 
 class Subscriber(models.Model):
     _name = 'subscription.user'
-    _description = 'Users'
+    _description = 'Create User'
     _auto = True
+    _inherit=['mail.thread','mail.activity.mixin']
     # _order = 'sequence'
 
-    name = fields.Char(string='Name', required=True, index=True, translate=True)
+    name = fields.Char(string='Name', required=True, index=True, translate=True, track_visibility="always")
     age = fields.Integer('Age', default=18, group_operator='avg')
     active = fields.Boolean('Active', help='This field is used to activate or deactivate a record', default=True)
     notes = fields.Text('Notes')
@@ -172,7 +174,7 @@ class Subscriber(models.Model):
         @param self: object pointer
         """
         vals1 = {
-            'name':'janvi',
+            'name':'Nidhi',
             'active':True,
             'age':22,
             'birthdate':'2001-04-01',
@@ -180,15 +182,69 @@ class Subscriber(models.Model):
             'gender':'female'
         }
         vals2 = {
-            'name': 'manoj',
+            'name': 'Herry',
             'active': True,
             'age': 29,
             'birthdate': '1994-05-17',
             # 'plan_id': 2,
-            'gender': 'male '
+            'gender': 'female'
         }
         vals_lst = [vals1,vals2]
         # Creating record in the same object
         new_users = self.create(vals_lst)
         print("USERS", new_users)
+        return {
+            'effect':{
+                'fadeout':'slow',
+                'type':'rainbow_man',
+                'message':'Record has been Created Sucessfully'
+            }
+        }
+    @api.constrains('age')
+    def val_age(self):
+        for record in self:
+            if record.age <=18:
+                raise ValidationError(_('The age must be above than 18 years'))
 
+
+
+    @api.model
+    def create(self,vals):
+        res =super(Subscriber,self).create(vals)
+        print("Hello")
+        print("self : - ",self,"res : -",res,"vals :-",vals)
+        return res
+
+    # ORM Method
+    def check_orm(self):
+        search_var = self.env['subscription.user'].search([('gender','=','male')])
+        print("Search Var ---------- ",search_var)
+        for rec in search_var:
+            print("Name ----" ,rec.name,"Gender --",rec.gender)
+
+        search_count = self.env['subscription.user'].search_count([('gender', '=', 'female')])
+        print("Search Var Count ---------- ", search_count)
+
+        browse = self.env['subscription.user'].browse(6)
+        print("Search Var Count ---------- ", browse,"Name -",browse.name,"Age -",browse.age)
+
+        ref = self.env.ref('subscription_managaement.view_user_form')
+        print("Search Var Count ---------- ", ref.type,"Name---",ref.name)
+
+        # browse_id=self.env['subscription.user'].browse(6)
+        # browse_id.write({
+        #     "name":"Kiran Chavda",
+        #     "age":27
+        # })
+        # browse_id.copy()
+        # browse_id.unlink()
+
+
+
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'type': 'rainbow_man',
+                'message': 'Print Sucessfully'
+            }
+        }
