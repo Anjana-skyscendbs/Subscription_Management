@@ -210,10 +210,24 @@ class Subscriber(models.Model):
 
     @api.model
     def create(self,vals):
-        res =super(Subscriber,self).create(vals)
-        print("Hello")
-        print("self : - ",self,"res : -",res,"vals :-",vals)
+        res = super(Subscriber, self).create(vals)
+        if not vals.get('type_ids'):
+            raise ValidationError(_("PLease fill the one2many field"))
+        else:
+            return res
+
         return res
+
+        # if vals.get('gender')=='male':
+        #     res['name']="Mr." + res['name']
+        #     print("res['name']--" ,res['name'])
+        # elif vals.get('gender')=='female':
+        #     res['name']="Ms." + res['name']
+        #     print("res['name']--" ,res['name'])
+        # else:
+        #     return res
+        # print("Hello")
+        # print("self : - ",self,"res : -",res,"vals :-",vals)
 
     # ORM Method
     def check_orm(self):
