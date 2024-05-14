@@ -6,8 +6,8 @@ class AddSubscription(models.Model):
     _name ='subscription.addsubscription'
     _description = 'Add Subscription'
 
-    type_id = fields.Many2one('subscription.type', 'Subscription', required=True)
-    plan_id = fields.Many2one('subscription.plan', 'Plan', required=True)
+    type_id = fields.Many2one('subscription.type', 'Subscription')#  required=True
+    plan_id = fields.Many2one('subscription.plan', 'Plan')# , required=True
     price_depend = fields.Float(compute='_compute_price_depend', string='Price')
     start_date = fields.Date(string='Start Date',default =fields.Date.today())
     expire_date = fields.Date(string='Expire Date')
@@ -34,6 +34,32 @@ class AddSubscription(models.Model):
                     user.price_depend = 0.0
             else:
                 user.price_depend = 0.0
+
+
+
+    def add_rec(self):
+        vals1 = {
+            'type_id':3,
+            'plan_id':7
+        }
+            # 0 is used for creation
+            # (0,0,{}) used to create record in O2M field
+        vals_lst = [vals1]
+        # Creating record in the same object
+        new_users = self.create(vals_lst)
+        print("USERS", new_users)
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'type': 'rainbow_man',
+                'message': 'Record has been Added Sucessfully'
+            }
+        }
+
+    def remove_all_records(self):
+        self.unlink()
+        return True
+
 
 
 #  user.expire_date = user.start_date + timedelta(days=30)

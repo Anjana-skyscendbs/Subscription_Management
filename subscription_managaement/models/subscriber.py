@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+# from odoo.exceptions import ValidationError,UserError
 
 
 class Subscriber(models.Model):
@@ -22,15 +22,27 @@ class Subscriber(models.Model):
     email = fields.Char('Email')
     phone = fields.Char('Phone')
     photo = fields.Image('Photo')
+    ref = fields.Reference([('school.student', ' Students'),
+                            ('res.users', 'Users'),
+                            ('res.partner', 'Contacts')], 'Reference')
+    file_name = fields.Char('File Name')
 
     state = fields.Selection([('applied', 'Applied'),
+                              ('pending', 'Pending'),
                               ('draft', 'Draft'),
                               ('done', 'Done'),
                               ('left', 'Left')], 'State', default='applied')
     plan_id = fields.Many2one('subscription.plan', 'Plan')#,domain=[('name','=','Monthly')]
-    type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions')
-    service_ids = fields.Many2many('subscription.service', string='Services')
+    type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions',ondelete='cascade')
+    # service_ids = fields.Many2many('subscription.service', string='Services',ondelete='restrict')
+    service_ids = fields.Many2many('subscription.service', 'sub_ser_rel','sub_id','ser_id',string='Services', ondelete='restrict')
+
+
     sequence = fields.Integer('Sequence')
+    parent_id = fields.Many2one('subscription.user', 'Manager')
+    child_ids = fields.One2many('subscription.user', 'parent_id', 'Subordinates')
+    currency_id = fields.Many2one('res.currency', 'Currency')
+    price = fields.Monetary(currency_field='currency_id', string='Price Amount')
 
 
     total_subscription_price = fields.Float(string='Total Price',
@@ -41,103 +53,6 @@ class Subscriber(models.Model):
         for user in self:
             user.total_subscription_price = sum(subscription.price_depend for subscription in user.type_ids)
 
-        """
-                This method will calculate multiple fields.
-                -------------------------------------------
-                @param self : object pointer / recordset
-                """
-        print("SELF", self)
-        # You can not access any fields from a recordset which contains multiple records
-        # print("SELF NAME", self.name) # This will raise singleton error
-        # filtered is used to filter the records
-        # It can be called only with recrodset containing records
-        # You can use either jsut the field name in filtered which will check value eexisting or not.
-        # In below case it will return records which have active set.
-        active_records = self.filtered('active')
-        print("ACTIVE RECORDS", active_records)
-        # The scond way is using lambda where you can use proper conditions to filter records.
-        female_records = active_records.filtered(lambda r: r.gender == 'female')
-        male_records = active_records.filtered(lambda r: r.gender == 'male')
-        print("FEMALE RECORDS", female_records)
-        print("MALE RECORDS", male_records)
-
-        # Mapped is used to map field values from records and return in a list.
-        active_records_name = active_records.mapped('name')
-        print("ACTIVE NAMES", active_records_name)
-
-        activ_name_age = active_records.mapped(lambda r: str(r.name) + "," + str(r.age))
-        print("ACITVE NAME AGE", activ_name_age)
-
-        # sorted() is used to sort the records
-        sort_by_age = active_records.sorted(key='age')
-        print("SORT BY AGE", sort_by_age)
-
-        sort_by_name = active_records.sorted(key='name', reverse=True)
-        print("SORT BY NAME", sort_by_name)
-
-        # RECORDSET OPERATIONS
-        # using in you can check whether a record exists in a recordset or not.
-        # works with a single record and not multiple records
-        res = female_records in active_records
-        print("RES", res)
-        for fr in female_records:
-            print("FR IN ACT", fr in active_records)
-
-        res = female_records not in active_records
-        print("RES", res)
-
-        # < is used to check subset
-        print("SUBSET", female_records < active_records)
-        # <= is used to check either subset or same set
-        print("SUB OR SAME1", male_records <= active_records)
-        print("SUB OR SAME 2", active_records <= active_records)
-
-        # > is used to check superset
-        print("SUPER", active_records > female_records)
-        # >= is used to check superset or same set
-        print("SUPER OR SAME 1", active_records >= male_records)
-        print("SUPER OR SAME 2", active_records >= active_records)
-
-        print("UNION", male_records | female_records)
-        print("INTERSECTION", male_records & active_records)
-        print("DIFF", active_records - female_records)
-
-        for user in self:
-            # You can access the fields using '.'.
-            # Normal field will directly give the value of th
-            #
-            # e field
-            print("NORMAL FIELD", user.name)
-            # Relational fields will always give you a recordset.
-            # M2O/Ref field will give you single record recordset
-            # O2M/M2M will give you multiple records recordset.
-            print("M2O FIELD", user.plan_id.name)
-            # IF there's a single record you can access the field with multiple '.' referecnes.
-            print("O2M FIELD", user.type_ids)
-            # If there are multiple records you can not access the field directly.
-            # print("EXAM FIELD",student.exam_ids.total_marks) # This will raise an error of singleton
-            for subscription in user.type_ids:
-                print("Subscription", subscription, subscription.price_depend)
-                print("Subscription Name", subscription.type_id.name)
-            print("M2M FIELD", user.service_ids)
-            # print("REF FUELD", user.ref)
-            # total = 0.0
-            # total_obt = 0.0
-            # You can use index in the recordset but if and only if there is a record
-            if user.type_ids:
-                print("O@M EXAM SUBSCRIPTION", user.type_ids[0].type_id.name)
-
-            # ensure_one() is used to validate a single record
-            user.ensure_one()  # NO ERROR
-            # student.exam_ids.ensure_one() # ERROR
-
-            # get_metadata() gives you the pre-defined fields / magic fields
-            # It returns a dictionary containing id, create_date, create_uid, write_date, write_uid
-            mt_dt = user.get_metadata()
-            print("MT DT", mt_dt)
-
-
-
     def print_user(self):
         """
         This is a method of the button to demonstrate the usage of button
@@ -146,26 +61,71 @@ class Subscriber(models.Model):
         """
         # TODO: Future development
         print("PRINT")
-        print("SELFFFFFF", self)
-        print("ENVIRONMENT", self.env)
-        print("ENVIRONEMTN  ATTRS", dir(self.env))
-        print("ARGS", self.env.args)
-        print("CURSOR", self.env.cr)
-        print("UID", self.env.uid)
-        print("USER", self.env.user)
-        print("CONTEXT",self.env.context)
-        print("COMPANY",self.env.company)
-        print("COMPANIES", self.env.companies)
-        print("LANG", self.env.lang)
+        print("SELF : -", self)
+        print("ENVIRONMENT : -", self.env)
+        print("ENVIRONMENT  ATTRS : -", dir(self.env))
+        print("ARGS : -", self.env.args)
+        print("CURSOR : -", self.env.cr)
+        print("UID : -", self.env.uid)
+        print("USER : -", self.env.user)
+        print("CONTEXT : -",self.env.context)
+        print("COMPANY : -",self.env.company)
+        print("COMPANIES : -", self.env.companies)
+        print("LANG : -", self.env.lang)
 
-        subj_obj = self.env['subscription.type']
-        print("SUBJ OBJ",subj_obj)
-        std_obj = self.env['subscription.plan']
-        print("STD OBJ", std_obj)
+        records = self.env['subscription.user'].search([])
+        print("Print Records ID",records)
+
+        for user in self:
+            mt_dt = user.get_metadata()
+            print("MT DT Predefined Fields", mt_dt)
+
+        # Filter the recordset based on a condition
+        filtered_records = records.filtered(lambda r: r.age > 25)
+        print("filtered_records ID", filtered_records)
+
+        # # Filter the recordset based on a condition using domain syntax
+        # domain_filtered_records = records.filtered(domain=[('age', '>', 25)])
+        # print("domain_filtered_records ID", domain_filtered_records)
+
+        # Filter the recordset to display only records with a value in the 'active' field
+        with_value_records = records.filtered(lambda r: bool(r.active))
+        print("with_value_records ID", with_value_records)
+
+        # Get the concatenated value of 'name' and 'age' fields
+        result = [f"{r.name}-{r.age}" for r in records]
+        print("result name-age", result)
+
+        # Get a list of values in the 'name' field
+        field_values = records.mapped('name')
+        print("result field_values list ", field_values)
+
+        # Sort the recordset in descending order by the 'name' field
+        sort_by_name = records.sorted(key='name', reverse=True)
+        print("SORT BY NAME",sort_by_name)
+
+        female_records = records.filtered(lambda r: r.gender == 'female')
+        male_records = records.filtered(lambda r:r.gender=='male')
+        print("FEMALE RECORDS", female_records)
+        print("MALE RECORDS", male_records)
+
+        print("UNION",male_records | female_records)
+        print("INTERSECTION",male_records & records)
+        print("DIFFERENCE", records - female_records)
 
 
-        # form_view_user = self.env.ref('subscription.view_user_form')
-        # print("FORM VIEW USER", form_view_user)
+
+
+
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'type': 'rainbow_man',
+                'message': 'Print ENV Sucessfully'
+            }
+        }
+
+
 
     def create_rec(self):
         """
@@ -173,26 +133,35 @@ class Subscriber(models.Model):
         ---------------------------------------------------------------------
         @param self: object pointer
         """
-        vals1 = {
-            'name':'Nidhi',
-            'active':True,
-            'age':22,
-            'birthdate':'2001-04-01',
-            # 'plan_id':2,
-            'gender':'female'
-        }
-        vals2 = {
-            'name': 'Herry',
-            'active': True,
-            'age': 29,
-            'birthdate': '1994-05-17',
-            # 'plan_id': 2,
-            'gender': 'female'
-        }
-        vals_lst = [vals1,vals2]
-        # Creating record in the same object
-        new_users = self.create(vals_lst)
-        print("USERS", new_users)
+
+        other_model= self.env['subscription.plan']
+        other_model.create({
+            'name': 'anjana',
+            'code': 'AN'
+
+        })
+
+
+        # vals1 = {
+        #     'name':'Nirupa',
+        #     'active':True,
+        #     'age':22,
+        #     'birthdate':'2001-04-01',
+        #     'plan_id':5,
+        #     'gender':'female'
+        # }
+        # vals2 = {
+        #     'name': 'lila',
+        #     'active': True,
+        #     'age': 29,
+        #     'birthdate': '1994-05-17',
+        #     'plan_id': 5,
+        #     'gender': 'female'
+        # }
+        # vals_lst = [vals1,vals2]
+        # # Creating record in the same object
+        # new_users = self.create(vals_lst)
+        # print("USERS", new_users)
         return {
             'effect':{
                 'fadeout':'slow',
@@ -200,23 +169,82 @@ class Subscriber(models.Model):
                 'message':'Record has been Created Sucessfully'
             }
         }
-    @api.constrains('age')
-    def val_age(self):
-        for record in self:
-            if record.age <=18:
-                raise ValidationError(_('The age must be above than 18 years'))
 
 
 
-    @api.model
-    def create(self,vals):
-        res = super(Subscriber, self).create(vals)
-        if not vals.get('type_ids'):
-            raise ValidationError(_("PLease fill the one2many field"))
-        else:
-            return res
+    def update_rec(self):
+        """
+        Button's method to demonstrate write() method
+        """
+        # 0 is for creation
+        # 1 is for updation
+        # (1,<id>,{}) will update existing record in o2m.
+        # 2 is for deletion
+        # (2,<id>) will remove the record from o2m field and will be removed from the table.
+        # 3 is for unlink
+        # (3,<id>) will remove the record from o2m field but will keep in the table.
+        # 4 is to link
+        # 5 is used to unlink all records
+        #(5,0,0) is used to unlink all records and keeps in the table.
+        # 6 is used to link multiple records but overwrites existing ones
+        # 6 first performs the 5 operation to remove existing records.
+        # then uses 4 operation to link the new records
+        vals = {
+            'age':30,
+            'plan_id':5,
+            'name':'Dol'
+            # 'exam_ids':[
+            #    # (0,0,{'subject_id':3,'total_marks':100.0,'obt_marks':50.0}),
+            #    # (1,2,{'subject_id':2})
+            #    #  (2,18),
+            #    #  (3,19)
+            #    #  (4,19)
+            #    #  (5,0,0)
+            #    #  (6,0,[1,2,3])
+            #    #  (6,0,[8,19])
+            #     (4,1),(4,2),(4,3)
+            # ]
+        }
+        res = self.write(vals)
+        print("RES",res)
 
-        return res
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'type': 'rainbow_man',
+                'message': 'Record has been Updated Sucessfully'
+            }
+        }
+
+
+
+    # @api.constrains('age')
+    # def val_age(self):
+    #     for record in self:
+    #         if record.age <=18:
+    #             raise ValidationError(_('The age must be above than 18 years'))
+    #
+    # @api.model
+    # def unlink(self,vals):
+    #     res = super(Subscriber, self).unlink()
+    #     for vals in self:
+    #         if vals.active == 'active':
+    #                 raise UserError(_("Record cannot be deleted, it is an active state"))
+    #         else:
+    #             return res
+    #     return res
+
+
+
+    # @api.model
+    # def create(self,vals):
+    #     res = super(Subscriber, self).create(vals)
+    #     if not vals.get('type_ids'):
+    #         raise ValidationError(_("PLease fill the one2many field"))
+    #     else:
+    #         return res
+    #
+    #     return res
 
         # if vals.get('gender')=='male':
         #     res['name']="Mr." + res['name']
@@ -239,19 +267,24 @@ class Subscriber(models.Model):
         search_count = self.env['subscription.user'].search_count([('gender', '=', 'female')])
         print("Search Var Count ---------- ", search_count)
 
-        browse = self.env['subscription.user'].browse(6)
-        print("Search Var Count ---------- ", browse,"Name -",browse.name,"Age -",browse.age)
+        # browse = self.env['subscription.user'].browse(60)
+        # print("Browse ID ---------- ", browse,"Name -",browse.name,"Age -",browse.age)
+        stu_rec = self.browse(60)
+        print("\nUSER REC--------------------------", stu_rec)
+        stu_dict = stu_rec.read(
+            ['name', 'age', 'plan_id', 'type_ids', 'service_ids'], load='_classic_read')
+        print("USER DICCT::::----------------", stu_dict)
 
         ref = self.env.ref('subscription_managaement.view_user_form')
-        print("Search Var Count ---------- ", ref.type,"Name---",ref.name)
+        print("Reference:::---------- ", ref.type,"Name reference ---",ref.name)
 
-        # browse_id=self.env['subscription.user'].browse(6)
+        # browse_id=self.env['subscription.user'].browse(31)
         # browse_id.write({
         #     "name":"Kiran Chavda",
         #     "age":27
         # })
         # browse_id.copy()
-        # browse_id.unlink()
+        # browse_id.unlink(31)
 
 
 
