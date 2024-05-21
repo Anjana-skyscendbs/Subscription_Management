@@ -6,8 +6,8 @@
     'version': '1.0',
     'depends': ['base','mail'],
     'data': [
-        'security/ir.model.access.csv',
         'security/sub_manage_security.xml',
+        'security/ir.model.access.csv',
         'views/subscriber_view.xml',
         'views/plans_view.xml',
         'views/types_view.xml',

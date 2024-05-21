@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-# from odoo.exceptions import ValidationError,UserError
+from odoo.exceptions import ValidationError,UserError
 
 
 class Subscriber(models.Model):
@@ -9,8 +9,8 @@ class Subscriber(models.Model):
     _inherit=['mail.thread','mail.activity.mixin']
     # _order = 'sequence'
 
-    name = fields.Char(string='Name', required=True, index=True, translate=True, track_visibility="always")
-    age = fields.Integer('Age', default=18, group_operator='avg')
+    name = fields.Char(string='Name',  track_visibility="always")#required=True, index=True, translate=True,
+    age = fields.Integer('Age',group_operator='avg')# ,compute='_compute_int_field'
     active = fields.Boolean('Active', help='This field is used to activate or deactivate a record', default=True)
     notes = fields.Text('Notes')
     birthdate = fields.Date('Birthdate')
@@ -22,9 +22,10 @@ class Subscriber(models.Model):
     email = fields.Char('Email')
     phone = fields.Char('Phone')
     photo = fields.Image('Photo')
-    ref = fields.Reference([('school.student', ' Students'),
+    ref = fields.Reference([('subscription.user', ' Subscribers'),
                             ('res.users', 'Users'),
                             ('res.partner', 'Contacts')], 'Reference')
+    document = fields.Binary('Document')
     file_name = fields.Char('File Name')
 
     state = fields.Selection([('applied', 'Applied'),
@@ -32,8 +33,8 @@ class Subscriber(models.Model):
                               ('draft', 'Draft'),
                               ('done', 'Done'),
                               ('left', 'Left')], 'State', default='applied')
-    plan_id = fields.Many2one('subscription.plan', 'Plan')#,domain=[('name','=','Monthly')]
-    type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions',ondelete='cascade')
+    type_id = fields.Many2one('subscription.type', 'Subscription')#,domain=[('name','=','Streaming Service')]
+    sub_type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions',ondelete='cascade')
     # service_ids = fields.Many2many('subscription.service', string='Services',ondelete='restrict')
     service_ids = fields.Many2many('subscription.service', 'sub_ser_rel','sub_id','ser_id',string='Services', ondelete='restrict')
 
@@ -41,17 +42,28 @@ class Subscriber(models.Model):
     sequence = fields.Integer('Sequence')
     parent_id = fields.Many2one('subscription.user', 'Manager')
     child_ids = fields.One2many('subscription.user', 'parent_id', 'Subordinates')
-    currency_id = fields.Many2one('res.currency', 'Currency')
-    price = fields.Monetary(currency_field='currency_id', string='Price Amount')
+
 
 
     total_subscription_price = fields.Float(string='Total Price',
                                             compute='_compute_total_subscription_price', store=True)
 
-    @api.depends('type_ids.price_depend')
+    # @api.depends('name')
+    # def _compute_int_field(self):
+    #     for record in self:
+    #         if record.name:
+    #             record.age = record.age or False
+    #         else:
+    #             record.age = False
+
+
+
+
+
+    @api.depends('sub_type_ids.price')
     def _compute_total_subscription_price(self):
         for user in self:
-            user.total_subscription_price = sum(subscription.price_depend for subscription in user.type_ids)
+            user.total_subscription_price = sum(subscription.price for subscription in user.sub_type_ids)
 
     def print_user(self):
         """
@@ -142,26 +154,26 @@ class Subscriber(models.Model):
         })
 
 
-        # vals1 = {
-        #     'name':'Nirupa',
-        #     'active':True,
-        #     'age':22,
-        #     'birthdate':'2001-04-01',
-        #     'plan_id':5,
-        #     'gender':'female'
-        # }
-        # vals2 = {
-        #     'name': 'lila',
-        #     'active': True,
-        #     'age': 29,
-        #     'birthdate': '1994-05-17',
-        #     'plan_id': 5,
-        #     'gender': 'female'
-        # }
-        # vals_lst = [vals1,vals2]
-        # # Creating record in the same object
-        # new_users = self.create(vals_lst)
-        # print("USERS", new_users)
+        vals1 = {
+            'name':'Nirupa',
+            'active':True,
+            'age':22,
+            'birthdate':'2001-04-01',
+            'type_id':5,
+            'gender':'female'
+        }
+        vals2 = {
+            'name': 'lila',
+            'active': True,
+            'age': 29,
+            'birthdate': '1994-05-17',
+            'type_id': 5,
+            'gender': 'female'
+        }
+        vals_lst = [vals1,vals2]
+        # Creating record in the same object
+        new_users = self.create(vals_lst)
+        print("USERS", new_users)
         return {
             'effect':{
                 'fadeout':'slow',
@@ -176,34 +188,11 @@ class Subscriber(models.Model):
         """
         Button's method to demonstrate write() method
         """
-        # 0 is for creation
-        # 1 is for updation
-        # (1,<id>,{}) will update existing record in o2m.
-        # 2 is for deletion
-        # (2,<id>) will remove the record from o2m field and will be removed from the table.
-        # 3 is for unlink
-        # (3,<id>) will remove the record from o2m field but will keep in the table.
-        # 4 is to link
-        # 5 is used to unlink all records
-        #(5,0,0) is used to unlink all records and keeps in the table.
-        # 6 is used to link multiple records but overwrites existing ones
-        # 6 first performs the 5 operation to remove existing records.
-        # then uses 4 operation to link the new records
         vals = {
             'age':30,
-            'plan_id':5,
+            'type_id':4,
             'name':'Dol'
-            # 'exam_ids':[
-            #    # (0,0,{'subject_id':3,'total_marks':100.0,'obt_marks':50.0}),
-            #    # (1,2,{'subject_id':2})
-            #    #  (2,18),
-            #    #  (3,19)
-            #    #  (4,19)
-            #    #  (5,0,0)
-            #    #  (6,0,[1,2,3])
-            #    #  (6,0,[8,19])
-            #     (4,1),(4,2),(4,3)
-            # ]
+
         }
         res = self.write(vals)
         print("RES",res)
@@ -217,27 +206,53 @@ class Subscriber(models.Model):
         }
 
 
+    def search_rec(self):
+        all_users = self.search([])
+        # When you pass a blank domain it will return all the records.
+        print("ALL USERS",all_users)
+        # When you pass offset it will skip no of records from the result
+        offset_5_users = self.search([], offset=5 ,limit=3 ,order='name asc')
+        print("SKIP 5 RECORDS and LIMIT 3 record show", offset_5_users)
+        # records = self.env['subscription.user'].search([], order='name asc')
+        # # print("USERS", records)
 
-    # @api.constrains('age')
-    # def val_age(self):
-    #     for record in self:
-    #         if record.age <=18:
-    #             raise ValidationError(_('The age must be above than 18 years'))
-    #
+
+        ### search_count
+        no_of_users = self.search_count([])
+        print("TOTAL USERS", no_of_users)
+        no_of_female_users = self.search_count([('gender', '=', 'female')])
+        print("FEMALE USERS", no_of_female_users)
+
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'type': 'rainbow_man',
+                'message': 'Record has been Search Sucessfully'
+            }
+        }
+
+
+
+    @api.constrains('age')
+    def val_age(self):
+        for record in self:
+            if record.age <=18:
+                raise ValidationError(_('The age must be above than 18 years'))
+
+    @api.model
+    def unlink(self,vals):
+        res = super(Subscriber, self).unlink()
+        for vals in self:
+            if vals.active == 'active':
+                    raise UserError(_("Record cannot be deleted, it is an active state"))
+            else:
+                return res
+        return res
+
+
+
     # @api.model
-    # def unlink(self,vals):
-    #     res = super(Subscriber, self).unlink()
-    #     for vals in self:
-    #         if vals.active == 'active':
-    #                 raise UserError(_("Record cannot be deleted, it is an active state"))
-    #         else:
-    #             return res
-    #     return res
-
-
-
-    # @api.model
-    # def create(self,vals):
+    # def create(self, vals):
     #     res = super(Subscriber, self).create(vals)
     #     if not vals.get('type_ids'):
     #         raise ValidationError(_("PLease fill the one2many field"))
@@ -245,17 +260,43 @@ class Subscriber(models.Model):
     #         return res
     #
     #     return res
+    #
+    #     if vals.get('gender') == 'male':
+    #         res['name'] = "Mr." + res['name']
+    #         print("res['name']--", res['name'])
+    #     elif vals.get('gender') == 'female':
+    #         res['name'] = "Ms." + res['name']
+    #         print("res['name']--", res['name'])
+    #     else:
+    #         return res
+    #     print("Hello")
+    #     print("self : - ", self,"res : -",res,"vals :-",vals)
 
-        # if vals.get('gender')=='male':
-        #     res['name']="Mr." + res['name']
-        #     print("res['name']--" ,res['name'])
-        # elif vals.get('gender')=='female':
-        #     res['name']="Ms." + res['name']
-        #     print("res['name']--" ,res['name'])
-        # else:
-        #     return res
-        # print("Hello")
-        # print("self : - ",self,"res : -",res,"vals :-",vals)
+
+
+    def browse_rec(self):
+        """
+        This si a button's method used to demonstrate browse() method
+        """
+        user_rec = self.browse(2)
+        print("\nUSER REC--------------------------",user_rec)
+
+        user_dict = user_rec.read(
+            ['name', 'age', 'type_id', 'sub_type_ids'], load='_classic_read')
+        print("USER DICCT----------------------", user_dict)
+
+        record = self.env['subscription.user'].browse(3)
+        creator_user = record.create_uid
+        print(f"Record created by: {creator_user.name}")
+
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'type': 'rainbow_man',
+                'message': 'Print BROWSE Sucessfully'
+            }
+        }
+
 
     # ORM Method
     def check_orm(self):
@@ -272,7 +313,7 @@ class Subscriber(models.Model):
         stu_rec = self.browse(60)
         print("\nUSER REC--------------------------", stu_rec)
         stu_dict = stu_rec.read(
-            ['name', 'age', 'plan_id', 'type_ids', 'service_ids'], load='_classic_read')
+            ['name', 'age', 'type_id', 'sub_type_ids'], load='_classic_read')
         print("USER DICCT::::----------------", stu_dict)
 
         ref = self.env.ref('subscription_managaement.view_user_form')
@@ -295,3 +336,6 @@ class Subscriber(models.Model):
                 'message': 'Print Sucessfully'
             }
         }
+
+
+    # name_get () deprecated in odoo 17 

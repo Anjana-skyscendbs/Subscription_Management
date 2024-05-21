@@ -6,3 +6,5 @@ class Subscriptionplan(models.Model):
 
     name = fields.Char('Name', required=True)
     code = fields.Char('Code', required=True)
+    duration = fields.Float('Duration')
+    unit = fields.Char('Unit')

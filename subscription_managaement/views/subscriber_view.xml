@@ -12,6 +12,8 @@
                     <button name="print_user" string="Print" type="object" class="oe_highlight"/>
                     <button name="create_rec" string="Create" type="object" class="oe_highlight"/>
                     <button name="update_rec" string="Update" type="object" class="oe_highlight"/>
+                    <button name="search_rec" string="Search" type="object" class="oe_highlight"/>
+                    <button name="browse_rec" string="Browse" type="object" class="oe_highlight"/>
                     <button name="check_orm" string="Check ORM" type="object" class="oe_highlight"/>
                     <field name="state" widget="statusbar" options="{'clickable':1}"
                            statusbar_visible="applied,draft,pending,done,left"/>
@@ -22,21 +24,21 @@
                     <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>
                     <label for="name"/>
                     <h1 colspan="4">
-                        <field name="name"/>
+                        <field name="name" />
                     </h1>
                     <div class="row">
                         <div class="col col-md-6">
                             <group>
-                                <field name="age"/>
+                                <field name="age" required="name" readonly="not name"/>
                                 <field name="active"/>
                                 <field name="email" widget="email"/>
                                 <field name="password" password="*"/>
                                 <field name="birthdate" />
-                                <field name="plan_id" options="{'no_create':1, 'no_open':1}"/> <!-- domain="[('name', 'ilike', '%it%')]"-->
+                                <field name="type_id" options="{'no_create':1, 'no_open':1}"/> <!-- domain="[('name', 'ilike', '%it%')]"-->
                                 <field name="parent_id" domain="[('id', '!=', active_id)]"/>
                                 <field name="file_name" invisible="1"/>
-                                <field name="currency_id"/>
-                                <field name="price"/>
+                                 <field name="document" filename="file_name"/>
+
 <!--                                <field name="timestamp"/>-->
                             </group>
                         </div>
@@ -55,7 +57,7 @@
                     </div>
                     <notebook>
                         <page name="pg_type" string="Type">
-                            <field name="type_ids"/>
+                            <field name="sub_type_ids"/>
                             <group>
                                 <field name="total_subscription_price" widget="monetary"/>
                             </group>
@@ -69,7 +71,7 @@
                             <field name="child_ids" readonly="1"/>
                         </page>
                         <page name="pg_notes" string="Notes">
-                            <field name="notes"/>
+                            <field name="notes" required="active" invisible="not active"/>
                         </page>
 
                     </notebook>
@@ -91,15 +93,17 @@
         <field name="name">view.user.tree</field>
         <field name="model">subscription.user</field>
         <field name="arch" type="xml">
-            <tree decoration-success = "active==True" decoration-danger="active==False">
+            <tree decoration-success = "active==True" decoration-danger="active==False" >
                 <field name="sequence" widget="handle"/>
+                <field name="id"/>
                 <field name="name"/>
                 <field name="age" avg ="Avg "/>
                 <!-- sum="Sum of total Age"-->
                 <field name="active" widget="boolean_toggle"/>
                 <field name="birthdate"/>
                 <field name="gender"/>
-<!--                <field name="plan_id"/>-->
+                <field name="state"/>
+                <field name="type_id"/>
 
             </tree>
         </field>
@@ -114,7 +118,7 @@
                 <field name="name"/>
                 <field name="gender"/>
                 <field name="age"/>
-                <field name="plan_id"/>
+                <field name="type_id"/>
                 <!-- Adding Filters in the Search view -->
                 <filter name="fil_gender_male" string="Male" domain="[('gender','=','male')]"/>
                 <filter name="fil_gender_female" string="Female" domain="[('gender','=','female')]"/>
@@ -125,7 +129,7 @@
                 <!-- Adding Group By in the Search View -->
                 <filter name="grp_by_gender" string="Gender" context="{'group_by':'gender'}"/>
                 <filter name="grp_by_birthdate" string="Birthdate" context="{'group_by':'birthdate'}"/>
-                <filter name="grp_by_plan" string="Plan" context="{'group_by':'plan_id'}"/>
+                <filter name="grp_by_plan" string="Plan" context="{'group_by':'type_id'}"/>
 
             </search>
         </field>
@@ -173,7 +177,8 @@
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
         <field name="view_mode">tree,form,search,kanban</field>
-        <field name="context">{'search_default_age':22, 'search_default_grp_by_plan':'Monthly','search_default_date':'12/02/2001'}</field>
+        <field name="limit">7</field>
+        <field name="context">{'search_default_age':22, 'search_default_grp_by_type':'Streaming Service','search_default_date':'12/02/2001'}</field>
     </record>
 
 
@@ -197,7 +202,7 @@
     </record>
 
 
-    <menuitem id="menu_subscription" name="Subcription Management"/>
+    <menuitem id="menu_subscription" name="Subscription Management"/>
 
     <menuitem id="menu_user" name="All Users" parent="menu_subscription"/>
 

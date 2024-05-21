@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <!-- Action of Plan Users-->
+    <record id="action_type_users" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="res_model">subscription.user</field>
+        <field name="view_mode">tree,form</field>
+    </record>
     <!-- Form view of Types -->
     <record id="view_type_form" model="ir.ui.view">
         <field name="name">view.type.form</field>
         <field name="model">subscription.type</field>
         <field name="arch" type="xml">
             <form>
-                <sheet>
+                <header>
+                    <button name="%(action_user)d" type="action" string="Users" count='1' icon="fa-pencil-square-o"/>
+                </header>
+                    <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button class="oe_stat_button"
+                                type="action"
+                                name="%(action_type_users)d"
+                                context="{'default_type_id':active_id,'search_default_type_id':active_id}"
+                                string="Users"
+                                icon="fa-users"/>
+                    </div>
+
                     <group>
                         <field name="name"/>
                         <field name="code"/>
-                        <field name="daily_price"/>
-                        <field name="weekly_price"/>
-                        <field name="monthly_price"/>
-                        <field name="yearly_price"/>
+
                     </group>
                 </sheet>
             </form>
@@ -28,10 +43,7 @@
             <tree>
                 <field name="name"/>
                 <field name="code"/>
-                <field name="daily_price"/>
-                <field name="weekly_price"/>
-                <field name="monthly_price"/>
-                <field name="yearly_price"/>
+
             </tree>
         </field>
     </record>
