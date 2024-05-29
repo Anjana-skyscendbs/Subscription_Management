@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="seq_subscription_user" model="ir.sequence">
+        <field name="name">Subscription User</field>
+        <field name="code">subscription.user.sequence</field>
+        <field name="prefix">SO</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+</odoo>

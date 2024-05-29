@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_user_form" model="ir.ui.view">
+        <field name="name">view.user.form</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="assign_sequence" string="Assign Sequence" type="object" class="oe_highlight"/>
+                    <!--                    <h1>Welcome to Our Channel!!</h1>-->
+                    <button name="print_user" string="Print" type="object" class="oe_highlight"/>
+                    <button name="create_rec" string="Create" type="object" class="oe_highlight"/>
+                    <button name="update_rec" string="Update" type="object" class="oe_highlight"/>
+                    <button name="search_rec" string="Search" type="object" class="oe_highlight"/>
+                    <button name="browse_rec" string="Browse" type="object" class="oe_highlight"/>
+                    <button name="check_orm" string="Check ORM" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" options="{'clickable':1}"
+                           statusbar_visible="applied,draft,pending,done,left"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reg_no" readonly="1"/>
+                        </h1>
+                    </div>
+                    <widget name="web_ribbon" title="Expired" bg_color="bg-danger"
+                            attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Active" bg_color="bg-success"
+                            attrs="{'invisible': [('active', '=', False)]}"/>
+
+                    <label for="name"/>
+                    <h1 colspan="4">
+                        <field name="name"/>
+                    </h1>
+                    <div class="row">
+                        <div class="col col-md-6">
+                            <group>
+                                <field name="age" />
+                                <field name="active"/>
+                                <field name="email" widget="email"/>
+                                <field name="password" password="*"/>
+                                <field name="birthdate"/>
+                                <field name="type_id"/> <!-- options="{'no_create':1, 'no_open':1}" domain="[('name', 'ilike', '%it%')]"-->
+                                <field name="parent_id" domain="[('id', '!=', active_id)]"/>
+                                <field name="photo" widget="image" class="oe_avatar"/>
+
+                                <!--                                <field name="timestamp"/>-->
+                            </group>
+                        </div>
+                        <div class="col col-md-6">
+                            <group>
+                                <field name="gender" widget="radio"/>
+                                <field name="user_code"/>
+                                <field name="phone" widget="phone"/>
+                                <field name="sequence"/>
+                                <field name="ref"/>
+<!--                                <field name="partner_id"/>-->
+<!--                                <field name="category_ids"/>-->
+
+                                <field name="priority" widget="priority"/>
+                                <field name="file_name" invisible="1"/>
+                                <field name="document" filename="file_name"/>
+
+
+                            </group>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page name="pg_type" string="Type">
+                            <field name="sub_type_ids"/>
+                            <group>
+                                <field name="total_subscription_price" widget="monetary"/>
+                            </group>
+                        </page>
+                        <!--                        <page name="pg_ser" string="Services">-->
+                        <!--&lt;!&ndash;                            <field name="service_ids" />&ndash;&gt;-->
+                        <!--                            <field name="service_ids" widget="many2many_checkboxes"/>-->
+                        <!--&lt;!&ndash;                            domain="[('name', '=like', '%ts')]"&ndash;&gt;-->
+                        <!--                        </page>-->
+                        <page name="pg_sub" string="Subordinates">
+                            <field name="child_ids" readonly="1"/>
+                        </page>
+                        <page name="pg_notes" string="Notes">
+                            <field name="notes" attrs="{'invisible': [('active', '=', False)]}"/>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                <footer>
+                    <h1>This is the Footer....</h1>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view / List view of User -->
+    <record id="view_user_tree" model="ir.ui.view">
+        <field name="name">view.user.tree</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+            <tree decoration-success = "active==True" decoration-danger="active==False" >
+                <field name="sequence" widget="handle"/>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="age" avg ="Avg "/>
+                <!-- sum="Sum of total Age"-->
+                 <field name="reg_no"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="birthdate"/>
+                <field name="gender"/>
+                <field name="state"/>
+                <field name="type_id"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search view -->
+    <record id="view_user_search" model="ir.ui.view">
+        <field name="name">view.user.search</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="age"/>
+                <field name="type_id"/>
+                <!-- Adding Filters in the Search view -->
+                <filter name="fil_gender_male" string="Male" domain="[('gender','=','male')]"/>
+                <filter name="fil_gender_female" string="Female" domain="[('gender','=','female')]"/>
+                <filter name="fil_active_users" string="Active Users" domain="[('active','=',True)]"/>
+                <filter name="fil_archive_users" string="Expired Users" domain="[('active','=',False)]"/>
+                <filter name="fil_birthdate_users" string="Birthdate Users" domain="[('birthdate','>','01/01/2001')]"/>
+
+                <!-- Adding Group By in the Search View -->
+                <filter name="grp_by_gender" string="Gender" context="{'group_by':'gender'}"/>
+                <filter name="grp_by_birthdate" string="Birthdate" context="{'group_by':'birthdate'}"/>
+                <filter name="grp_by_plan" string="Subscriptions" context="{'group_by':'type_id'}"/>
+
+            </search>
+        </field>
+    </record>
+
+    <!-- Kanban view -->
+    <record id="view_user_kanban" model="ir.ui.view">
+        <field name="name">view.user.kanban</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+            <kanban string ="Subscription Kanban" class ="o_res_partner_kanban">
+                <field name ="id"/>
+                <templates>
+                    <t t-name ="kanban-box">
+                        <div class="oe_kanban_global_click" style="height:135px;background-color:#ccff99;color:#006600;">
+                            <div style="width:30%;float:left;display:inline-block;">
+                                <img alt="Avatar" t-att-src="kanban_image('subscription.user','photo',record.id.raw_value)" style="width:100px;height:120px;"/>
+                            </div>
+                            <div style="width:70%;float:right;display:inline-block;">
+                                <ul style ="list-style-type:none;">
+                                    <li>
+                                        <b> Name : </b>
+                                        <field name="name"/>
+                                    </li>
+                                    <li>
+                                        <b> Age : </b>
+                                        <field name="age"/>
+                                    </li>
+                                    <li>
+                                        <b> Gender : </b>
+                                        <field name="gender"/>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_user" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="res_model">subscription.user</field>
+        <field name="view_mode">tree,form,search,kanban</field>
+        <field name="limit">7</field>
+        <field name="context">{'search_default_age':22, 'search_default_grp_by_type':'Streaming Service','search_default_date':'12/02/2001'}</field>
+    </record>
+
+
+    <!-- Action of Male Users -->
+    <record id="action_user_male" model="ir.actions.act_window">
+        <field name="name">Males</field>
+        <field name="res_model">subscription.user</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('gender','=','male')]</field>
+        <field name="context">{'default_gender':'male'}</field>
+    </record>
+
+
+    <!-- Action of Female Users -->
+    <record id="action_user_female" model="ir.actions.act_window">
+        <field name="name">Females</field>
+        <field name="res_model">subscription.user</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('gender','=','female')]</field>
+        <field name="context">{'default_gender':'female'}</field>
+    </record>
+
+
+    <menuitem id="menu_subscription" name="Subscription Management"/>
+
+    <menuitem id="menu_user" name="All Users" parent="menu_subscription"/>
+
+    <menuitem id="menu_configuration" name="Configuration" parent="menu_subscription" sequence="100"/>
+
+    <menuitem id="menu_user_user" action="action_user" parent="menu_user"/>
+
+
+    <!-- Menu of Females -->
+    <menuitem id="menu_user_user_female" action="action_user_female" parent="menu_user"/>
+
+    <!-- Menu of Males -->
+    <menuitem id="menu_user_user_male" action="action_user_male" parent="menu_user"/>
+
+</odoo>
