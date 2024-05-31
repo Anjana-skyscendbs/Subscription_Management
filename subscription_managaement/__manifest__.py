@@ -8,6 +8,7 @@
     'data': [
         'security/sub_manage_security.xml',
         'security/ir.model.access.csv',
+        'data/user_sequence.xml',
         'views/subscriber_view.xml',
         'views/plans_view.xml',
         'views/types_view.xml',

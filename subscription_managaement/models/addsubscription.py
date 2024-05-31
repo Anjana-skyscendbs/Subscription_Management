@@ -15,6 +15,31 @@ class AddSubscription(models.Model):
     price = fields.Monetary(currency_field='currency_id', string='Price')
     user_id = fields.Many2one('subscription.user', 'User', ondelete='cascade')
 
+    # todo 10.Override name_search method to search with both the fields which are displayed in many2one field.
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        args = args or []
+        print("Name : -", name)
+        print("Args : -", args)
+        print("Operator : -", operator)
+        print("Limit : - ", limit)
+        if name:
+            records = self.search(['|', '|', '|', ('name', operator, name), ('unit', operator, name),
+                                   ('code', operator, name), ('duration', operator, name)])
+            return records.name_get()
+        return self.search([('name', operator, name)] + args, limit=limit).name_get()
+
+    def name_create(self, name):
+        print("Self ", self)
+        print("Subscription Name  ", name)
+        rtn = self.create({'name': name})
+        print("RTN ", rtn)
+        print("rtn.name_get()[0]", rtn.name_get()[0])
+        return rtn.name_get()[0]
+
+
+
+
 
     # price = fields.Float('Price')
     # month_price = fields.Float('Monthly Price')

@@ -8,6 +8,7 @@
 
             <form>
                 <header>
+                    <button name="assign_sequence" string="Assign Sequence" type="object" class="oe_highlight"/>
 <!--                    <h1>Welcome to Our Channel!!</h1>-->
                     <button name="print_user" string="Print" type="object" class="oe_highlight"/>
                     <button name="create_rec" string="Create" type="object" class="oe_highlight"/>
@@ -19,7 +20,11 @@
                            statusbar_visible="applied,draft,pending,done,left"/>
                 </header>
                 <sheet>
-
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reg_no" readonly="1"/>
+                        </h1>
+                    </div>
                     <widget name="web_ribbon" title="Expired" bg_color="bg-danger" invisible="active"/>
                     <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>
                     <label for="name"/>
