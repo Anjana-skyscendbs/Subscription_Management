@@ -4,10 +4,11 @@
     'author': 'Skyscend Business Solutions Pvt. Ltd.',
     'website': 'https://www.skyscendbs.com',
     'version': '1.0',
-    'depends': ['base','mail'],
+    'depends': ['base', 'mail'],
     'data': [
         'security/sub_manage_security.xml',
         'security/ir.model.access.csv',
+        'data/user_sequence.xml',
         'views/subscriber_view.xml',
         'views/recurrence_period_view.xml',
         'views/types_view.xml',
@@ -15,6 +16,6 @@
         'views/addsubscription_view.xml',
     ],
     'auto_install': False,
-    'installable':True,
+    'installable': True,
     'application': True,
 }

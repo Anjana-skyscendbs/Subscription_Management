@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="assign_sequence" string="Assign Sequence" type="object" class="oe_highlight"/>
                     <!--                    <h1>Welcome to Our Channel!!</h1>-->
                     <button name="print_user" string="Print" type="object" class="oe_highlight"/>
                     <button name="create_rec" string="Create" type="object" class="oe_highlight"/>
@@ -17,6 +18,11 @@
                            statusbar_visible="applied,draft,pending,done,left"/>
                 </header>
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reg_no" readonly="1"/>
+                        </h1>
+                    </div>
                     <widget name="web_ribbon" title="Expired" bg_color="bg-danger"
                             attrs="{'invisible': [('active', '=', True)]}"/>
                     <widget name="web_ribbon" title="Active" bg_color="bg-success"
@@ -34,11 +40,9 @@
                                 <field name="email" widget="email"/>
                                 <field name="password" password="*"/>
                                 <field name="birthdate"/>
-                                <field name="type_id"
-                                       options="{'no_create':1, 'no_open':1}"/> <!-- domain="[('name', 'ilike', '%it%')]"-->
+                                <field name="type_id"/> <!-- options="{'no_create':1, 'no_open':1}" domain="[('name', 'ilike', '%it%')]"-->
                                 <field name="parent_id" domain="[('id', '!=', active_id)]"/>
-                                <field name="file_name" invisible="1"/>
-                                <field name="document" filename="file_name"/>
+                                <field name="photo" widget="image" class="oe_avatar"/>
 
                                 <!--                                <field name="timestamp"/>-->
                             </group>
@@ -48,9 +52,14 @@
                                 <field name="gender" widget="radio"/>
                                 <field name="user_code"/>
                                 <field name="phone" widget="phone"/>
-                                <field name="photo" widget="image" class="oe_avatar"/>
                                 <field name="sequence"/>
                                 <field name="ref"/>
+<!--                                <field name="partner_id"/>-->
+<!--                                <field name="category_ids"/>-->
+
+                                <field name="priority" widget="priority"/>
+                                <field name="file_name" invisible="1"/>
+                                <field name="document" filename="file_name"/>
 
 
                             </group>
@@ -94,12 +103,13 @@
         <field name="name">view.user.tree</field>
         <field name="model">subscription.user</field>
         <field name="arch" type="xml">
-            <tree decoration-success = "active==True" decoration-danger="active==False" >
+            <tree decoration-success = "active==True" decoration-danger="active==False" editable="top">
                 <field name="sequence" widget="handle"/>
                 <field name="id"/>
                 <field name="name"/>
-                <field name="age" avg ="Avg "/>
-                <!-- sum="Sum of total Age"-->
+                <field name="age" />
+                <!-- sum="Sum of total Age" avg ="Avg "-->
+                 <field name="reg_no"/>
                 <field name="active" widget="boolean_toggle"/>
                 <field name="birthdate"/>
                 <field name="gender"/>
@@ -109,6 +119,33 @@
             </tree>
         </field>
     </record>
+
+    <!-- Graph view of User -->
+    <record id="view_user_graph" model="ir.ui.view">
+        <field name="name">view.user.graph</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+                <graph string="Subscriber Analysis">
+                    <field name="name" type="row"/>
+                    <field name="type_id" type="measure"/>
+                </graph>
+        </field>
+
+    </record>
+
+    <!-- Calendar view of User -->
+    <record id="view_user_calendar" model="ir.ui.view">
+        <field name="name">view.user.calendar</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+               <calendar string="Calendar View" date_start="birthdate" mode="month" color="name" event_open_popup="true" quick_add="False">
+                     <field name="name"/>
+                    <field name="type_id"/>
+               </calendar>
+        </field>
+
+    </record>
+
 
     <!-- Search view -->
     <record id="view_user_search" model="ir.ui.view">
@@ -177,8 +214,8 @@
     <record id="action_user" model="ir.actions.act_window">
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
-        <field name="view_mode">tree,form,search,kanban</field>
-        <field name="limit">7</field>
+        <field name="view_mode">tree,form,search,kanban,graph,calendar</field>
+<!--        <field name="limit">7</field>-->
         <field name="context">{'search_default_age':22, 'search_default_grp_by_type':'Streaming Service','search_default_date':'12/02/2001'}</field>
     </record>
 
