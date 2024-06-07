@@ -7,39 +7,38 @@ class AddSubscription(models.Model):
     _description = 'Add Subscription'
 
     # type_id = fields.Many2one('subscription.type', 'Subscription')#  required=True
-    sub_type =fields.Many2one('subscription.subtype','Subscription Type')
-
-    recurrence_id = fields.Many2one('subscription.recurrence', 'Plan')# , required=True
-    start_date = fields.Date(string='Start Date',default = fields.Date.today())
+    service =fields.Many2one('subscription.service','Subscription Type')
+    plan_id = fields.Many2one('subscription.plan', 'Plan')# , required=True
+    start_date = fields.Date(string='Start Date',default =fields.Date.today())
     expire_date = fields.Date(string='Expire Date')
     currency_id = fields.Many2one('res.currency', 'Currency')
     price = fields.Monetary(currency_field='currency_id', string='Price')
     user_id = fields.Many2one('subscription.user', 'User', ondelete='cascade')
 
-
     # todo 10.Override name_search method to search with both the fields which are displayed in many2one field.
     @api.model
-    def name_search(self,name,args=None,operator='ilike',limit=100):
+    def name_search(self, name, args=None, operator='ilike', limit=100):
         args = args or []
-        print("Name : -",name)
-        print("Args : -",args)
-        print("Operator : -",operator)
-        print("Limit : - ",limit)
+        print("Name : -", name)
+        print("Args : -", args)
+        print("Operator : -", operator)
+        print("Limit : - ", limit)
         if name:
-            records=self.search(['|','|','|',('name',operator,name),('unit',operator,name),
-                                 ('code',operator,name),('duration',operator,name)])
+            records = self.search(['|', '|', '|', ('name', operator, name), ('unit', operator, name),
+                                   ('code', operator, name), ('duration', operator, name)])
             return records.name_get()
-        return self.search([('name',operator,name)]+args,limit=limit).name_get()
+        return self.search([('name', operator, name)] + args, limit=limit).name_get()
 
-
-
-    def name_create(self,name):
-        print("Self ",self)
-        print("Subscription Name  ",name)
-        rtn = self.create({'name':name})
-        print("RTN ",rtn)
-        print("rtn.name_get()[0]",rtn.name_get()[0])
+    def name_create(self, name):
+        print("Self ", self)
+        print("Subscription Name  ", name)
+        rtn = self.create({'name': name})
+        print("RTN ", rtn)
+        print("rtn.name_get()[0]", rtn.name_get()[0])
         return rtn.name_get()[0]
+
+
+
 
 
     # price = fields.Float('Price')
@@ -94,12 +93,9 @@ class AddSubscription(models.Model):
 #
 #
     def add_rec(self):
-        print('add rec called:',self)
         vals1 = {
-            'sub_type':1,
-            'recurrence_id':1,
-            'expire_date':'2024-02-12',
-            'price':200
+            'service':3,
+            'plan_id':7
         }
             # 0 is used for creation
             # (0,0,{}) used to create record in O2M field

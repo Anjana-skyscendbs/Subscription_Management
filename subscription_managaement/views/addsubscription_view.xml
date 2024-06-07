@@ -12,9 +12,9 @@
                 </header>
                 <group>
 <!--                    <field name="type_id"/>-->
-                    <field name="recurrence_id"/>
-                    <field name="sub_type" />
-<!--                   options="{'no_create':1, 'no_open':1}"  <field name="price_depend"/>-->
+                    <field name="plan_id"/>
+                    <field name="service" options="{'no_create':1, 'no_open':1}" />
+<!--                    <field name="price_depend"/>-->
                     <field name ='start_date'/>
                     <field name ='expire_date'/>
                     <field name="currency_id"/>
@@ -34,10 +34,10 @@
         <field name="arch" type="xml">
             <tree>
 <!--                <field name="type_id"/>-->
-                <field name="recurrence_id"/>
+                <field name="plan_id"/>
                 <field name='start_date'/>
                 <field name='expire_date'/>
-                <field name="sub_type"/>
+                <field name="service"/>
 <!--                <field name="price_depend"/>-->
                 <field name="price"/>
 <!--                <field name="weekly_price"/>-->

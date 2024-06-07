@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _ , Command
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError,UserError
 
 
@@ -7,20 +7,10 @@ class Subscriber(models.Model):
     _description = 'Create User'
     _auto = True
     _inherit=['mail.thread','mail.activity.mixin']
-    # 19.Add an SQL constraint to add a unique constraint on a single field.
-    # 20. Add an SQL constraint to add a unique constraint on a combination of two fields.
-    # 21. Add an SQL constraint to add a check constraint to check the value of a field.
-    # #
-    _sql_constraints = [
-        # ('check_age', 'check(age>=18)', 'Age Must be 18 Above '),
-        ('unique_phone', 'unique (phone,email)','The phone number and email should be different')
-        # ('unique_phone', 'unique (phone)','The phone number should be different')
-    ]
+    # _order = 'sequence'
 
-    _order = 'sequence'
-
-    name = fields.Char(string='Name', required=True, index=True, translate=True, track_visibility="always")#
-    age = fields.Integer('Age',group_operator='avg')
+    name = fields.Char(string='Name',  track_visibility="always")#required=True, index=True, translate=True,
+    age = fields.Integer('Age',group_operator='avg',default=18)# ,compute='_compute_int_field'
     active = fields.Boolean('Active', help='This field is used to activate or deactivate a record', default=True)
     notes = fields.Text('Notes')
     birthdate = fields.Date('Birthdate')
@@ -43,22 +33,21 @@ class Subscriber(models.Model):
                               ('draft', 'Draft'),
                               ('done', 'Done'),
                               ('left', 'Left')], 'State', default='applied')
-    type_id = fields.Many2one('subscription.type', 'Subscription',store = True)#,domain=[('name','=','Streaming Service')]
-    sub_type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions',ondelete='cascade',)
-
+    type_id = fields.Many2one('subscription.type', 'Subscription')#,domain=[('name','=','Streaming Service')]
+    sub_type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions',ondelete='cascade')
+    # service_ids = fields.Many2many('subscription.service', string='Services',ondelete='restrict')
+    service_ids = fields.Many2many('subscription.service', 'sub_ser_rel','sub_id','ser_id',string='Services', ondelete='restrict')
+    reg_no = fields.Char('Reg No', copy=False)  # default=lambda self: self._get_sequence(),
 
     sequence = fields.Integer('Sequence')
-    # reg_no = fields.Char('Reg No', copy=False,readonly=True,default=lambda self: self._get_sequence(),required =True,index=True)#default=lambda self: self._get_sequence(),
-    reg_no = fields.Char('Reg No', copy=False)#default=lambda self: self._get_sequence(),
-
     parent_id = fields.Many2one('subscription.user', 'Manager')
     child_ids = fields.One2many('subscription.user', 'parent_id', 'Subordinates')
-    parent_path = fields.Char('Parent Path', index=True)
-    priority = fields.Selection([(str(ele), str(ele)) for ele in range(6)], 'Priority')
+
 
 
     total_subscription_price = fields.Float(string='Total Price',
-                                            compute='_compute_total_subscription_price', store=True,group_operator='avg')
+                                            compute='_compute_total_subscription_price', store=True)
+
 
 
 
@@ -129,6 +118,11 @@ class Subscriber(models.Model):
         print("UNION",male_records | female_records)
         print("INTERSECTION",male_records & records)
         print("DIFFERENCE", records - female_records)
+
+
+
+
+
         return {
             'effect': {
                 'fadeout': 'slow',
@@ -137,57 +131,43 @@ class Subscriber(models.Model):
             }
         }
 
+
+
     def create_rec(self):
         """
         This is a button method which is used to demonstrate create() method.
         ---------------------------------------------------------------------
         @param self: object pointer
         """
-        vals1 = {
-            'name': 'lalit',
-            'active': True,
-            'age': 22,
-            'birthdate': '2001-04-01',
-            'type_id': 2,
-            'gender': 'male',
-            # 0 is used for creation
-            # (0,0,{}) used to create record in O2M field
-            'sub_type_ids': [
-                (0, 0, {
-                    'sub_type': 2,
-                    'recurrence_id': 3,
-                    'price': 200
-                }),
-                # Instead of 0,0 you can use the Command.create method.
-                # (Command.create(<vals_dict>))
-                (
-                    Command.create({
-                    'sub_type': 1,
-                    'recurrence_id': 2,
-                    'price': 400
-                })),
-                (0, 0, {
-                    'sub_type': 2,
-                    'recurrence_id': 1,
-                    'price': 300
-                })
-            ],
 
+        other_model= self.env['subscription.plan']
+        other_model.create({
+            'name': 'anjana',
+            'code': 'AN'
+
+        })
+
+
+        vals1 = {
+            'name':'Nirupa',
+            'active':True,
+            'age':22,
+            'birthdate':'2001-04-01',
+            'type_id':5,
+            'gender':'female'
         }
         vals2 = {
-            'name': 'Anjum',
+            'name': 'lila',
             'active': True,
             'age': 29,
             'birthdate': '1994-05-17',
-            'type_id': 2,
-            'gender': 'female',
-
+            'type_id': 5,
+            'gender': 'female'
         }
-        vals_lst = [vals1, vals2]
+        vals_lst = [vals1,vals2]
         # Creating record in the same object
-        new_stds = self.create(vals_lst)
-        print("STDS", new_stds)
-
+        new_users = self.create(vals_lst)
+        print("USERS", new_users)
         return {
             'effect':{
                 'fadeout':'slow',
@@ -199,30 +179,13 @@ class Subscriber(models.Model):
 
 
     def update_rec(self):
+        """
+        Button's method to demonstrate write() method
+        """
         vals = {
             'age':30,
-            'type_id':1,
-            'name':'Dolly',
-            'gender': 'female',
-            'type_id': 4,
-            'sub_type_ids': [
-            # (0,0,{'sub_type':3,'price':200}),
-            #  (Command.create({'sub_type':3,'price':200,'recurrence_id':})),
-            # (1,2,{'sub_type':2})
-            #  (Command.update(2,{'sub_type':1})),
-            #  (2,18),
-            #  (Command.delete(3)),
-            #  (3,19)
-            #  (Command.unlink(2))
-            #  (4,19)
-            #  (Command.link(2)),
-            #  (5,0,0)
-            #  (Command.clear()),
-            #  (6,0,[1,2,3])
-            #  (6,0,[1,3])
-            (Command.set([20, 21, 23, 24]))
-            #  (4,1),(4,2),(4,3)
-        ]
+            'type_id':4,
+            'name':'Dol'
 
         }
         res = self.write(vals)
@@ -261,24 +224,7 @@ class Subscriber(models.Model):
                 'message': 'Record has been Search Sucessfully'
             }
         }
-    def copy_rec(self):
-        default = {
-            'name': self.name + ' (copy)',
-            'email': False,
-            'state': 'applied',
-        }
-        new_rec = self.copy(default=default)
-        print("\nNEW REC",new_rec)
 
-    @api.model
-    def unlink(self, vals):
-        res = super(Subscriber, self).unlink()
-        for vals in self:
-            if vals.active == 'active':
-                raise UserError(_("Record cannot be deleted, it is an active state"))
-            else:
-                return res
-        return res
 
 
     @api.constrains('age')
@@ -287,83 +233,90 @@ class Subscriber(models.Model):
             if record.age <=18:
                 raise ValidationError(_('The age must be above than 18 years'))
 
+    @api.model
+    def unlink(self,vals):
+        res = super(Subscriber, self).unlink()
+        for vals in self:
+            if vals.active == 'active':
+                    raise UserError(_("Record cannot be deleted, it is an active state"))
+            else:
+                return res
+        return res
 
-# todo Excersice :4 Question :1 Override create method to create a record in another model.
-
-    # @api.model
-    # def create(self, vals):
-    #     # Create the record in current model
-    #     record = super(Subscriber, self).create(vals)
-    #
-    #     # Create a related record in other model
-    #     other_model_vals = {
-    #         'name': 'Subscription Main',
-    #         'code': 'SM'
-    #     }
-    #     other_record = self.env['subscription.type'].create(other_model_vals)
-    #
-    #     # Optionally, you can link the related record to the original record
-    #     record.type_id = other_record.id
-    #
-    #     return record
-
-
-    # @api.model
-    # def name_search(self, name, args=None, operator='ilike', limit=100):
-    #     args = args or []
-    #     print("Name : -", name)
-    #     print("Args : -", args)
-    #     print("Operator : -", operator)
-    #     print("Limit : - ", limit)
-    #     if name:
-    #         records = self.search(['|',('name', operator, name),
-    #                                ('code', operator, name)])
-    #         return records.name_get()
-    #     return self.search([('name', operator, name)] + args, limit=limit).name_get()
-
+        # todo Excersice :4 Question :1 Override create method to create a record in another model.
 
     @api.model
-    # def create(self, vals):
-    #     res = super(Subscriber, self).create(vals)
-    #     if vals.get('gender') == 'male':
-    #         res['name'] = "Mr." + res['name']
-    #         print("res['name']--", res['name'])
-    #     elif vals.get('gender') == 'female':
-    #         res['name'] = "Ms." + res['name']
-    #         print("res['name']--", res['name'])
-    #     else:
-    #         return res
-        # if not vals.get('sub_type_ids'):
-        #     raise ValidationError(_("PLease fill the one2many field"))
-        # else:
-        #     return res
-    #     return res
-        # print("Hello")
-        # print("self : - ", self,"res : -",res,"vals :-",vals)
+    def create(self, vals):
+        # Create the record in current model
+        record = super(Subscriber, self).create(vals)
 
-    # def write(self, vals):
-    #     if vals.get('name'):
-    #         vals['user_code'] = vals['name'][:4].upper()
-    #     return super().write(vals)
+       # Create a related record in other model
+        other_model_vals = {
+            'name': 'Subscription Main',
+            'code': 'SM'
+            }
+        other_record = self.env['subscription.type'].create(other_model_vals)
+
+        # Optionally, you can link the related record to the original record
+        record.type_id = other_record.id
+
+        return record
+
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        args = args or []
+        print("Name : -", name)
+        print("Args : -", args)
+        print("Operator : -", operator)
+        print("Limit : - ", limit)
+        if name:
+            records = self.search(['|', ('name', operator, name),('code', operator, name)])
+            return records.name_get()
+        return self.search([('name', operator, name)] + args, limit=limit).name_get()
+
+    @api.model
+    def create(self, vals):
+        res = super(Subscriber, self).create(vals)
+        if vals.get('gender') == 'male':
+            res['name'] = "Mr." + res['name']
+            print("res['name']--", res['name'])
+        elif vals.get('gender') == 'female':
+            res['name'] = "Ms." + res['name']
+            print("res['name']--", res['name'])
+        else:
+            return res
+
+        if not vals.get('sub_type_ids'):
+            raise ValidationError(_("PLease fill the one2many field"))
+        else:
+            return res
+            return res
+        print("Hello")
+        print("self : - ", self,"res : -",res,"vals :-",vals)
+
+    def write(self, vals):
+        if vals.get('name'):
+            vals['user_code'] = vals['name'][:4].upper()
+        return super().write(vals)
 
     def unlink(self):
         if self.state == 'applied':
             raise ValidationError(("Do not Deleted"))
         return super(Subscriber, self).unlink()
 
-    # @api.onchange('gender','age')
-    # def onchange_gender(self):
-    #     """
-    #     Onchange method to set default age for male and female
-    #     ------------------------------------------------------
-    #     """
-    #     for user in self:
-    #         ages = 0
-    #         if user.gender == 'female':
-    #             ages = 18
-    #         elif user.gender == 'male':
-    #             ages = 21
-    #         user.age = ages
+    @api.onchange('gender','age')
+    def onchange_gender(self):
+        """
+        Onchange method to set default age for male and female
+        ------------------------------------------------------
+        """
+        for user in self:
+            ages = self.age
+            if user.gender == 'female':
+                ages = 18
+            elif user.gender == 'male':
+                ages = 21
+            user.age = ages
 
     @api.onchange('name', 'gender', 'active')
     def _onchange_fields(self):
@@ -372,48 +325,63 @@ class Subscriber(models.Model):
         else:
             self.total_subscription_price = 0.0
 
-    # @api.onchange('phone')
-    # def _onchange_phone(self):
-    #     if not self.phone:
-    #         warning = {
-    #             'title': 'Warning!',
-    #             'message': 'Please enter a value for Phone Number',
-    #         }
-    #         return {'warning': warning}
+    @api.onchange('phone')
+    def _onchange_phone(self):
+        if not self.phone:
+            warning = {
+                'title': 'Warning!',
+                'message': 'Please enter a value for Phone Number',
+            }
+            return {'warning': warning}
 
-    # @api.model
-    # def _get_sequence(self):
-    #     sequence_obj = self.env['ir.sequence']
-    #     sequence = sequence_obj.next_by_code('subscription.user.sequence')
-    #     print("sequnce===================================================================",sequence)
-    #     return sequence
+    @api.model
+    def _get_sequence(self):
+        sequence_obj = self.env['ir.sequence']
+        sequence = sequence_obj.next_by_code('subscription.user.sequence')
+        print("sequnce=======================================", sequence)
+        return sequence
 
-    # @api.model
-    # def create(self, vals):
-    #     if vals.get('reg_no', '/') == '/':
-    #         sequence_obj = self.env['ir.sequence']
-    #         vals['reg_no'] = sequence_obj.next_by_code('subscription.user.sequence')
-    #     return super(Subscriber, self).create(vals)
-
+    @api.model
+    def create(self, vals):
+        if vals.get('reg_no', '/') == '/':
+            sequence_obj = self.env['ir.sequence']
+            vals['reg_no'] = sequence_obj.next_by_code('subscription.user.sequence')
+        return super(Subscriber, self).create(vals)
 
     def assign_sequence(self):
         sequence_obj = self.env['ir.sequence']
         self.reg_no = sequence_obj.next_by_code('subscription.user.sequence')
 
-
-
-
     @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
-        args = ['|', ('active', '=', False), ('active', '=', True)] + args
-        return super().search(args, offset=offset, limit=limit, order=order, count=count)
+    def create(self, vals):
+        res = super(Subscriber, self).create(vals)
+        # if not vals.get('type_ids'):
+        #     raise ValidationError(_("PLease fill the one2many field"))
+        # else:
+        #     return res
+        #
+        # return res
 
+        if vals.get('gender') == 'male':
+            res['name'] = "Mr." + res['name']
+            print("res['name']--", res['name'])
+        elif vals.get('gender') == 'female':
+            res['name'] = "Ms." + res['name']
+            print("res['name']--", res['name'])
+        else:
+            return res
+        print("Hello")
+        print("self : - ", self,"res : -",res,"vals :-",vals)
+
+    # @api.model
+    # def search(self, args, offset=0, limit=None, order=None, count=False):
+    #     args = ['|', ('active', '=', False), ('active', '=', True)] + args
+    #     return super().search(args, offset=offset, limit=limit, order=order, count=count)
 
     # def unlink(self):
     #     if self.sub_type_ids:
     #        raise ValidationError("You can not delete with subscription !")
     #     return super().unlink()
-
 
     # todo 6. Override copy() method to remove one of the existing fields and add another value.
     # def copy(self, default=None):
@@ -437,7 +405,6 @@ class Subscriber(models.Model):
     #
     #     copied_partner = super(Subscriber, self).copy(default)
     #     return copied_partner
-
 
     @api.model
     # def create(self,values):
@@ -463,34 +430,6 @@ class Subscriber(models.Model):
     #     rtn['email'] ='dafdaanajana75@gmail.com'
     #     print("return statement " ,rtn)
     #     return rtn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     def browse_rec(self):
         """
@@ -518,6 +457,14 @@ class Subscriber(models.Model):
 
     # ORM Method
     def check_orm(self):
+        # todo this is all ORM method Try by me and
+        # todo 1. Search
+        # todo 2. Search count
+        # todo 3. Browse
+        # todo 4. Copy
+        # todo 5. Read
+        # todo 6. Ref
+        # todo 7. Unlink
         search_var = self.env['subscription.user'].search([('gender','=','male')])
         print("Search Var ---------- ",search_var)
         for rec in search_var:

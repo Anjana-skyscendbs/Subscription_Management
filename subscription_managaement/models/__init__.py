@@ -1,5 +1,5 @@
 from . import subscriber
-from . import recurrence_period
+from . import plans
 from . import types
-from . import subtype_subscription
+from . import services
 from . import addsubscription
