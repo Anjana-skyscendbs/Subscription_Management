@@ -8,12 +8,12 @@ access_subscription_type_manager,access.subscription.type.manager,model_subscrip
 access_subscription_type_user,access.subscription.type.user,model_subscription_type,group_subscriber_user,1,1,0,0
 
 
-access_subscription_plan_manager,access.subscription.plan.manager,model_subscription_plan,group_subscriber_admin,1,1,1,1
-access_subscription_plan_user,access.subscription.plan.user,model_subscription_plan,group_subscriber_user,1,1,0,0
+access_subscription_recurrence_manager,access.subscription.recurrence.manager,model_subscription_recurrence,group_subscriber_admin,1,1,1,1
+access_subscription_recurrence_user,access.subscription.recurrence.user,model_subscription_recurrence,group_subscriber_user,1,1,0,0
 
 
-access_subscription_service_manager,access.subscription.service.manager,model_subscription_service,group_subscriber_admin,1,1,1,1
-access_subscription_service_user,access.subscription.service.user,model_subscription_service,group_subscriber_user,1,1,0,0
+access_subscription_subtype_manager,access.subscription.subtype.manager,model_subscription_subtype,group_subscriber_admin,1,1,1,1
+access_subscription_subtype_user,access.subscription.subtype.user,model_subscription_subtype,group_subscriber_user,1,1,0,0
 
 
 access_subscription_addsubscription_manager,access.subscription.addsubscription.manager,model_subscription_addsubscription,group_subscriber_admin,1,1,1,1
