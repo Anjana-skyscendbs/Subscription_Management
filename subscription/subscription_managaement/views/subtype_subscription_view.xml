@@ -9,7 +9,8 @@
                 <sheet>
                     <group>
                         <field name="type_id"/>
-                        <field name="recurrence_id" widget="many2many_checkboxes"/>
+<!--todo exercise 3 2. In the many2many field only the records which are ending with ‘ts’ substring  should be allowed to select.                        -->
+                        <field name="recurrence_id" widget="many2many_checkboxes" domain="[('name', '=like', '%ts')]"/>
                         <field name="name" required="1"/>
                     </group>
                 </sheet>

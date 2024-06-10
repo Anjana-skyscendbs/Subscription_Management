@@ -6,6 +6,10 @@
         <field name="res_model">subscription.user</field>
         <field name="view_mode">tree,form</field>
     </record>
+<!--   todo  32. Add a smart button on your model which will open the records related to your current record.-->
+<!--   todo 33. Add a smart button which displays the count of records from another model-->
+<!--    related to your current record. When you click on this button it will show you the-->
+<!--    same no of records in a list view.-->
     <!-- Form view of Types -->
     <record id="view_type_form" model="ir.ui.view">
         <field name="name">view.type.form</field>

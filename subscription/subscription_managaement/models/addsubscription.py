@@ -92,7 +92,8 @@ class AddSubscription(models.Model):
 #                 user.price_depend = 0.0
 #
 #
-#
+# todo exercise 3 27. Add a button on the form view on the page of a one2many field. When you click
+#  this button it will add a record in the one2many field.
     def add_rec(self):
         print('add rec called:',self)
         vals1 = {
@@ -114,6 +115,9 @@ class AddSubscription(models.Model):
                 'message': 'Record has been Added Sucessfully'
             }
         }
+
+    # todo exercise 3 29. Add another button on the page of one2many field when you click on this button
+    #  it will remove one record but it will not remove it from the database.
 
     def remove_all_records(self):
         self.unlink()
