@@ -16,6 +16,8 @@
                         <field name="code"/>
                         <field name="duration"/>
                         <field name="unit"/>
+                        <field name="start_timestamp"/>
+                         <field name="end_timestamp"/>
 
                     </group>
                 </sheet>
@@ -37,11 +39,32 @@
         </field>
     </record>
 
+
+    <!-- Calendar view of Recurrence -->
+    <record id="view_recurrence_calendar" model="ir.ui.view">
+        <field name="name">view.recurrence.calendar</field>
+        <field name="model">subscription.plan</field>
+        <field name="arch" type="xml">
+               <calendar string="Calendar View"
+                         date_start="start_timestamp"
+                         date_stop="end_timestamp"
+                         mode="month"
+                         event_open_popup="true">
+<!--                         date_delay=""-->
+                     <field name="name"/>
+<!--                    <field name="duration"/>-->
+<!--                   <field name="unit"/>-->
+               </calendar>
+        </field>
+
+    </record>
+
+
     <!-- Action of Plan -->
     <record id="action_plan" model="ir.actions.act_window">
         <field name="name">Recurrence Period</field>
         <field name="res_model">subscription.plan</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,calendar</field>
     </record>
 
     <!-- Menu of Plans -->

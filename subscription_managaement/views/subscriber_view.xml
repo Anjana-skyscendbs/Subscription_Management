@@ -7,6 +7,16 @@
 
 
             <form>
+
+                <!--                <style>-->
+                <!--                /* Your inline styles go here */-->
+                <!--                .my-class {-->
+                <!--                    color: red;-->
+                <!--                    font-weight: bold;-->
+                <!--                }-->
+                <!--            </style>-->
+                <!--                create="0" edit="0" delete="0"-->
+<!--          delete="1"      create="0" edit="0" -->
                 <header>
                     <button name="assign_sequence" string="Assign Sequence" type="object" class="oe_highlight"/>
 <!--                    <h1>Welcome to Our Channel!!</h1>-->
@@ -16,8 +26,9 @@
                     <button name="search_rec" string="Search" type="object" class="oe_highlight"/>
                     <button name="browse_rec" string="Browse" type="object" class="oe_highlight"/>
                     <button name="check_orm" string="Check ORM" type="object" class="oe_highlight"/>
-                    <field name="state" widget="statusbar" options="{'clickable':1}"
-                           statusbar_visible="applied,draft,pending,done,left"/>
+                    <field name="state" widget="statusbar" options="{'clickable':1}"/>
+<!--                    <field name="state" widget="statusbar" options="{'clickable':1}"-->
+<!--                           statusbar_visible="applied,draft,pending,done,left"/>-->
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -26,10 +37,13 @@
                         </h1>
                     </div>
                     <widget name="web_ribbon" title="Expired" bg_color="bg-danger" invisible="active"/>
-                    <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>
+<!--                    <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>-->
+                     <widget name="web_ribbon" title="Done" bg_color="bg-success" visible="done"/>
+<!--                    <widget name="web_ribbon" title="Draft" bg_color="bg-warning" visible="draft"/>-->
                     <label for="name"/>
                     <h1 colspan="4">
                         <field name="name" />
+                        <!--                        style="color:blue;" class="oe_inline"-->
                     </h1>
                     <div class="row">
                         <div class="col col-md-6">
@@ -55,6 +69,8 @@
                                 <field name="photo" widget="image" class="oe_avatar"/>
                                 <field name="sequence"/>
                                 <field name="ref"/>
+                                <field name="priority" widget="priority"/>
+                                <field name="color" widget="color_picker"/>
 
 
                             </group>
@@ -62,7 +78,30 @@
                     </div>
                     <notebook>
                         <page name="pg_type" string="Type">
-                            <field name="sub_type_ids"/>
+                            <field name="sub_type_ids">
+                                <tree editable="bottom">
+                                    <field name="service"/>-->
+                                    <field name="plan_id"/>
+                                    <field name='start_date'/>
+                                    <field name='expire_date'/>
+                                    <field name="service"/>
+                                    <!--                <field name="price_depend"/>-->
+                                    <field name="price"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="service"/>-->
+                                        <field name="plan_id"/>
+                                        <field name="service" options="{'no_create':1, 'no_open':1}"/>
+                                        <!--                    <field name="price_depend"/>-->
+                                        <field name='start_date'/>
+                                        <field name='expire_date'/>
+                                        <field name="currency_id"/>
+                                        <field name="price"/>
+                                    </group>
+                                </form>
+                            </field>
+
                             <group>
                                 <field name="total_subscription_price" widget="monetary"/>
                             </group>
@@ -98,17 +137,31 @@
         <field name="name">view.user.tree</field>
         <field name="model">subscription.user</field>
         <field name="arch" type="xml">
-            <tree decoration-success = "active==True" decoration-danger="active==False" >
+            <tree default_order="birthdate"
+                  edit="1"
+                  decoration-bf="not state"
+                  decoration-primary="state=='applied'"
+                  decoration-info="state=='pending'"
+                  decoration-warning="state=='draft'"
+                  decoration-success="state=='done'"
+                  decoration-muted="state=='left'"
+                  decoration-danger="active==False">
+<!--                editable="top"-->
+<!--                  create="0"-->
+<!--                  delete="0"
+                    decoration-success = "active==True"
+                    decoration-danger="active==False"-->
                 <field name="sequence" widget="handle"/>
-                <field name="id"/>
+                <field name="id" optional="hide"/>
                 <field name="name"/>
                 <field name="age" avg ="Avg "/>
                 <!-- sum="Sum of total Age"-->
                 <field name="active" widget="boolean_toggle"/>
-                <field name="birthdate"/>
-                <field name="gender"/>
+                <field name="birthdate" optional="show"/>
+                <field name="gender" optional="hide"/>
                 <field name="state"/>
-                <field name="type_id"/>
+                <field name="type_id" optional="show"/>
+
 
             </tree>
         </field>
@@ -120,6 +173,10 @@
         <field name="model">subscription.user</field>
         <field name="arch" type="xml">
             <search>
+                <searchpanel>
+                    <field name="type_id" icon="fa-cubes"/>
+                    <field name="gender" icon="fa-group"/>
+                </searchpanel>
                 <field name="name"/>
                 <field name="gender"/>
                 <field name="age"/>
@@ -140,6 +197,57 @@
         </field>
     </record>
 
+
+
+     <!-- Calendar view of User -->
+    <record id="view_user_calendar" model="ir.ui.view">
+        <field name="name">view.user.calendar</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+               <calendar string="Calendar View" date_start="birthdate" mode="month" event_open_popup="true">
+                     <field name="name"/>
+                    <field name="type_id"/>
+               </calendar>
+        </field>
+
+    </record>
+
+     <!-- Graph view of User -->
+    <record id="view_user_graph" model="ir.ui.view">
+        <field name="name">view.user.graph</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml" >
+<!--                <graph string="Subscriber Analysis" type="bar" stacked="0">-->
+<!--            <graph string="Subscriber Analysis" type="line">-->
+            <graph string="Subscriber Analysis" type="pie">
+
+                    <field name="age" type="measure"/>
+                    <field name="gender" type="col"/>
+                    <field name="type_id" type="row"/>
+                </graph>
+        </field>
+
+    </record>
+
+
+    <!-- Pivot view of User-->
+    <record id="view_user_pivot" model="ir.ui.view">
+        <field name="name">view.user.pivot</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="birthdate" type="row" interval="year"/>
+                <field name="gender" type="row"/>
+                <field name="type_id" type="col"/>
+                <field name="age" type="measure"/>
+<!--                <field name="state" type="measure"/>-->
+            </pivot>
+        </field>
+    </record>
+
+
+
+
     <!-- Kanban view -->
     <record id="view_user_kanban" model="ir.ui.view">
         <field name="name">view.user.kanban</field>
@@ -147,9 +255,12 @@
         <field name="arch" type="xml">
             <kanban string ="Subscription Kanban" class ="o_res_partner_kanban">
                 <field name ="id"/>
+                <field name="color"/>
+                <field name="sub_type_ids"/>
                 <templates>
                     <t t-name ="kanban-box">
-                        <div class="oe_kanban_global_click" style="height:135px;background-color:#ccff99;color:#006600;">
+<!--                        <div class="oe_kanban_global_click" style="height:135px;background-color:#ccff99;color:#006600;">-->
+                         <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_card oe_kanban_color oe_kanban_global_click">
                             <div style="width:30%;float:left;display:inline-block;">
                                 <img alt="Avatar" t-att-src="kanban_image('subscription.user','photo',record.id.raw_value)" style="width:100px;height:120px;"/>
                             </div>
@@ -167,8 +278,63 @@
                                         <b> Gender : </b>
                                         <field name="gender"/>
                                     </li>
+                                     <li>
+                                        <b> Type : </b>
+                                        <field name="type_id"/>
+                                    </li>
+                                    <li>
+                                        <b> Priority : </b>
+                                        <field name="priority" widget="priority"/>
+                                    </li>
+                                    <li>
+                                        <b> Recurrence : </b>
+                                        <field name="service_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                    </li>
+
 
                                 </ul>
+                            </div>
+
+
+                             <div class="o_dropdown_kanban o_dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown"
+                                   data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <!-- type="open" is used to open the form view in non editable mode -->
+                                    <a role="menuitem" type="open" class="dropdown-item">Open</a>
+                                    <!-- type="edit" is used to open the form view in editable mdoe -->
+                                    <t t-if="widget.editable">
+                                        <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    </t>
+                                    <!-- type="delete" is used to delete the record -->
+                                    <t t-if="widget.deletable">
+                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    </t>
+                                    <!-- Adding separator -->
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <!-- Using Object Button's Method -->
+                                    <a role="menuitem" type="object" name="browse_rec" class="dropdown-item">Browse</a>
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <!-- Using Action Button -->
+                                    <a role="menuitem" type="action" name="%(action_plan)d" class="dropdown-item">
+                                        Recurrence
+                                    </a>
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <a role="menuitem" name="open_one2many" type="object" class="dropdown-item">One2Many
+                                        Records
+                                    </a>
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <a role="menuitem" name="action_confirm" type="object" class="dropdown-item">Draft
+                                        State
+                                    </a>
+
+
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <!-- Adding Colorpicker to select the color -->
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
                             </div>
                         </div>
                     </t>
@@ -181,9 +347,13 @@
     <record id="action_user" model="ir.actions.act_window">
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
-        <field name="view_mode">tree,form,search,kanban</field>
-        <field name="limit">7</field>
-        <field name="context">{'search_default_age':22, 'search_default_grp_by_type':'Streaming Service','search_default_date':'12/02/2001'}</field>
+        <field name="view_mode">tree,form,search,kanban,calendar,graph,pivot</field>
+<!--        <field name="limit">7</field>-->
+        <!--         <field name="context">{'tree_view_ref':'subscription.view_user_tree'}</field>-->
+                  <field name="context">{'group_by': 'state'}</field>
+        <!--        <field name="search_view_id" ref="view_user_search"/>-->
+<!--        <field name="context">{}</field>-->
+<!--        <field name="context">{'search_default_age':22, 'search_default_grp_by_type':'Streaming Service','search_default_date':'12/02/2001'}</field>-->
     </record>
 
 

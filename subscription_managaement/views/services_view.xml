@@ -11,6 +11,7 @@
                         <field name="type_id"/>
                         <field name="plan_id" widget="many2many_checkboxes"/>
                         <field name="name" required="1"/>
+                        <field name="color" widget="color_picker"/>
                     </group>
                 </sheet>
             </form>
@@ -27,6 +28,7 @@
                 <field name="type_id"/>
                 <field name="plan_id"/>
                 <field name="name"/>
+                <field name="color" widget="color_picker"/>
             </tree>
         </field>
     </record>

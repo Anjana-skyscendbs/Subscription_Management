@@ -27,6 +27,8 @@ class Subscriber(models.Model):
                             ('res.partner', 'Contacts')], 'Reference')
     document = fields.Binary('Document')
     file_name = fields.Char('File Name')
+    priority = fields.Selection([(str(ele), str(ele)) for ele in range(6)], 'Priority')
+    color = fields.Integer('Color')
 
     state = fields.Selection([('applied', 'Applied'),
                               ('pending', 'Pending'),
@@ -52,6 +54,20 @@ class Subscriber(models.Model):
 
 
 
+
+    def open_one2many(self):
+        self.ensure_one()
+        return {
+            'name': 'One2Many Records',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'res_model': 'subscription.addsubscription',
+            'domain': [('user_id', '=', self.id)],
+            'context': {},
+        }
+
+    def action_confirm(self):
+        self.state = 'draft'
 
 
     @api.depends('sub_type_ids.price')

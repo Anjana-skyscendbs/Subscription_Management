@@ -8,3 +8,5 @@ class Subscriptionplan(models.Model):
     code = fields.Char('Code', required=True)
     duration = fields.Float('Duration')
     unit = fields.Char('Unit')
+    start_timestamp = fields.Datetime('Start Date')
+    end_timestamp = fields.Datetime('End Date')

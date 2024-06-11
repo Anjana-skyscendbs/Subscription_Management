@@ -8,6 +8,8 @@ class SubscriptionServices(models.Model):
     name = fields.Char('Name')
     plan_id = fields.Many2many('subscription.plan','Plan')
     type_id = fields.Many2one('subscription.type', 'Type')
+    color = fields.Integer('Color')
+
     # currency_id = fields.Many2one('res.currency', 'Currency')
     # # price = fields.(currency_field='currency_id', string='Price Amount')
     # daily_price = fields.Monetary('Daily Price', currency_field='currency_id', required=True)
