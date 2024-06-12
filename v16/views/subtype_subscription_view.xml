@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Form view of Sub Type Of Subscription -->
+    <record id="view_subtype_form" model="ir.ui.view">
+        <field name="name">view.subtype.form</field>
+        <field name="model">subscription.subtype</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="type_id"/>
+                        <!--todo exercise 3 2. In the many2many field only the records which are ending with ‘ts’ substring  should be allowed to select.                        -->
+<!--                        domain="[('name', '=like', '%ts')]"-->
+                        <field name="name" required="1"/>
+                        <field name="recurrence_id" widget="many2many_checkboxes" />
+                        <field name="color" widget="color_picker"/>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of Sub type of Subscription -->
+    <record id="view_subtype_tree" model="ir.ui.view">
+        <field name="name">view.subtype.tree</field>
+        <field name="model">subscription.subtype</field>
+        <field name="arch" type="xml">
+            <tree>
+
+                <field name="type_id"/>
+                <field name="name"/>
+                <field name="recurrence_id" options="{'color_field': 'color'}" widget="many2many_tags"/>
+                <field name="color" widget="color_picker"/>
+
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_subtype_kanban" model="ir.ui.view">
+        <field name="name">view.subtype.kanban</field>
+        <field name="model">subscription.subtype</field>
+        <field name="arch" type="xml">
+            <kanban string="Subscription Kanban" class="o_kanban_mobile">
+                <field name="color"/>
+                 <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_card oe_kanban_color oe_kanban_global_click">
+                            <div style="width:30%;float:left;display:inline-block;">
+                            </div>
+                            <div style="width:70%;float:right;display:inline-block;">
+                                <ul style="list-style-type:none;">
+                                    <li>
+                                        <b>Name :</b>
+                                        <field name="name"/>
+                                    </li>
+                                    <li>
+                                        <b>Type :</b>
+                                        <field name="type_id"/>
+                                    </li>
+                                    <li>
+                                        <b>Recurrence :</b>
+                                        <field name="recurrence_id" widget="many2many_tags"
+                                               options="{'color_field': 'color'}"/>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="o_dropdown_kanban o_dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown"
+                                   data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <!-- type="open" is used to open the form view in non editable mode -->
+                                    <a role="menuitem" type="open" class="dropdown-item">Open</a>
+                                    <!-- type="edit" is used to open the form view in editable mdoe -->
+                                    <t t-if="widget.editable">
+                                        <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    </t>
+
+                                    <!-- type="delete" is used to delete the record -->
+                                    <t t-if="widget.deletable">
+                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    </t>
+                                    <!-- Adding separator -->
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <!-- Using Object Button's Method -->
+                                    <a role="menuitem" type="object" name="browse_rec" class="dropdown-item">Browse</a>
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <!-- Using Action Button -->
+                                    <a role="menuitem" type="action" name="%(action_recurrence)d" class="dropdown-item">
+                                        Recurrence
+                                    </a>
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <!-- Adding Colorpicker to select the color -->
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+
+            </kanban>
+        </field>
+    </record>
+
+
+
+
+    <!-- Action of Service -->
+    <record id="action_subtype" model="ir.actions.act_window">
+        <field name="name">Sub Types</field>
+        <field name="res_model">subscription.subtype</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+    <!-- Menu of Service -->
+    <menuitem id="menu_service" action="action_subtype" parent="menu_configuration"/>
+
+</odoo>
