@@ -38,8 +38,8 @@
                     </div>
                     <widget name="web_ribbon" title="Expired" bg_color="bg-danger" invisible="active"/>
 <!--                    <widget name="web_ribbon" title="Active" bg_color="bg-success" invisible="not active"/>-->
-                     <widget name="web_ribbon" title="Done" bg_color="bg-success" visible="done"/>
-<!--                    <widget name="web_ribbon" title="Draft" bg_color="bg-warning" visible="draft"/>-->
+<!--                     <widget name="web_ribbon" title="Done" bg_color="bg-success" visible="done"/>-->
+                    <widget name="web_ribbon" title="Draft" bg_color="bg-warning" visible="draft"/>
                     <label for="name"/>
                     <h1 colspan="4">
                         <field name="name" />
@@ -79,18 +79,18 @@
                     <notebook>
                         <page name="pg_type" string="Type">
                             <field name="sub_type_ids">
-                                <tree editable="bottom">
-                                    <field name="service"/>-->
-                                    <field name="plan_id"/>
-                                    <field name='start_date'/>
-                                    <field name='expire_date'/>
-                                    <field name="service"/>
-                                    <!--                <field name="price_depend"/>-->
-                                    <field name="price"/>
-                                </tree>
+<!--                                <tree editable="bottom">-->
+<!--                                    <field name="service"/>&ndash;&gt;-->
+<!--                                    <field name="plan_id"/>-->
+<!--                                    <field name='start_date'/>-->
+<!--                                    <field name='expire_date'/>-->
+<!--                                    <field name="service"/>-->
+<!--                                    &lt;!&ndash;                <field name="price_depend"/>&ndash;&gt;-->
+<!--                                    <field name="price"/>-->
+<!--                                </tree>-->
                                 <form>
                                     <group>
-                                        <field name="service"/>-->
+<!--                                        <field name="service"/>&ndash;&gt;-->
                                         <field name="plan_id"/>
                                         <field name="service" options="{'no_create':1, 'no_open':1}"/>
                                         <!--                    <field name="price_depend"/>-->
@@ -114,8 +114,8 @@
                         <page name="pg_sub" string="Subordinates">
                             <field name="child_ids" readonly="1"/>
                         </page>
-                        <page name="pg_notes" string="Notes">
-                            <field name="notes" required="active" invisible="not active"/>
+                        <page name="pg_notes" string="Notes" invisible="not active">
+                            <field name="notes" required="active" />
                         </page>
 
                     </notebook>
@@ -161,8 +161,6 @@
                 <field name="gender" optional="hide"/>
                 <field name="state"/>
                 <field name="type_id" optional="show"/>
-
-
             </tree>
         </field>
     </record>
@@ -253,13 +251,13 @@
         <field name="name">view.user.kanban</field>
         <field name="model">subscription.user</field>
         <field name="arch" type="xml">
-            <kanban string ="Subscription Kanban" class ="o_res_partner_kanban">
+            <kanban t-name ="kanban-box" string ="Subscription Kanban" class ="o_res_partner_kanban">
                 <field name ="id"/>
                 <field name="color"/>
                 <field name="sub_type_ids"/>
                 <templates>
                     <t t-name ="kanban-box">
-<!--                        <div class="oe_kanban_global_click" style="height:135px;background-color:#ccff99;color:#006600;">-->
+<!--                        kanban-menu <div class="oe_kanban_global_click" style="height:135px;background-color:#ccff99;color:#006600;">-->
                          <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_card oe_kanban_color oe_kanban_global_click">
                             <div style="width:30%;float:left;display:inline-block;">
                                 <img alt="Avatar" t-att-src="kanban_image('subscription.user','photo',record.id.raw_value)" style="width:100px;height:120px;"/>
@@ -297,15 +295,15 @@
 
 
                              <div class="o_dropdown_kanban o_dropdown">
-                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown"
-                                   data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                               <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
                                     <!-- type="open" is used to open the form view in non editable mode -->
-                                    <a role="menuitem" type="open" class="dropdown-item">Open</a>
+
                                     <!-- type="edit" is used to open the form view in editable mdoe -->
                                     <t t-if="widget.editable">
+<!--                                         <a role="menuitem" type="edit" class="dropdown-item border-top-0">Edit</a>-->
                                         <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
                                     </t>
                                     <!-- type="delete" is used to delete the record -->
@@ -315,8 +313,8 @@
                                     <!-- Adding separator -->
                                     <div role="separator" class="dropdown-divider"/>
                                     <!-- Using Object Button's Method -->
-                                    <a role="menuitem" type="object" name="browse_rec" class="dropdown-item">Browse</a>
-                                    <div role="separator" class="dropdown-divider"/>
+<!--                                    <a role="menuitem" type="object" name="browse_rec" class="dropdown-item">Browse</a>-->
+<!--                                    <div role="separator" class="dropdown-divider"/>-->
                                     <!-- Using Action Button -->
                                     <a role="menuitem" type="action" name="%(action_plan)d" class="dropdown-item">
                                         Recurrence
@@ -344,7 +342,12 @@
         </field>
     </record>
 
-    <record id="action_user" model="ir.actions.act_window">
+
+
+-
+
+
+   <record id="action_user" model="ir.actions.act_window">
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
         <field name="view_mode">tree,form,search,kanban,calendar,graph,pivot</field>
