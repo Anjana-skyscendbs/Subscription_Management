@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--Inherited Form view of Student -->
+    <record id="view_user_form_inherit" model="ir.ui.view">
+        <field name="name">view.user.form.inherit</field>
+        <field name="model">subscription.user</field>
+        <!-- TO Inherit a view we need to add inherit_id -->
+        <!-- The ref has to be an xml id of the view prefixed by the module in which the view is defined -->
+        <field name="inherit_id" ref="subscription_managaement.view_user_form"/>
+        <field name="arch" type="xml">
+            <!-- xpath is used to inherit the view part -->
+            <!-- expr will be the expression to the reference tag -->
+            <!-- Position can have one of the following options -->
+            <!-- before, after, replace, inside, attributes -->
+            <xpath expr="//field[@name='priority']"
+                   position="before">
+                <field name="weight"/>
+            </xpath>
+            <xpath expr="//field[@name='ref']"
+                   position="after">
+                <field name="height"/>
+            </xpath>
+            <xpath expr="//field[@name='user_code']"
+                   position="replace">
+                <field name="user_code" required="1"/>
+            </xpath>
+            <xpath expr="//field[@name='reg_no']"
+                   position="replace">
+            </xpath>
+            <xpath expr="/form/sheet/notebook[1]"
+                   position="inside">
+                <page name="pg_extra_notes" string="Extra Notes">
+                    <field name="extra_notes"/>
+                </page>
+            </xpath>
+            <xpath expr="/form/sheet/notebook[1]/page[@name='pg_notes']"
+                   position="inside">
+                <group>
+                    <field name="blood_group"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='birthdate']"
+                   position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
