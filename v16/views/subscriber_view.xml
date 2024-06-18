@@ -51,7 +51,7 @@
                             <group>
                                 <field name="age"/>
                                 <field name="active"/>
-                                <field name="email" widget="email"/>
+                                <field name="email" widget="email" class="color_red"/>
                                 <field name="password" password="*"/>
                                 <field name="birthdate"/>
                                 <!--todo exercise 3   1. In the many2one field only the records which are having ‘it’ as a substring in their name should be allowed to select.-->
@@ -202,14 +202,21 @@
         <field name="model">subscription.user</field>
         <field name="arch" type="xml">
             <pivot>
-                <field name="birthdate" type="row" interval="year"/>
-                <field name="gender" type="row"/>
-                <field name="type_id" type="col"/>
+                <field name="birthdate" type="col" interval="month"/>
+                 <field name="birthdate" type="col" interval="quarter"/>
+<!--                <field name="gender" type="row"/>-->
+                <field name="type_id" type="row"/>
                 <field name="age" type="measure"/>
                 <!--                <field name="state" type="measure"/>-->
             </pivot>
         </field>
     </record>
+<!--    <pivot string="Sales Analysis" sample="1">-->
+<!--    <field name="order_id" type="row"/>-->
+<!--    <field name="date_order" type="col" interval="month"/>-->
+<!--    <field name="date_order" type="col" interval="quarter"/>-->
+<!--    <field name="price_total" type="measure"/>-->
+<!--</pivot>-->
 
 
     <!-- Search view -->

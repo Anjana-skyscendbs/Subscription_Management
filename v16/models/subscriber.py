@@ -71,8 +71,18 @@ class Subscriber(models.Model):
     total_subscription_price = fields.Float(string='Total Price',
                                             compute='_compute_total_subscription_price', store=True,group_operator='avg')
 
+    @api.model
+    def _default_type_id(self):
+        # Get the default subscription type based on some condition
+        default_type = self.env['subscription.type'].search([('is_default', '=', True)], limit=1)
+        return default_type.id if default_type else False
 
-
+    @api.model
+    def default_get(self, fields_list):
+        res = super(MyModel, self).default_get(fields_list)
+        if 'type_id' in fields_list:
+            res['type_id'] = self._default_type_id()
+        return res
 
 
 
@@ -406,29 +416,29 @@ class Subscriber(models.Model):
 
     # todo exercise 4 15.Add an onchange method for a field where it will update values of two other  fields.
 
-    @api.onchange('gender','age')
-    def onchange_gender(self):
-        """
-        Onchange method to set default age for male and female
-        ------------------------------------------------------
-        """
-        for user in self:
-            ages = 0
-            if user.gender == 'female':
-                ages = 18
-            elif user.gender == 'male':
-                ages = 21
-            user.age = ages
+    # @api.onchange('gender','age')
+    # def onchange_gender(self):
+    #     """
+    #     Onchange method to set default age for male and female
+    #     ------------------------------------------------------
+    #     """
+    #     for user in self:
+    #         ages = 0
+    #         if user.gender == 'female':
+    #             ages = 18
+    #         elif user.gender == 'male':
+    #             ages = 21
+    #         user.age = ages
 
     # todo exercise 4 16.Add an onchange method for multiple fields to update another field’s value.
     #  NOTE: Here the same method should be called when you change any of the fields.
 
-    @api.onchange('name', 'gender', 'active')
-    def _onchange_fields(self):
-        if self.name and self.gender and self.active:
-            self.total_subscription_price = 100.0
-        else:
-            self.total_subscription_price = 0.0
+    # @api.onchange('name', 'gender', 'active')
+    # def _onchange_fields(self):
+    #     if self.name and self.gender and self.active:
+    #         self.total_subscription_price = 100.0
+    #     else:
+    #         self.total_subscription_price = 0.0
 
 
     # todo exercise 4 18. If there is no value passed raise a warning in an onchnage method.
@@ -445,21 +455,21 @@ class Subscriber(models.Model):
     # todo exercise 4 23. Create a Sequence for an object and fetch the sequence as default value to a field.
 
     @api.model
-    def _get_sequence(self):
-        sequence_obj = self.env['ir.sequence']
-        sequence = sequence_obj.next_by_code('subscription.user.sequence')
-        print("sequnce===================================================================",sequence)
-        return sequence
+    # def _get_sequence(self):
+    #     sequence_obj = self.env['ir.sequence']
+    #     sequence = sequence_obj.next_by_code('subscription.user.sequence')
+    #     print("sequnce===================================================================",sequence)
+    #     return sequence
 
 
     # todo exercise 4 24. Create a sequence and assign it on creation of the record.
 
-    @api.model
-    def create(self, vals):
-        if vals.get('reg_no', '/') == '/':
-            sequence_obj = self.env['ir.sequence']
-            vals['reg_no'] = sequence_obj.next_by_code('subscription.user.sequence')
-        return super(Subscriber, self).create(vals)
+    # @api.model
+    # def create(self, vals):
+    #     if vals.get('reg_no', '/') == '/':
+    #         sequence_obj = self.env['ir.sequence']
+    #         vals['reg_no'] = sequence_obj.next_by_code('subscription.user.sequence')
+    #     return super(Subscriber, self).create(vals)
 
     # todo exercise 4 25. Create a sequence and assign it’s value on a button click.
 
@@ -470,10 +480,10 @@ class Subscriber(models.Model):
 
 
 
-    @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
-        args = ['|', ('active', '=', False), ('active', '=', True)] + args
-        return super().search(args, offset=offset, limit=limit, order=order, count=count)
+    # @api.model
+    # def search(self, args, offset=0, limit=None, order=None, count=False):
+    #     args = ['|', ('active', '=', False), ('active', '=', True)] + args
+    #     return super().search(args, offset=offset, limit=limit, order=order, count=count)
 
 
     # def unlink(self):
@@ -483,46 +493,46 @@ class Subscriber(models.Model):
 
 
     # todo 6. Override copy() method to remove one of the existing fields and add another value.
-    def copy(self, default=None):
-        default = dict(default or {})
-
-        # Remove an existing field from the default values
-        if 'phone' in default:
-            del default['phone']
-
-        # Add a new value to the default values
-        default['name'] = 'Copy'
-
-        copied_partner = super(Subscriber, self).copy(default)
-        return copied_partner
+    # def copy(self, default=None):
+    #     default = dict(default or {})
+    #
+    #     # Remove an existing field from the default values
+    #     if 'phone' in default:
+    #         del default['phone']
+    #
+    #     # Add a new value to the default values
+    #     default['name'] = 'Copy'
+    #
+    #     copied_partner = super(Subscriber, self).copy(default)
+    #     return copied_partner
 
 
     # todo exercise 4 7. Override copy() method and have the state field not copied and bring back to the
     #  fiirst state in the selection.
-    def copy(self, default=None):
-        default = dict(default or {})
-
-        # Reset the state field to the first state in the selection
-        default['state'] = 'draft'
-
-        copied_partner = super(Subscriber, self).copy(default)
-        return copied_partner
+    # def copy(self, default=None):
+    #     default = dict(default or {})
+    #
+    #     # Reset the state field to the first state in the selection
+    #     default['state'] = 'draft'
+    #
+    #     copied_partner = super(Subscriber, self).copy(default)
+    #     return copied_partner
 
 
     @api.model
-    def create(self,values):
-        print("Values of create Method",values)
-        print("Self ",self)
-        rtn =super(Subscriber,self).create(values)
-        print("Return Statement ",rtn)
-        return rtn
-
-    def create(self,values):
-        print("Before edit values ",values)
-        values["active"] = True
-        print("After edit values",values)
-        rtn = super(Subscriber, self).create(values)
-        return rtn
+    # def create(self,values):
+    #     print("Values of create Method",values)
+    #     print("Self ",self)
+    #     rtn =super(Subscriber,self).create(values)
+    #     print("Return Statement ",rtn)
+    #     return rtn
+    #
+    # def create(self,values):
+    #     print("Before edit values ",values)
+    #     values["active"] = True
+    #     print("After edit values",values)
+    #     rtn = super(Subscriber, self).create(values)
+    #     return rtn
 
 
     # todo excercise 4 12.Override default_get method to add default fields when the record is created.
@@ -536,12 +546,6 @@ class Subscriber(models.Model):
         rtn['email'] ='dafdaanajana75@gmail.com'
         print("return statement " ,rtn)
         return rtn
-
-
-
-
-
-
 
 
 
