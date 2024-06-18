@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherited form view of Type -->
+    <record id="view_type_form_inherit" model="ir.ui.view">
+        <field name="name">view.type.form.inherit</field>
+        <field name="model">subscription.type</field>
+        <field name="inherit_id" ref="subscription_managaement.view_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="color" widget="color_picker"/>
+            </xpath>
+            <xpath expr="/form/sheet" position="after">
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                    <field name="activity_ids"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherited tree view of Type -->
+    <record id="view_type_tree_inherit" model="ir.ui.view">
+        <field name="name">view.type.tree.inherit</field>
+        <field name="model">subscription.type</field>
+        <field name="inherit_id" ref="subscription_managaement.view_type_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="color" widget="color_picker"/>
+                <field name="activity_ids" widget="list_activity"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Activity View of Type -->
+    <record id="view_type_activity" model="ir.ui.view">
+            <field name="name">view.type.activity</field>
+            <field name="model">subscription.type</field>
+            <field name="arch" type="xml">
+                <activity string="Type">
+                    <templates>
+                        <div t-name="activity-box" class="d-block">
+                            <div class="d-flex justify-content-between">
+                                <field name="name" string="Name" class="o_text_block o_text_bold"/>
+                            </div>
+                        </div>
+                    </templates>
+                </activity>
+            </field>
+    </record>
+
+    <!-- Inherited Action of Type to add activity view -->
+    <record id="subscription_managaement.action_type" model="ir.actions.act_window">
+        <field name="view_mode">tree,form,activity</field>
+    </record>
+
+</odoo>

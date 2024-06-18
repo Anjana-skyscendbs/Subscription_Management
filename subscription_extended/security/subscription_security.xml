@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--  Group for School Employee -->
+    <record id="group_subscription_employee" model="res.groups">
+        <field name="name">Subscription Employee</field>
+    </record>
+</odoo>
