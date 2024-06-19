@@ -37,8 +37,8 @@ class Subscriber(models.Model):
                               ('left', 'Left')], 'State', default='applied')
     type_id = fields.Many2one('subscription.type', 'Subscription')#,domain=[('name','=','Streaming Service')]
     sub_type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions',ondelete='cascade')
-    # service_ids = fields.Many2many('subscription.service', string='Services',ondelete='restrict')
-    service_ids = fields.Many2many('subscription.service', 'sub_ser_rel','sub_id','ser_id',string='Services', ondelete='restrict')
+    # service_ids = fields.Many2many('subscription.servAddice', string='Services',ondelete='restrict')
+    # service_ids = fields.Many2many('subscription.service', 'sub_ser_rel','sub_id','ser_id',string='Services', ondelete='restrict')
     reg_no = fields.Char('Reg No', copy=False)  # default=lambda self: self._get_sequence(),
 
     sequence = fields.Integer('Sequence')
@@ -50,8 +50,10 @@ class Subscriber(models.Model):
     total_subscription_price = fields.Float(string='Total Price',
                                             compute='_compute_total_subscription_price', store=True)
 
-
-
+    payment_mode = fields.Selection([('cash', 'Cash'),
+                                     ('digital', 'Digital Payments'),
+                                     ('debit', 'Debit Card'),
+                                     ('credit', 'Credit Card')], 'Payment Mode', default='cash')
 
 
 

@@ -90,7 +90,7 @@
 <!--                                </tree>-->
                                 <form>
                                     <group>
-                                        <field name="service"/>-->
+<!--                                        <field name="service"/>&ndash;&gt;-->
                                         <field name="plan_id"/>
                                         <field name="service" options="{'no_create':1, 'no_open':1}"/>
                                         <!--                    <field name="price_depend"/>-->
@@ -105,12 +105,15 @@
                             <group>
                                 <field name="total_subscription_price" widget="monetary"/>
                             </group>
+                             <group>
+                                <field name="payment_mode"/>
+                            </group>
                         </page>
-                        <page name="pg_ser" string="Services">
-<!--                            <field name="service_ids" />-->
-                            <field name="service_ids" widget="many2many_checkboxes"/>
-<!--                            domain="[('name', '=like', '%ts')]"-->
-                        </page>
+<!--                        <page name="pg_ser" string="Services">-->
+<!--&lt;!&ndash;                            <field name="service_ids" />&ndash;&gt;-->
+<!--                            <field name="service_ids" widget="many2many_checkboxes"/>-->
+<!--&lt;!&ndash;                            domain="[('name', '=like', '%ts')]"&ndash;&gt;-->
+<!--                        </page>-->
                         <page name="pg_sub" string="Subordinates">
                             <field name="child_ids" readonly="1"/>
                         </page>
@@ -161,8 +164,6 @@
                 <field name="gender" optional="hide"/>
                 <field name="state"/>
                 <field name="type_id" optional="show"/>
-
-
             </tree>
         </field>
     </record>
@@ -258,85 +259,68 @@
                 <field name="color"/>
                 <field name="sub_type_ids"/>
                 <templates>
-                    <t t-name ="kanban-box">
-<!--                        <div class="oe_kanban_global_click" style="height:135px;background-color:#ccff99;color:#006600;">-->
-                         <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_card oe_kanban_color oe_kanban_global_click">
+                    <t t-name="kanban-menu">
+
+
+                                <t t-if="widget.editable">
+                                    <!--                                         <a role="menuitem" type="edit" class="dropdown-item border-top-0">Edit</a>-->
+                                    <a type="edit" class="dropdown-item">Edit</a>
+                                </t>
+                                <!-- type="delete" is used to delete the record -->
+                                <t t-if="widget.deletable">
+                                    <a type="delete" class="dropdown-item">Delete</a>
+                                </t>
+                                <div role="separator" class="dropdown-divider"/>
+                                <a name="action_confirm" type="object" class="dropdown-item">Draft
+                                    State
+                                </a>
+
+
+                                <div role="separator" class="dropdown-divider"/>
+                                <!-- Adding Colorpicker to select the color -->
+                                <ul class="oe_kanban_colorpicker" data-field="color"/>
+                            </t>
+                    <t t-name="kanban-box">
+                        <!--                        kanban-menu <div class="oe_kanban_global_click" style="height:135px;background-color:#ccff99;color:#006600;">-->
+                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_card oe_kanban_color oe_kanban_global_click">
                             <div style="width:30%;float:left;display:inline-block;">
-                                <img alt="Avatar" t-att-src="kanban_image('subscription.user','photo',record.id.raw_value)" style="width:100px;height:120px;"/>
+                                <img alt="Avatar"
+                                     t-att-src="kanban_image('subscription.user','photo',record.id.raw_value)"
+                                     style="width:100px;height:120px;"/>
                             </div>
                             <div style="width:70%;float:right;display:inline-block;">
-                                <ul style ="list-style-type:none;">
+                                <ul style="list-style-type:none;">
                                     <li>
-                                        <b> Name : </b>
+                                        <b>Name :</b>
                                         <field name="name"/>
                                     </li>
                                     <li>
-                                        <b> Age : </b>
+                                        <b>Age :</b>
                                         <field name="age"/>
                                     </li>
                                     <li>
-                                        <b> Gender : </b>
+                                        <b>Gender :</b>
                                         <field name="gender"/>
                                     </li>
-                                     <li>
-                                        <b> Type : </b>
+                                    <li>
+                                        <b>Type :</b>
                                         <field name="type_id"/>
                                     </li>
                                     <li>
-                                        <b> Priority : </b>
+                                        <b>Priority :</b>
                                         <field name="priority" widget="priority"/>
                                     </li>
-                                    <li>
-                                        <b> Recurrence : </b>
-                                        <field name="service_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                                    </li>
+                                    <!--                                    <li>-->
+                                    <!--                                        <b> Recurrence : </b>-->
+                                    <!--                                        <field name="service_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>-->
+                                    <!--                                    </li>-->
 
 
                                 </ul>
                             </div>
 
-
-                             <div class="o_dropdown_kanban o_dropdown">
-                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown"
-                                   data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                    <span class="fa fa-ellipsis-v"/>
-                                </a>
-                                <div class="dropdown-menu" role="menu">
-                                    <!-- type="open" is used to open the form view in non editable mode -->
-                                    <a role="menuitem" type="open" class="dropdown-item">Open</a>
-                                    <!-- type="edit" is used to open the form view in editable mdoe -->
-                                    <t t-if="widget.editable">
-                                        <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
-                                    </t>
-                                    <!-- type="delete" is used to delete the record -->
-                                    <t t-if="widget.deletable">
-                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
-                                    </t>
-                                    <!-- Adding separator -->
-                                    <div role="separator" class="dropdown-divider"/>
-                                    <!-- Using Object Button's Method -->
-                                    <a role="menuitem" type="object" name="browse_rec" class="dropdown-item">Browse</a>
-                                    <div role="separator" class="dropdown-divider"/>
-                                    <!-- Using Action Button -->
-                                    <a role="menuitem" type="action" name="%(action_plan)d" class="dropdown-item">
-                                        Recurrence
-                                    </a>
-                                    <div role="separator" class="dropdown-divider"/>
-                                    <a role="menuitem" name="open_one2many" type="object" class="dropdown-item">One2Many
-                                        Records
-                                    </a>
-                                    <div role="separator" class="dropdown-divider"/>
-                                    <a role="menuitem" name="action_confirm" type="object" class="dropdown-item">Draft
-                                        State
-                                    </a>
-
-
-                                    <div role="separator" class="dropdown-divider"/>
-                                    <!-- Adding Colorpicker to select the color -->
-                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
-                                </div>
-                            </div>
                         </div>
+
                     </t>
                 </templates>
 
@@ -344,7 +328,12 @@
         </field>
     </record>
 
-    <record id="action_user" model="ir.actions.act_window">
+
+
+-
+
+
+   <record id="action_user" model="ir.actions.act_window">
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
         <field name="view_mode">tree,form,search,kanban,calendar,graph,pivot</field>

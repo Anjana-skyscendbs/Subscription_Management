@@ -7,13 +7,63 @@ class AddSubscription(models.Model):
     _description = 'Add Subscription'
 
     # type_id = fields.Many2one('subscription.type', 'Subscription')#  required=True
+
+    #
     service =fields.Many2one('subscription.service','Subscription Type')
+    # print(service.type_id,"============================")
+
     plan_id = fields.Many2one('subscription.plan', 'Plan')# , required=True
     start_date = fields.Date(string='Start Date',default =fields.Date.today())
-    expire_date = fields.Date(string='Expire Date')
+    expire_date = fields.Date(string='Expire Date',compute='_compute_expire_date', store=True)
     currency_id = fields.Many2one('res.currency', 'Currency')
     price = fields.Monetary(currency_field='currency_id', string='Price')
     user_id = fields.Many2one('subscription.user', 'User', ondelete='cascade')
+
+    @api.depends('plan_id', 'start_date')
+    def _compute_expire_date(self):
+        for rec in self:
+            if rec.plan_id.code == 'MH':
+                rec.expire_date = rec.start_date + relativedelta(months=1)
+            elif rec.plan_id.code == 'QH':
+                rec.expire_date = rec.start_date + relativedelta(months=3)
+            elif rec.plan_id.code == 'WH':
+                rec.expire_date = rec.start_date + relativedelta(weeks=1)
+            elif rec.plan_id.code == 'WH2':
+                rec.expire_date = rec.start_date + relativedelta(weeks=2)
+            elif rec.plan_id.code == 'YH':
+                rec.expire_date = rec.start_date + relativedelta(years=1)
+            elif rec.plan_id.code == 'YH3':
+                rec.expire_date = rec.start_date + relativedelta(years=3)
+            elif rec.plan_id.code == 'YH5':
+                rec.expire_date = rec.start_date + relativedelta(years=5)
+            else:
+                rec.expire_date = False
+
+    @api.model
+    def _expired_subscriptions(self):
+        today = date.today()
+        expired_subscriptions = self.env['subscription.addsubscription'].search([
+            ('expire_date', '<', today)
+        ])
+        return expired_subscriptions
+
+    is_expired = fields.Boolean(compute='_compute_is_expired', search='_search_is_expired')
+
+    @api.depends('expire_date')
+    def _compute_is_expired(self):
+        today = date.today()
+        for rec in self:
+            rec.is_expired = rec.expire_date and rec.expire_date < today
+
+    def _search_is_expired(self, operator, value):
+        expired_subscriptions = self._expired_subscriptions()
+        if operator == '=':
+            return [('id', 'in', expired_subscriptions.ids)] if value else [('id', 'not in', expired_subscriptions.ids)]
+        else:
+            return [('id', 'not in', expired_subscriptions.ids)] if value else [('id', 'in', expired_subscriptions.ids)]
+
+
+
 
     # todo 10.Override name_search method to search with both the fields which are displayed in many2one field.
     @api.model
@@ -36,6 +86,8 @@ class AddSubscription(models.Model):
         print("RTN ", rtn)
         print("rtn.name_get()[0]", rtn.name_get()[0])
         return rtn.name_get()[0]
+
+
 
 
 

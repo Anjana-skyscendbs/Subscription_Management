@@ -9,7 +9,7 @@
                 <sheet>
                     <group>
                         <field name="type_id"/>
-                        <field name="plan_id" widget="many2many_checkboxes"/>
+                        <field name="plan_id" widget="many2many_tags"/>
                         <field name="name" required="1"/>
                         <field name="color" widget="color_picker"/>
                     </group>
@@ -25,19 +25,79 @@
         <field name="arch" type="xml">
             <tree>
 
-                <field name="type_id"/>
-                <field name="plan_id"/>
+                <field name="type_id" />
+                <field name="plan_id" widget="many2many_tags" options="{'color_field': 'color'}" optional="show"/>
                 <field name="name"/>
                 <field name="color" widget="color_picker"/>
             </tree>
         </field>
     </record>
 
+
+    <record id="view_service_kanban" model="ir.ui.view">
+        <field name="name">view.service.kanban</field>
+        <field name="model">subscription.service</field>
+        <field name="arch" type="xml">
+            <kanban string="Subscription Kanban" class="o_kanban_mobile">
+                <field name="color"/>
+                 <templates>
+                     <t t-name="kanban-menu">
+
+                            <!-- type="open" is used to open the form view in non editable mode -->
+                                    <a role="menuitem" type="open" class="dropdown-item">Open</a>
+                                    <!-- type="edit" is used to open the form view in editable mdoe -->
+                                    <t t-if="widget.editable">
+                                        <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    </t>
+
+                                    <!-- type="delete" is used to delete the record -->
+                                    <t t-if="widget.deletable">
+                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    </t>
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <!-- Adding Colorpicker to select the color -->
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+
+                     </t>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_card oe_kanban_color oe_kanban_global_click">
+                            <div style="width:30%;float:left;display:inline-block;">
+                            </div>
+                            <div style="width:70%;float:right;display:inline-block;">
+                                <ul style="list-style-type:none;">
+                                    <li>
+                                        <b>Name :</b>
+                                        <field name="name"/>
+                                    </li>
+                                    <li>
+                                        <b>Type :</b>
+                                        <field name="type_id"/>
+                                    </li>
+                                    <li>
+                                        <b>Recurrence :</b>
+                                        <field name="plan_id" widget="many2many_tags"
+                                               options="{'color_field': 'color'}"/>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+
+                                </div>
+
+                    </t>
+                </templates>
+
+            </kanban>
+        </field>
+    </record>
+
+
     <!-- Action of Service -->
     <record id="action_service" model="ir.actions.act_window">
         <field name="name">Sub Types</field>
         <field name="res_model">subscription.service</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
     </record>
 
     <!-- Menu of Service -->
