@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_report_subscriber" model="ir.actions.report">
+        <field name="name">Subscriber Report</field>
+        <field name="model">subscription.user</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">subscription_managaement.report_subscriber</field>
+        <field name="report_file">subscription_managaement.report_subscriber</field>
+        <field name="print_report_name">'Subscriber - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_subscription_user"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Registration of Qweb Report -->
+    <record id="action_report_subscriber2" model="ir.actions.report">
+        <field name="name">Subscriber Report - HTML</field>
+        <field name="model">subscription.user</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">subscription_managaement.report_subscriber</field>
+        <field name="report_file">subscription_managaement.report_subscriber</field>
+        <field name="binding_model_id" ref="model_subscription_user"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

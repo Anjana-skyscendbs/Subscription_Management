@@ -432,7 +432,8 @@
 
     <menuitem id="menu_user" name="All Users" parent="menu_subscription"/>
 
-    <menuitem id="menu_configuration" name="Configuration" parent="menu_subscription" sequence="100"/>
+    <menuitem id="menu_configuration" name="Configuration" parent="menu_subscription" sequence="80"/>
+    <menuitem id="menu_reporting" name="Reporting" parent="menu_subscription" sequence="100"/>
 
     <menuitem id="menu_user_user" action="action_user" parent="menu_user"/>
 

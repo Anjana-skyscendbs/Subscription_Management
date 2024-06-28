@@ -24,3 +24,7 @@ access_subscription_package_stop_user,subscription.package.stop_user,model_subsc
 
 access_subscription_close_wizard_manager,access.subscription.close.wizard.manager,model_subscription_close_wizard,group_subscriber_admin,1,1,1,1
 access_subscription_close_wizard_user,access.subscription.close.wizard.user,model_subscription_close_wizard,group_subscriber_user,1,1,1,0
+
+
+access_subscriber_analysis_user,access.subscriber.analysis.user,model_subscriber_analysis,group_subscriber_user,1,1,1,0
+access_subscriber_analysis_admin,access.subscriber.analysis.admin,model_subscriber_analysis,group_subscriber_admin,1,1,1,1

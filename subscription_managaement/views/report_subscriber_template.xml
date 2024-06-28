@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!--    <template id="report_subscriber">-->
+<!--        <t t-call="web.html_container">-->
+<!--            <t t-foreach="docs" t-as="doc">-->
+<!--                <t t-call="web.external_layout">-->
+<!--                    <div class="page">-->
+<!--                        <span t-field="doc.name"/>-->
+<!--                        <span t-field="doc.apreview_externalreportge"/>-->
+<!--                        <span t-field="doc.phone"/>-->
+<!--                        <span t-field="doc.gender"/>-->
+<!--                    </div>-->
+<!--                </t>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </template>-->
+    <template id="report_subscriber">
+        <t t-set="company" t-value="env.company"/>
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+            <t t-set="o" t-value="res_company"/>
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <p>This is a sample of an external report.</p>
+
+                        <span t-field="doc.name"/>
+                    <br/>
+                        <span t-field="doc.age"/>
+                    <br/>
+                        <span t-field="doc.phone"/>
+                    <br/>
+                        <span t-field="doc.gender"/>
+                </div>
+            </t>
+        </t>
+        </t>
+    </template>
+
+</odoo>
