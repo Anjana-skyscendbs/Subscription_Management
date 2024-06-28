@@ -1,5 +1,8 @@
 from odoo import models, fields, api, _ , Command
 from odoo.exceptions import ValidationError,UserError
+import re
+
+from datetime import date
 
 
 class Subscriber(models.Model):
@@ -40,23 +43,35 @@ class Subscriber(models.Model):
     email = fields.Char('Email')
     phone = fields.Char('Phone')
     photo = fields.Image('Photo')
-    # recurrence_id = fields.Many2many('subscription.recurrence', string='Recurrence Period')
+    template = fields.Html('Template')
+    recurrence_id = fields.Many2many('subscription.recurrence', string='Recurrence Period')
     ref = fields.Reference([('subscription.user', ' Subscribers'),
                             ('res.users', 'Users'),
                             ('res.partner', 'Contacts')], 'Reference')
     document = fields.Binary('Document')
     file_name = fields.Char('File Name')
     color = fields.Integer('Color')
+    partner =fields.Many2one('res.users', 'Partners')
 
     state = fields.Selection([('applied', 'Applied'),
                               ('pending', 'Pending'),
                               ('draft', 'Draft'),
                               ('done', 'Done'),
-                              ('left', 'Left')], 'State', default='applied')
+                              ('left', 'Left')], 'State',compute='_compute_state', default='applied')
 
     type_id = fields.Many2one('subscription.type', 'Subscription',store = True)#,domain=[('name','=','Streaming Service')]
     sub_type_ids = fields.One2many('subscription.addsubscription', 'user_id', 'Subscriptions',ondelete='cascade',)
 
+    @api.depends('sub_type_ids.expire_date')
+    def _compute_state(self):
+        today = date.today()
+        for record in self:
+            if any(child.expire_date and child.expire_date <= today for child in record.sub_type_ids):
+                record.state = 'left'
+            elif any(child.expire_date for child in record.sub_type_ids):
+                record.state = 'done'
+            else:
+                record.state = 'draft'
 
     sequence = fields.Integer('Sequence')
     # reg_no = fields.Char('Reg No', copy=False,readonly=True,default=lambda self: self._get_sequence(),required =True,index=True)#default=lambda self: self._get_sequence(),
@@ -71,18 +86,25 @@ class Subscriber(models.Model):
     total_subscription_price = fields.Float(string='Total Price',
                                             compute='_compute_total_subscription_price', store=True,group_operator='avg')
 
+    payment_mode = fields.Selection([('cash', 'Cash'),
+                              ('digital', 'Digital Payments'),
+                              ('debit', 'Debit Card'),
+                              ('credit', 'Credit Card')], 'Payment Mode', default='cash')
+
+
+
     @api.model
     def _default_type_id(self):
         # Get the default subscription type based on some condition
         default_type = self.env['subscription.type'].search([('is_default', '=', True)], limit=1)
         return default_type.id if default_type else False
-
-    @api.model
-    def default_get(self, fields_list):
-        res = super(MyModel, self).default_get(fields_list)
-        if 'type_id' in fields_list:
-            res['type_id'] = self._default_type_id()
-        return res
+    #
+    # @api.model
+    # def default_get(self, fields_list):
+    #     res = super(Subscriber, self).default_get(fields_list)
+    #     if 'type_id' in fields_list:
+    #         res['type_id'] = self._default_type_id()
+    #     return res
 
 
 
@@ -183,12 +205,34 @@ class Subscriber(models.Model):
     def action_confirm(self):
         self.state = 'draft'
 
+    # @api.onchange('active')
+    # def _onchange_active(self):
+    #     if not self.active:
+    #         self.notes = "This record is currently inactive."
+    #     else:
+    #         self.notes = "
 
 
+    @api.onchange('name', 'email')
+    def _onchange_generate_user_code(self):
+        if self.name and self.email:
+            self.user_code = (self.name[:2] + self.email[:2]).upper()
 
 
+    # @api.onchange('birthdate')
+    # def _onchange_birthdate(self):
+    #     if self.birthdate:
+    #         today = date.today()
+    #         self.age = today.year - self.birthdate.year - (
+    #                     (today.month, today.day) < (self.birthdate.month, self.birthdate.day))
 
-# todo exercise 3 26. Add a button on the form view when you click on this button it will create a
+    @api.constrains('email')
+    def _check_email(self):
+        for record in self:
+            if record.email and not re.match(r"[^@]+@[^@]+\.[^@]+", record.email):
+                raise ValidationError(_("Invalid email format."))
+
+    # todo exercise 3 26. Add a button on the form view when you click on this button it will create a
 #  record on a new model which does not have a relation with the current model.
 
     def create_rec(self):
@@ -416,19 +460,22 @@ class Subscriber(models.Model):
 
     # todo exercise 4 15.Add an onchange method for a field where it will update values of two other  fields.
 
-    # @api.onchange('gender','age')
-    # def onchange_gender(self):
-    #     """
-    #     Onchange method to set default age for male and female
-    #     ------------------------------------------------------
-    #     """
-    #     for user in self:
-    #         ages = 0
-    #         if user.gender == 'female':
-    #             ages = 18
-    #         elif user.gender == 'male':
-    #             ages = 21
-    #         user.age = ages
+    @api.onchange('gender','age')
+    def onchange_gender(self):
+        """
+        Onchange method to set default age for male and female
+        ------------------------------------------------------
+        """
+        for user in self:
+            ages = 0
+            print("ages ",ages)
+            if user.gender == 'female':
+                ages = 18
+                print("Age",ages)
+            elif user.gender == 'male':
+                ages = 21
+                print("Age", ages)
+            user.age = ages
 
     # todo exercise 4 16.Add an onchange method for multiple fields to update another field’s value.
     #  NOTE: Here the same method should be called when you change any of the fields.

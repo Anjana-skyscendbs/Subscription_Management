@@ -3,5 +3,6 @@
     <!--  Group for School Employee -->
     <record id="group_subscription_employee" model="res.groups">
         <field name="name">Subscription Employee</field>
+        <field name="implied_ids" eval="[(4,ref('subscription_managaement.group_subscriber_user'))]"/>
     </record>
 </odoo>

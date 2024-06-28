@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="subscription_close_wizard_view_inherit" model="ir.ui.view">
+        <field name="name">subscription.close.wizard.view.inherit</field>
+        <field name="model">subscription.close.wizard</field>
+         <field name="inherit_id" ref="subscription_managaement.subscription_close_wizard_view"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='active']" position="after">
+                 <field name="phone"/>
+                 <field name="height"/>
+                 <field name="weight"/>
+             </xpath>
+        </field>
+    </record>
+
+
+    <record id="subscription_close_wizard_view2_inherit" model="ir.ui.view">
+        <field name="name">subscription.close.wizard.view2.inherit</field>
+        <field name="model">subscription.close.wizard</field>
+         <field name="inherit_id" ref="subscription_managaement.subscription_close_wizard_view2"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='active']" position="after">
+                 <field name="phone"/>
+                 <field name="height"/>
+                 <field name="weight"/>
+             </xpath>
+        </field>
+    </record>
+
+
+</odoo>
+

@@ -8,6 +8,7 @@ class SubscriptionType(models.Model):
     name = fields.Char('Name', required=True)
     code = fields.Char('Code', required=True)
     # color = fields.Integer('Color')
+    color = fields.Integer('Color')
 
     def name_get(self):
         """

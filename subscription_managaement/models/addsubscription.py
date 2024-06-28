@@ -9,12 +9,32 @@ class AddSubscription(models.Model):
     # type_id = fields.Many2one('subscription.type', 'Subscription')#  required=True
     sub_type =fields.Many2one('subscription.subtype','Subscription Type')
 
-    # recurrence_id = fields.Many2one('subscription.recurrence', 'Plan')# , required=True
+    recurrence_id = fields.Many2one('subscription.recurrence', 'Plan')# , required=True
     start_date = fields.Date(string='Start Date',default = fields.Date.today())
-    expire_date = fields.Date(string='Expire Date')
+    expire_date = fields.Date(string='Expire Date',compute='_compute_expire_date')
     currency_id = fields.Many2one('res.currency', 'Currency')
     price = fields.Monetary(currency_field='currency_id', string='Price')
     user_id = fields.Many2one('subscription.user', 'User', ondelete='cascade')
+
+    @api.depends('recurrence_id', 'start_date')
+    def _compute_expire_date(self):
+        for rec in self:
+            if rec.recurrence_id.code == 'MH':
+                rec.expire_date = rec.start_date + relativedelta(months=1)
+            elif rec.recurrence_id.code == 'QH':
+                rec.expire_date = rec.start_date + relativedelta(months=3)
+            elif rec.recurrence_id.code == 'WH':
+                rec.expire_date = rec.start_date + relativedelta(weeks=1)
+            elif rec.recurrence_id.code == 'WH2':
+                rec.expire_date = rec.start_date + relativedelta(weeks=2)
+            elif rec.recurrence_id.code == 'YH':
+                rec.expire_date = rec.start_date + relativedelta(years=1)
+            elif rec.recurrence_id.code == 'YH3':
+                rec.expire_date = rec.start_date + relativedelta(years=3)
+            elif rec.recurrence_id.code == 'YH5':
+                rec.expire_date = rec.start_date + relativedelta(years=5)
+            else:
+                rec.expire_date = False
 
 
     # todo 10.Override name_search method to search with both the fields which are displayed in many2one field.
@@ -40,6 +60,7 @@ class AddSubscription(models.Model):
         print("RTN ",rtn)
         print("rtn.name_get()[0]",rtn.name_get()[0])
         return rtn.name_get()[0]
+
 
 
     # price = fields.Float('Price')

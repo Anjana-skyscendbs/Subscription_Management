@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Form view of Sub Service -->
+    <record id="view_sub_service_form" model="ir.ui.view">
+        <field name="name">view.sub.service.form</field>
+        <field name="model">subscription.sub.service</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="service_id"/>
+                    <field name="name"/>
+                    <field name="color" widget="color_picker"/>
+                    <field name="sub_ser_name"/>
+                    <field name="sub_ser_code"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of Sub Activity -->
+    <record id="view_sub_service_tree" model="ir.ui.view">
+        <field name="name">view.sub.service.tree</field>
+        <field name="model">subscription.sub.service</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="service_id"/>
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+                <field name="sub_ser_name"/>
+                <field name="sub_ser_code"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action of Sub activity -->
+    <record id="action_sub_service" model="ir.actions.act_window">
+        <field name="name">Sub Services</field>
+        <field name="res_model">subscription.sub.service</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu of Sub activity -->
+    <menuitem id="menu_sub_service" action="action_sub_service" parent="subscription_managaement.menu_configuration"/>
+
+    <!-- Form view of Sub Activity2 -->
+    <record id="view_sub_service2_form" model="ir.ui.view">
+        <field name="name">view.sub.service2.form</field>
+        <field name="model">subscription.sub.service2</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="service_id"/>
+                    <field name="name"/>
+                    <field name="color" widget="color_picker"/>
+                    <field name="sub_ser_name"/>
+                    <field name="sub_ser_code"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of Sub Activity -->
+    <record id="view_sub_service2_tree" model="ir.ui.view">
+        <field name="name">view.sub.service2.tree</field>
+        <field name="model">subscription.sub.service2</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="service_id"/>
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+                <field name="sub_ser_name"/>
+                <field name="sub_ser_code"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action of Sub activity -->
+    <record id="action_sub_service2" model="ir.actions.act_window">
+        <field name="name">Sub Services 2</field>
+        <field name="res_model">subscription.sub.service2</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu of Sub activity -->
+    <menuitem id="menu_sub_service2" action="action_sub_service2" parent="subscription_managaement.menu_configuration"/>
+
+</odoo>

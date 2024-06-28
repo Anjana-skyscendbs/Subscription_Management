@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="subscription_close_wizard_view" model="ir.ui.view">
+        <field name="name">subscription.close.wizard.view</field>
+        <field name="model">subscription.close.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Subscription Close Wizard">
+                <group class="oe_title">
+                    <field name="user_id"/>
+                    <field name="close_reason"/>
+                    <field name="closed_by"/>
+                    <field name="close_date"/>
+                    <field name="active"/>
+                </group>
+                <footer>
+                    <button name="button_submit" string="Submit" type="object" class="btn-primary"/>
+<!--                    <button name="button_submit" string="Submit" type="object" class="btn-primary"/>-->
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+     <!-- Action of the Wizard -->
+    <record id="action_subscription_close_wizard" model="ir.actions.act_window">
+        <field name="name">Sub Close Or Renew Wizard</field>
+        <field name="res_model">subscription.close.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu of Wizard -->
+    <menuitem id="menu_subscription_close_wizard" action="action_subscription_close_wizard" parent="menu_user" sequence="5"/>
+
+
+    <record id="subscription_close_wizard_view2" model="ir.ui.view">
+        <field name="name">subscription.close.wizard.view2</field>
+        <field name="model">subscription.close.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Subscription Close Wizard">
+                <group class="oe_title">
+<!--                    <field name="user_id"/>-->
+                    <field name="close_reason"/>
+                    <field name="closed_by"/>
+                    <field name="close_date"/>
+                    <field name="active"/>
+                </group>
+                <footer>
+                    <button name="button_submit" string="Submit" type="object" class="btn-primary"/>
+<!--                    <button name="button_submit" string="Submit" type="object" class="btn-primary"/>-->
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+      <record id="action_subscription_close_wizard2" model="ir.actions.act_window">
+        <field name="name">Sub Close Or Renew Wizard</field>
+        <field name="res_model">subscription.close.wizard</field>
+        <field name="view_mode">form</field>
+         <field name="target">new</field>
+        <field name="context">{'form_view_ref':'subscription_managaement.subscription_close_wizard_view2'}</field>
+    </record>
+
+     <!-- Action of Wizard to be called from Action Toolbar -->
+    <record id="action_subscription_close_wizard3" model="ir.actions.act_window">
+        <field name="name">Sub Close Or Renew Wizard</field>
+        <field name="res_model">subscription.close.wizard</field>
+        <field name="binding_model_id" ref="subscription_managaement.model_subscription_user"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'form_view_ref':'subscription_managaement.subscription_close_wizard_view2'}</field>
+    </record>
+
+
+</odoo>

@@ -8,6 +8,15 @@
         <!-- The ref has to be an xml id of the view prefixed by the module in which the view is defined -->
         <field name="inherit_id" ref="subscription_managaement.view_user_form"/>
         <field name="arch" type="xml">
+            <header>
+                <!-- Existing buttons -->
+                <button name="action_renew" string="Renew" type="object"
+                        attrs="{'invisible': [('state', 'in', ['renew', 'left'])]}"
+                        class="oe_highlight"/>
+    <!--                <field name="state" widget="statusbar" -->
+    <!--                       statusbar_visible="applied,pending,draft,done,left,renew"/>-->
+    <!--            -->
+            </header>
             <!-- xpath is used to inherit the view part -->
             <!-- expr will be the expression to the reference tag -->
             <!-- Position can have one of the following options -->
@@ -45,4 +54,24 @@
             </xpath>
         </field>
     </record>
+
+
+    <!-- Overridden Menu to add sequence -->
+
+    <menuitem id="subscription_managaement.menu_user_user"
+              action="subscription_managaement.action_user"
+              parent="subscription_managaement.menu_user"
+              sequence="1"/>
+
+    <menuitem id="subscription_managaement.menu_user_user_male"
+              name="Male Users"
+              action="subscription_managaement.action_user_male"
+              parent="subscription_managaement.menu_user"
+              sequence="2"/>
+
+    <menuitem id="subscription_managaement.menu_user_user_female"
+              name="Female Users"
+              action="subscription_managaement.action_user_female"
+              parent="subscription_managaement.menu_user"
+              sequence="3"/>
 </odoo>

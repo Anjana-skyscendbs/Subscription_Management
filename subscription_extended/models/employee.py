@@ -10,7 +10,7 @@ class Employee(models.Model):
 
     department_ids = fields.Many2many('subscription.type',string='Departments')
     qualification = fields.Char('Qualification')
-    # act_ids = fields.Many2many('school.activity','teacher_id','activity_id','teacher_act_rel','Activities')
+    recurrence_id = fields.Many2many('subscription.recurrence','emp_id','ser_id','emp_ser_rel','Services')
  # department_ids = fields.Many2many('subscription.type',string='Department')
  #    qualification = fields.Char('Qualification')
  #    recurrence_ids = fields.Many2many('subscription.recurrence','Recurrence')

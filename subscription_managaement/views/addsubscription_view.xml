@@ -12,7 +12,7 @@
                 </header>
                 <group>
 <!--                    <field name="type_id"/>-->
-<!--                    <field name="recurrence_id"/>-->
+                    <field name="recurrence_id"/>
                     <field name="sub_type" />
 <!--                   options="{'no_create':1, 'no_open':1}"  <field name="price_depend"/>-->
                     <field name ='start_date'/>
@@ -34,7 +34,7 @@
         <field name="arch" type="xml">
             <tree>
 <!--                <field name="type_id"/>-->
-<!--                <field name="recurrence_id"/>-->
+                <field name="recurrence_id"/>
                 <field name='start_date'/>
                 <field name='expire_date'/>
                 <field name="sub_type"/>

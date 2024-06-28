@@ -16,7 +16,7 @@
                         <field name="qualification"/>
                     </group>
                     <notebook>
-                        <page name="pg_sub" string="Subscription">
+                        <page name="pg_sub" string="Subscription Departments">
                             <field name="department_ids" widget="many2many_tags"/>
                         </page>
                     </notebook>

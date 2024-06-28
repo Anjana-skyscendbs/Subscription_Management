@@ -14,6 +14,8 @@
         'views/types_view.xml',
         'views/subtype_subscription_view.xml',
         'views/addsubscription_view.xml',
+        'views/subscription_close.xml',
+        'wizard/subscription_close_wizard.xml',
     ],
     'assets': {
         'web.assets_backend': [
