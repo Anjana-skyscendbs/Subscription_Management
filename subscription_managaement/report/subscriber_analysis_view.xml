@@ -8,50 +8,55 @@
             <tree>
                 <field name="name"/>
                 <field name="age"/>
+                <field name="type_id"/>
+                <field name="recurrence_id"/>
+                <field name="sub_type"/>
+                <field name="start_date"/>
+                <field name="expire_date"/>
+                <field name="currency_id"/>
+                <field name="price"/>
             </tree>
         </field>
     </record>
 
-<!--    &lt;!&ndash; Pivot view of Subscriber Analysis &ndash;&gt;-->
-<!--    <record id="view_subscriber_analysis_pivot" model="ir.ui.view">-->
-<!--        <field name="name">view.subscriber.analysis.pivot</field>-->
-<!--        <field name="model">subscriber.analysis</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <pivot>-->
-<!--                <field name="standard_id" type="row"/>-->
-<!--                <field name="name" type="row"/>-->
-<!--                <field name="subject_id" type="col"/>-->
-<!--                <field name="age" type="measure"/>-->
-<!--                <field name="total_marks" type="measure"/>-->
-<!--                <field name="min_marks" type="measure"/>-->
-<!--                <field name="obt_marks" type="measure"/>-->
-<!--                <field name="perc" type="measure"/>-->
-<!--            </pivot>-->
-<!--        </field>-->
-<!--    </record>-->
-
-<!--    &lt;!&ndash; Graph view of Student Analysis &ndash;&gt;-->
-<!--    <record id="view_student_analysis_graph" model="ir.ui.view">-->
-<!--        <field name="name">view.student.analysis.graph</field>-->
-<!--        <field name="model">student.analysis</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <graph>-->
-<!--                <field name="standard_id" type="row"/>-->
-<!--                <field name="subject_id" type="col"/>-->
-<!--                <field name="obt_marks" type="measure"/>-->
-<!--                <field name="perc" type="measure"/>-->
-<!--            </graph>-->
-<!--        </field>-->
-<!--    </record>-->
-
-    <!-- Action of Student Analysis -->
-    <record id="action_subscriber_analysis" model="ir.actions.act_window">
-        <field name="name">Student Analysis</field>
-        <field name="res_model">subscriber.analysis</field>
-        <field name="view_mode">tree</field>
+    <!-- Pivot view of Subscriber Analysis -->
+    <record id="view_subscriber_analysis_pivot" model="ir.ui.view">
+        <field name="name">view.subscriber.analysis.pivot</field>
+        <field name="model">subscriber.analysis</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="type_id" type="row"/>
+                <field name="name" type="row"/>
+                <field name="recurrence_id" type="col"/>
+                <field name="age" type="measure"/>
+                <field name="sub_type" type="measure"/>
+                <field name="price" type="measure"/>
+            </pivot>
+        </field>
     </record>
 
-    <!-- Menu of Student Analysis -->
+    <!-- Graph view of Subscriber Analysis -->
+    <record id="view_student_analysis_graph" model="ir.ui.view">
+        <field name="name">view.student.analysis.graph</field>
+        <field name="model">subscriber.analysis</field>
+        <field name="arch" type="xml">
+            <graph>
+                <field name="type_id" type="row"/>
+                <field name="recurrence_id" type="col"/>
+                <field name="price" type="measure"/>
+<!--                <field name="perc" type="measure"/>-->
+            </graph>
+        </field>
+    </record>
+
+    <!-- Action of Subscriber Analysis -->
+    <record id="action_subscriber_analysis" model="ir.actions.act_window">
+        <field name="name">Subscriber Analysis</field>
+        <field name="res_model">subscriber.analysis</field>
+        <field name="view_mode">tree,pivot,graph</field>
+    </record>
+
+    <!-- Menu of Subscriber Analysis -->
     <menuitem id="menu_subscriber_analysis" action="action_subscriber_analysis" parent="subscription_managaement.menu_reporting"/>
 
 
