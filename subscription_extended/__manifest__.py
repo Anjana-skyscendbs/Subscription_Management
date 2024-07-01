@@ -11,6 +11,8 @@
         'views/subscriber_view.xml',
         'views/employee_view.xml',
         'views/type_view.xml',
+        'views/sub_service_view.xml',
+        'wizard/subscription_close_wizard.xml',
     ],
     'auto_install': False,
     'installable': True,

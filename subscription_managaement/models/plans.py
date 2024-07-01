@@ -10,3 +10,4 @@ class Subscriptionplan(models.Model):
     unit = fields.Char('Unit')
     start_timestamp = fields.Datetime('Start Date')
     end_timestamp = fields.Datetime('End Date')
+    color =fields.Integer('Colors')

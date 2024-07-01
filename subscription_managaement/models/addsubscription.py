@@ -7,13 +7,41 @@ class AddSubscription(models.Model):
     _description = 'Add Subscription'
 
     # type_id = fields.Many2one('subscription.type', 'Subscription')#  required=True
+
+    #
     service =fields.Many2one('subscription.service','Subscription Type')
+    # print(service.type_id,"============================")
+
     plan_id = fields.Many2one('subscription.plan', 'Plan')# , required=True
     start_date = fields.Date(string='Start Date',default =fields.Date.today())
-    expire_date = fields.Date(string='Expire Date')
+    expire_date = fields.Date(string='Expire Date',compute='_compute_expire_date', store=True)
     currency_id = fields.Many2one('res.currency', 'Currency')
     price = fields.Monetary(currency_field='currency_id', string='Price')
     user_id = fields.Many2one('subscription.user', 'User', ondelete='cascade')
+
+    @api.depends('plan_id', 'start_date')
+    def _compute_expire_date(self):
+        for rec in self:
+            if rec.plan_id.code == 'MH':
+                rec.expire_date = rec.start_date + relativedelta(months=1)
+            elif rec.plan_id.code == 'QH':
+                rec.expire_date = rec.start_date + relativedelta(months=3)
+            elif rec.plan_id.code == 'WH':
+                rec.expire_date = rec.start_date + relativedelta(weeks=1)
+            elif rec.plan_id.code == 'WH2':
+                rec.expire_date = rec.start_date + relativedelta(weeks=2)
+            elif rec.plan_id.code == 'YH':
+                rec.expire_date = rec.start_date + relativedelta(years=1)
+            elif rec.plan_id.code == 'YH3':
+                rec.expire_date = rec.start_date + relativedelta(years=3)
+            elif rec.plan_id.code == 'YH5':
+                rec.expire_date = rec.start_date + relativedelta(years=5)
+            else:
+                rec.expire_date = False
+
+
+
+
 
     # todo 10.Override name_search method to search with both the fields which are displayed in many2one field.
     @api.model
@@ -36,6 +64,8 @@ class AddSubscription(models.Model):
         print("RTN ", rtn)
         print("rtn.name_get()[0]", rtn.name_get()[0])
         return rtn.name_get()[0]
+
+
 
 
 

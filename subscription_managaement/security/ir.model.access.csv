@@ -18,3 +18,12 @@ access_subscription_service_user,access.subscription.service.user,model_subscrip
 
 access_subscription_addsubscription_manager,access.subscription.addsubscription.manager,model_subscription_addsubscription,group_subscriber_admin,1,1,1,1
 access_subscription_addsubscription_user,access.subscription.addsubscription.user,model_subscription_addsubscription,group_subscriber_user,1,1,0,0
+
+access_subscription_package_stop_manager,subscription.package.stop_manager,model_subscription_package_stop,group_subscriber_admin,1,1,1,1
+access_subscription_package_stop_user,subscription.package.stop_user,model_subscription_package_stop,group_subscriber_user,1,1,1,1
+
+access_subscription_close_wizard_manager,access.subscription.close.wizard.manager,model_subscription_close_wizard,group_subscriber_admin,1,1,1,1
+access_subscription_close_wizard_user,access.subscription.close.wizard.user,model_subscription_close_wizard,group_subscriber_user,1,1,1,0
+
+access_subscriber_analysis_user,access.subscriber.analysis.user,model_subscriber_analysis,group_subscriber_user,1,1,1,0
+access_subscriber_analysis_admin,access.subscriber.analysis.admin,model_subscriber_analysis,group_subscriber_admin,1,1,1,1
