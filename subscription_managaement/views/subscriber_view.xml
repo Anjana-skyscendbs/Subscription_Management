@@ -379,13 +379,13 @@
         <menuitem id="menu_reporting" name="Reporting" parent="menu_subscription" sequence="100"/>
 
 
-    <menuitem id="menu_user_user" action="action_user" parent="menu_user"/>
+    <menuitem id="menu_user_user" action="action_user" parent="menu_user" sequence="1"/>
 
 
     <!-- Menu of Females -->
-    <menuitem id="menu_user_user_female" action="action_user_female" parent="menu_user"/>
+    <menuitem id="menu_user_user_female" action="action_user_female" parent="menu_user" sequence="2"/>
 
     <!-- Menu of Males -->
-    <menuitem id="menu_user_user_male" action="action_user_male" parent="menu_user"/>
+    <menuitem id="menu_user_user_male" action="action_user_male" parent="menu_user" sequence="3"/>
 
 </odoo>

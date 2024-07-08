@@ -31,7 +31,7 @@
     </record>
 
     <!-- Menu of Wizard -->
-    <menuitem id="menu_subscription_close_wizard" action="action_subscription_close_wizard" parent="menu_user" sequence="5"/>
+    <menuitem id="menu_subscription_close_wizard" action="action_subscription_close_wizard" parent="menu_user" sequence="6"/>
 
 
     <record id="subscription_close_wizard_view2" model="ir.ui.view">
