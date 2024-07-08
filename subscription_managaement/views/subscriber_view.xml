@@ -286,6 +286,7 @@
                 <field name="id"/>
                 <field name="color"/>
                 <field name="sub_type_ids"/>
+                <field name="activity_ids"/>
 
                 <templates>
                     <t t-name="kanban-box">
@@ -381,9 +382,21 @@
                                     <ul class="oe_kanban_colorpicker" data-field="color"/>
                                 </div>
                             </div>
+                             <div class="oe_kanban_bottom_right">
+                    <field name="activity_ids" widget="kanban_activity"/>
+                </div>
                         </div>
                     </t>
                 </templates>
+<!--                 &lt;!&ndash; Footer &ndash;&gt;-->
+<!--    <div class="oe_kanban_footer">-->
+<!--        <div class="oe_kanban_footer_left">-->
+<!--            <field name="create_date"/>-->
+<!--        </div>-->
+<!--        <div class="oe_kanban_footer_right">-->
+<!--            <field name="write_date"/>-->
+<!--        </div>-->
+<!--    </div>-->
 
             </kanban>
         </field>

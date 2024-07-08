@@ -19,6 +19,7 @@
         'report/subscriber_analysis_view.xml',
         'report/reports.xml',
         'views/report_subscriber_template.xml',
+        'wizard/subscriber_xlsx_report_view.xml',
     ],
     'assets': {
         'web.assets_backend': [

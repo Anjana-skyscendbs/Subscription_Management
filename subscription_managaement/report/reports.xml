@@ -22,4 +22,14 @@
         <field name="binding_type">report</field>
     </record>
 
+<!--    <record id="action_report_subscriber3" model="ir.actions.report">-->
+<!--        <field name="name">Subscriber Report - XLXS</field>-->
+<!--        <field name="model">subscription.user</field>-->
+<!--        <field name="report_type">qweb-html</field>-->
+<!--        <field name="report_name">subscription_managaement.report_subscriber</field>-->
+<!--        <field name="report_file">subscription_managaement.report_subscriber</field>-->
+<!--        <field name="binding_model_id" ref="model_subscription_user"/>-->
+<!--        <field name="binding_type">report</field>-->
+<!--    </record>-->
+
 </odoo>
