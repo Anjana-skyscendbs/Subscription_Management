@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-<!--    <template id="report_subscriber">-->
-<!--        <t t-call="web.html_container">-->
-<!--            <t t-foreach="docs" t-as="doc">-->
-<!--                <t t-call="web.external_layout">-->
-<!--                    <div class="page">-->
-<!--                        <span t-field="doc.name"/>-->
-<!--                        <span t-field="doc.apreview_externalreportge"/>-->
-<!--                        <span t-field="doc.phone"/>-->
-<!--                        <span t-field="doc.gender"/>-->
-<!--                    </div>-->
-<!--                </t>-->
-<!--            </t>-->
-<!--        </t>-->
-<!--    </template>-->
     <template id="report_subscriber">
-        <t t-set="company" t-value="env.company"/>
+<!--        <t t-set="company" t-value="env.company"/>-->
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-            <t t-set="o" t-value="res_company"/>
+<!--            <t t-set="o" t-value="res_company"/>-->
             <t t-call="web.external_layout">
                 <div class="page">
-                    <p>This is a sample of an external report.</p>
+                        Name : <span t-field="doc.name"/>
+                        <br/>
+                        Parser Attribute : <span t-esc="anjana"/>
+                        <br/>
+                        Wizard/Field : <span t-esc="data['form']['type_id'][1]"/>
+<!--                <div class="page">-->
+<!--                    <p>This is a sample of an external report.</p>-->
 
-                        <span t-field="doc.name"/>
-                    <br/>
-                        <span t-field="doc.age"/>
-                    <br/>
-                        <span t-field="doc.phone"/>
-                    <br/>
-                        <span t-field="doc.gender"/>
+<!--                        <span t-field="doc.name"/>-->
+<!--                    <br/>-->
+<!--                        <span t-field="doc.age"/>-->
+<!--                    <br/>-->
+<!--                        <span t-field="doc.phone"/>-->
+<!--                    <br/>-->
+<!--                        <span t-field="doc.gender"/>-->
                     <div class="row">
                                 <div class="col-12">
                                     <table class="table table-bordered" style="table-layout: fixed" id="hash_config_table">
@@ -39,7 +31,7 @@
                                                 <th>Recurrence</th>
                                                 <th>Start Date</th>
                                                 <th>End Date</th>
-                                                <th>Price</th>
+<!--                                                <th>Price</th>-->
 <!--                                                <th>Percentage</th>-->
                                             </tr>
                                         </thead>
@@ -50,7 +42,16 @@
                                                     <td><span t-field="subscription.recurrence_id.name"/></td>
                                                     <td><span t-field="subscription.start_date"/></td>
                                                     <td><span t-field="subscription.expire_date"/></td>
-                                                    <td><span t-field="subscription.price"/></td>
+                                                    <td>
+    <t t-if="subscription.currency_id">
+        <span t-field="subscription.price" t-options='{"widget": "monetary", "display_currency": subscription.currency_id}'/>
+    </t>
+    <t t-else="">
+        <span t-field="subscription.price"/>
+    </t>
+</td>
+<!--                                                    <td><span t-field="subscription.currency_id"/></td>-->
+<!--                                                    <td><span t-field="subscription.price"/></td>-->
 <!--                                                    <td><span t-field="subscription.perc"/></td>-->
                                                 </tr>
                                             </t>
@@ -59,7 +60,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-<!--                                                    <td></td>-->
+                                                    <td></td>
                                             <td>Total  :    <span t-esc="get_total_subscriptions(doc.sub_type_ids)"/></td>
                                                 </tr>
                                         </tbody>
@@ -76,3 +77,20 @@
     </template>
 
 </odoo>
+
+
+
+<!--    <template id="report_subscriber">-->
+<!--        <t t-call="web.html_container">-->
+<!--            <t t-foreach="docs" t-as="doc">-->
+<!--                <t t-call="web.external_layout">-->
+<!--                    <div class="page">-->
+<!--                        <span t-field="doc.name"/>-->
+<!--                        <span t-field="doc.apreview_externalreportge"/>-->
+<!--                        <span t-field="doc.phone"/>-->
+<!--                        <span t-field="doc.gender"/>-->
+<!--                    </div>-->
+<!--                </t>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </template>-->

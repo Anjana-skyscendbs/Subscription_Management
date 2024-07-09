@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
 
-class SchoolReport(models.AbstractModel):
+class SubscriberReport(models.AbstractModel):
     _name = 'report.subscription_managaement.report_subscriber'  # name of your reports
     _description = 'Subscriber Profile Report'
 
@@ -11,7 +11,11 @@ class SchoolReport(models.AbstractModel):
         print("SELF", self.ids)
         print("CONTEXT", self._context)
         print("DATA", data)
+        # docs = self.env['subscription.user'].browse(docids)
+        if not docids:
+            docids = self._context.get('active_ids')
         docs = self.env['subscription.user'].browse(docids)
+
 
         return {
             'doc_ids': docids,
@@ -19,6 +23,8 @@ class SchoolReport(models.AbstractModel):
             'data': data,
             'docs': docs,
             'test': 'TEST VARIABLE',
+            'anjum': 'manager',
+            'anjana': 'subscriber',
             'get_total_subscriptions': self.get_total_subscriptions,
         }
 

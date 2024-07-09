@@ -32,3 +32,6 @@ access_subscriber_analysis_admin,access.subscriber.analysis.admin,model_subscrib
 
 access_subscriber_xlsx_report_wiz_user,access.subscriber.xlsx.report.wiz.user,model_subscriber_xlsx_report_wiz,group_subscriber_user,1,1,1,0
 access_subscriber_xlsx_report_wiz_admin,access.subscriber.xlsx.report.wiz.admin,model_subscriber_xlsx_report_wiz,group_subscriber_admin,1,1,1,1
+
+access_subscriber_report_wiz_user,access.subscriber.report.wiz.user,model_subscriber_report_wiz,group_subscriber_user,1,1,1,0
+access_subscriber_report_wiz_admin,access.subscriber.report.wiz.admin,model_subscriber_report_wiz,group_subscriber_admin,1,1,1,1

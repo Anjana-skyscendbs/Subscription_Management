@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Form view of REport Wizard -->
+    <record id="view_subscriber_report_wiz_form" model="ir.ui.view">
+        <field name="name">view.subscriber.report.wiz.form</field>
+        <field name="model">subscriber.report.wiz</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="type_id"/>
+                </group>
+                <footer>
+                    <button name="print_report" string="Print" type="object" class="btn-primary"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action of Wizard -->
+    <record id="action_subscriber_report_wiz" model="ir.actions.act_window">
+        <field name="name">Subscriber Report</field>
+        <field name="res_model">subscriber.report.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu of Wizard -->
+    <menuitem id="menu_subscriber_report_wiz" action="action_subscriber_report_wiz" parent="subscription_managaement.menu_reporting"/>
+
+</odoo>
