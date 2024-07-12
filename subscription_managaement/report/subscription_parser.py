@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
 
-class SchoolReport(models.AbstractModel):
+class SubscriberReport(models.AbstractModel):
     _name = 'report.subscription_managaement.report_subscriber'  # name of your reports
     _description = 'Subscriber Profile Report'
 

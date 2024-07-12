@@ -20,6 +20,7 @@
         'report/reports.xml',
         'views/report_subscriber_template.xml',
         'wizard/subscriber_xlsx_report_view.xml',
+        'views/res_config_settings_views.xml'
     ],
     'assets': {
         'web.assets_backend': [

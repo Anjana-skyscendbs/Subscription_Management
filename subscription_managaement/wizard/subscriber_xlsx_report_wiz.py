@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 
-class SubscriptionCloseWizard(models.TransientModel):
+class SubscriptionxlsxWizard(models.TransientModel):
     _name = 'subscriber.xlsx.report.wiz'
     _description = 'Subscriber XLSX Report'
 
