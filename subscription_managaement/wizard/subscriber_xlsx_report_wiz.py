@@ -19,7 +19,7 @@ class SubscriptionxlsxWizard(models.TransientModel):
         workbook = xlsxwriter.Workbook('/tmp/subscriber.xlsx')
         bold_format = workbook.add_format({'bold': True, 'border': True, 'align': 'center', 'font_color': 'black', 'bg_color': '#fffbed'})
         title_format = workbook.add_format({'bold': True, 'border': True, 'align': 'center',  'bg_color': '#f2eee4'})
-        header_format = workbook.add_format({'bold': True, 'border': True, 'align': 'center','font_size': 20,'font_color': 'red'})
+        header_format = workbook.add_format({'bold': True, 'border': True, 'align': 'center','font_size': 20,'font_color': 'light blue'})
         date_style = workbook.add_format({'num_format': 'dd-mm-yyyy'})
 
         for subscriber in self.user_id:
@@ -44,19 +44,19 @@ class SubscriptionxlsxWizard(models.TransientModel):
             sheet.write(8, 1, 'Recurrence ',title_format)
             sheet.write(8, 2, 'Start Date',title_format)
             sheet.write(8, 3, 'Expire Date',title_format)
-            sheet.write(8, 4, 'Price',title_format)
+            # sheet.write(8, 4, 'Price',title_format)
 
 
             row = 9
-            for price in subscriber.sub_type_ids:
-                sheet.write(row, 0, price.sub_type.name)
-                sheet.write(row, 1, price.recurrence_id.name)
-                sheet.write_datetime(row, 2, price.start_date, date_style)
-                sheet.write_datetime(row, 3, price.expire_date, date_style)
-                sheet.write(row, 4, price.price)
-                row += 1
-            sheet.write(row, 0, 'Total Price: $',bold_format)
-            sheet.write(row, 1, subscriber.total_subscription_price)
+            for user in subscriber.sub_type_ids:
+                sheet.write(row, 0, user.sub_type.name)
+                sheet.write(row, 1, user.recurrence_id.name)
+                sheet.write_datetime(row, 2, user.start_date, date_style)
+                sheet.write_datetime(row, 3, user.expire_date, date_style)
+                # sheet.write(row, 4, price.price)
+            #     row += 1
+            # sheet.write(row, 0, 'Total Price: $',bold_format)
+            # sheet.write(row, 1, subscriber.total_subscription_price)
 
         print("jashcadsjkdvjks")
 

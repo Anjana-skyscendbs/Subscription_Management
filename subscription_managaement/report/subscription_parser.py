@@ -25,12 +25,12 @@ class SubscriberReport(models.AbstractModel):
             'test': 'TEST VARIABLE',
             'anjum': 'manager',
             'anjana': 'subscriber',
-            'get_total_subscriptions': self.get_total_subscriptions,
+            # 'get_total_subscriptions': self.get_total_subscriptions,
         }
 
-    @api.model
-    def get_total_subscriptions(self, prices):
-        total_price = 0.0
-        for dtl in prices:
-            total_price += dtl.price
-        return total_price
+    # @api.model
+    # def get_total_subscriptions(self, prices):
+    #     total_price = 0.0
+    #     for dtl in prices:
+    #         total_price += dtl.price
+    #     return total_price

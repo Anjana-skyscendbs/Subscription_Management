@@ -42,14 +42,14 @@
                                                     <td><span t-field="subscription.recurrence_id.name"/></td>
                                                     <td><span t-field="subscription.start_date"/></td>
                                                     <td><span t-field="subscription.expire_date"/></td>
-                                                    <td>
-    <t t-if="subscription.currency_id">
-        <span t-field="subscription.price" t-options='{"widget": "monetary", "display_currency": subscription.currency_id}'/>
-    </t>
-    <t t-else="">
-        <span t-field="subscription.price"/>
-    </t>
-</td>
+<!--                                                    <td>-->
+<!--    <t t-if="subscription.currency_id">-->
+<!--        <span t-field="subscription.price" t-options='{"widget": "monetary", "display_currency": subscription.currency_id}'/>-->
+<!--    </t>-->
+<!--    <t t-else="">-->
+<!--        <span t-field="subscription.price"/>-->
+<!--    </t>-->
+<!--</td>-->
 <!--                                                    <td><span t-field="subscription.currency_id"/></td>-->
 <!--                                                    <td><span t-field="subscription.price"/></td>-->
 <!--                                                    <td><span t-field="subscription.perc"/></td>-->
@@ -61,15 +61,15 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                            <td>Total  :    <span t-esc="get_total_subscriptions(doc.sub_type_ids)"/></td>
+<!--                                            <td>Total  :    <span t-esc="get_total_subscriptions(doc.sub_type_ids)"/></td>-->
                                                 </tr>
                                         </tbody>
                                     </table>
                                 </div>
                         </div>
-                        <div>Total Price:
-                            <span t-esc="get_total_subscriptions(doc.sub_type_ids)"/>
-                        </div>
+<!--                        <div>Total Price:-->
+<!--                            <span t-esc="get_total_subscriptions(doc.sub_type_ids)"/>-->
+<!--                        </div>-->
                 </div>
             </t>
         </t>

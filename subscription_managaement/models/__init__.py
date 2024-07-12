@@ -4,3 +4,4 @@ from . import types
 from . import subtype_subscription
 from . import addsubscription
 from . import subscription_close
+from . import res_config_settings
