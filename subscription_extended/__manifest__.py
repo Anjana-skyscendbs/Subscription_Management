@@ -13,6 +13,7 @@
         'views/type_view.xml',
         'views/sub_service_view.xml',
         'wizard/subscription_close_wizard.xml',
+        'views/report_subscriber_template.xml',
     ],
     'auto_install': False,
     'installable': True,

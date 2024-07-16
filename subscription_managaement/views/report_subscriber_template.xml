@@ -11,7 +11,7 @@
                         <br/>
                         Parser Attribute : <span t-esc="anjana"/>
                         <br/>
-                        Wizard/Field : <span t-esc="data['form']['type_id'][1]"/>
+<!--                        Wizard/Field : <span t-esc="data['form']['type_id'][1]"/>-->
 <!--                <div class="page">-->
 <!--                    <p>This is a sample of an external report.</p>-->
 
@@ -78,19 +78,3 @@
 
 </odoo>
 
-
-
-<!--    <template id="report_subscriber">-->
-<!--        <t t-call="web.html_container">-->
-<!--            <t t-foreach="docs" t-as="doc">-->
-<!--                <t t-call="web.external_layout">-->
-<!--                    <div class="page">-->
-<!--                        <span t-field="doc.name"/>-->
-<!--                        <span t-field="doc.apreview_externalreportge"/>-->
-<!--                        <span t-field="doc.phone"/>-->
-<!--                        <span t-field="doc.gender"/>-->
-<!--                    </div>-->
-<!--                </t>-->
-<!--            </t>-->
-<!--        </t>-->
-<!--    </template>-->

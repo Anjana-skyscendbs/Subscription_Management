@@ -82,6 +82,9 @@ class Subscriber(models.Model):
     parent_path = fields.Char('Parent Path', index=True)
     priority = fields.Selection([(str(ele), str(ele)) for ele in range(6)], 'Priority')
 
+    user_id = fields.Many2one('res.users','User')
+
+
 
     total_subscription_price = fields.Float(string='Total Price',
                                             compute='_compute_total_subscription_price', store=True,group_operator='avg')
