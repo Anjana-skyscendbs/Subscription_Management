@@ -334,14 +334,40 @@
     </record>
 
 
-
--
-
+    <record id="subscriber_hierarchy_view" model="ir.ui.view">
+        <field name="name">subscriber.view.hierarchy</field>
+        <field name="model">subscription.user</field>
+        <field name="arch" type="xml">
+            <hierarchy child_field="child_ids" js_class="subscription_user_hierarchy" icon="fa-users" draggable="1">
+                <field name="name" />
+                <field name="age" />
+                <field name="color" />
+<!--                <field name="hr_icon_display" />-->
+                <field name="type_id" />
+                <templates>
+                    <t t-name="hierarchy-box">
+                        <div t-attf-class="o_hierarchy_node_header d-flex justify-content-center pb-4 o_hierarchy_node_color_{{ record.color.raw_value }}"
+                             t-att-title="record.type_id.value"
+                        >
+                            <field name="photo" preview_image="photo" options="{'zoom': true, 'zoom_delay': 1000}" widget="background_image" />
+                        </div>
+                        <div class="o_hierarchy_node_body d-flex flex-column text-center">
+                            <div class="w-100 position-relative">
+                                <field class="fw-bold" name="name" />
+<!--                                <field name="hr_icon_display" class="d-flex align-items-end o_employee_availability" widget="hr_presence_status" />-->
+                            </div>
+                            <field name="parent_id" />
+                        </div>
+                    </t>
+                </templates>
+            </hierarchy>
+        </field>
+    </record>
 
    <record id="action_user" model="ir.actions.act_window">
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
-        <field name="view_mode">tree,form,search,kanban,calendar,graph,pivot</field>
+        <field name="view_mode">tree,form,search,kanban,calendar,graph,pivot,hierarchy</field>
 <!--        <field name="limit">7</field>-->
         <!--         <field name="context">{'tree_view_ref':'subscription_managaement.view_user_tree'}</field>-->
                   <field name="context">{'group_by': 'state'}</field>
