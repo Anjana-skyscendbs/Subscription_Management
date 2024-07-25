@@ -9,7 +9,6 @@
         'security/sub_manage_security.xml',
         'security/ir.model.access.csv',
         'data/user_sequence.xml',
-        'views/subscriber_view.xml',
         'views/recurrence_period_view.xml',
         'views/types_view.xml',
         'views/subtype_subscription_view.xml',
@@ -22,6 +21,10 @@
         'wizard/subscriber_xlsx_report_view.xml',
         'wizard/subscriber_report_wiz_view.xml',
         'views/res_config_settings_views.xml',
+        'wizard/subscription_type_wizard_views.xml',
+        'wizard/subscription_wizard_view_9.xml',
+        'wizard/add_subscription_wizard_view.xml',
+        'views/subscriber_view.xml',
     ],
     'assets': {
         'web.assets_backend': [

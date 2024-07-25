@@ -35,3 +35,18 @@ access_subscriber_xlsx_report_wiz_admin,access.subscriber.xlsx.report.wiz.admin,
 
 access_subscriber_report_wiz_user,access.subscriber.report.wiz.user,model_subscriber_report_wiz,group_subscriber_user,1,1,1,0
 access_subscriber_report_wiz_admin,access.subscriber.report.wiz.admin,model_subscriber_report_wiz,group_subscriber_admin,1,1,1,1
+
+
+access_add_subscription_wizard_user,access.add.subscription.wizard.user,model_add_subscription_wizard,group_subscriber_user,1,1,1,0
+access_add_subscription_wizard_admin,access.add.subscription.wizard.admin,model_add_subscription_wizard,group_subscriber_admin,1,1,1,1
+
+
+access_add_subscription_wizard_line_user,access.add.subscription.wizard.line.user,model_add_subscription_wizard_line,group_subscriber_user,1,1,1,0
+access_add_subscription_wizard_line_admin,access.add.subscription.wizard.line.admin,model_add_subscription_wizard_line,group_subscriber_admin,1,1,1,1
+
+
+access_subscription_type_wizard_user,access.subscription.type.wizard.user,model_subscription_type_wizard,group_subscriber_user,1,1,1,0
+access_subscription_type_wizard_admin,access.subscription.type.wizard.admin,model_subscription_type_wizard,group_subscriber_admin,1,1,1,1
+
+access_subscription_wizard_user,access.subscription.wizard.user,model_subscription_wizard,group_subscriber_user,1,1,1,0
+access_subscription_wizard_admin,access.subscription.wizard.admin,model_subscription_wizard,group_subscriber_admin,1,1,1,1

@@ -1,78 +1,104 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="report_subscriber">
-<!--        <t t-set="company" t-value="env.company"/>-->
+        <!--        <t t-set="company" t-value="env.company"/>-->
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-<!--            <t t-set="o" t-value="res_company"/>-->
-            <t t-call="web.external_layout">
-                <div class="page">
-                        Name : <span t-field="doc.name"/>
-                        <br/>
-                        Parser Attribute : <span t-esc="anjana"/>
-                        <br/>
-<!--                        Wizard/Field : <span t-esc="data['form']['type_id'][1]"/>-->
-<!--                <div class="page">-->
-<!--                    <p>This is a sample of an external report.</p>-->
+                <!--            <t t-set="o" t-value="res_company"/>-->
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <img t-if="doc.photo" t-att-src="image_data_uri(doc.photo)"
+                             style="max-height:100pt;max-width:100%;max-top:30%" align="right" alt="Photo"/>
+                        <h2>Name
+                            <span t-field="doc.name" t-options="{'widget':'barcode','humanreadable':1,'width':400,'height':100}"/>
+                        </h2>
+                        <div>
 
-<!--                        <span t-field="doc.name"/>-->
-<!--                    <br/>-->
-<!--                        <span t-field="doc.age"/>-->
-<!--                    <br/>-->
-<!--                        <span t-field="doc.phone"/>-->
-<!--                    <br/>-->
-<!--                        <span t-field="doc.gender"/>-->
-                    <div class="row">
-                                <div class="col-12">
-                                    <table class="table table-bordered" style="table-layout: fixed" id="hash_config_table">
-                                        <thead style="display: table-row-group">
-                                            <tr>
-                                                <th><span>Subscription</span></th>
-                                                <th>Recurrence</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-<!--                                                <th>Price</th>-->
-<!--                                                <th>Percentage</th>-->
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <t t-foreach="doc.sub_type_ids" t-as="subscription">
-                                                <tr>
-                                                    <td><span t-field="subscription.sub_type.name"/></td>
-                                                    <td><span t-field="subscription.recurrence_id.name"/></td>
-                                                    <td><span t-field="subscription.start_date"/></td>
-                                                    <td><span t-field="subscription.expire_date"/></td>
-<!--                                                    <td>-->
-<!--    <t t-if="subscription.currency_id">-->
-<!--        <span t-field="subscription.price" t-options='{"widget": "monetary", "display_currency": subscription.currency_id}'/>-->
-<!--    </t>-->
-<!--    <t t-else="">-->
-<!--        <span t-field="subscription.price"/>-->
-<!--    </t>-->
-<!--</td>-->
-<!--                                                    <td><span t-field="subscription.currency_id"/></td>-->
-<!--                                                    <td><span t-field="subscription.price"/></td>-->
-<!--                                                    <td><span t-field="subscription.perc"/></td>-->
-                                                </tr>
-                                            </t>
-                                            <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-<!--                                            <td>Total  :    <span t-esc="get_total_subscriptions(doc.sub_type_ids)"/></td>-->
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
                         </div>
-<!--                        <div>Total Price:-->
-<!--                            <span t-esc="get_total_subscriptions(doc.sub_type_ids)"/>-->
-<!--                        </div>-->
-                </div>
+                        <!--                        Name : <span t-field="doc.name"/>-->
+                        <!--                        <br/>-->
+                        Parser Attribute :
+                        <span t-esc="anjana"/>
+                        <br/>
+                        <!--                    <img t-if="doc.photo" t-att-src="image_data_uri(doc.photo)" style="max-height:100pt;max-width:100%;max-top:30%" align="right"  alt="Photo"/>-->
+
+                        <!--                        Wizard/Field : <span t-esc="data['form']['type_id'][1]"/>-->
+                        <!--                <div class="page">-->
+                        <!--                    <p>This is a sample of an external report.</p>-->
+
+                        <!--                        <span t-field="doc.name"/>-->
+                        <!--                    <br/>-->
+                        <!--                        <span t-field="doc.age"/>-->
+                        <!--                    <br/>-->
+                        <!--                        <span t-field="doc.phone"/>-->
+                        <!--                    <br/>-->
+                        <!--                        <span t-field="doc.gender"/>-->
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table table-bordered" style="table-layout: fixed" id="hash_config_table">
+                                    <!--                                        <td align="right" valign="right">-->
+                                    <!--                                            <img t-if="doc.photo" t-att-src="image_data_uri(doc.photo)" style="max-height:80pt;max-width:100%" alt="Photo"/>-->
+                                    <!--                                        </td>-->
+                                    <thead style="display: table-row-group">
+                                        <tr>
+                                            <th>
+                                                <span>Subscription</span>
+                                            </th>
+                                            <th>Recurrence</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <!--                                                <th>Price</th>-->
+                                            <!--                                                <th>Percentage</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="doc.sub_type_ids" t-as="subscription">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="subscription.sub_type.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="subscription.recurrence_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="subscription.start_date"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="subscription.expire_date"/>
+                                                </td>
+                                                <!--                                                    <td>-->
+                                                <!--    <t t-if="subscription.currency_id">-->
+                                                <!--        <span t-field="subscription.price" t-options='{"widget": "monetary", "display_currency": subscription.currency_id}'/>-->
+                                                <!--    </t>-->
+                                                <!--    <t t-else="">-->
+                                                <!--        <span t-field="subscription.price"/>-->
+                                                <!--    </t>-->
+                                                <!--</td>-->
+                                                <!--                                                    <td><span t-field="subscription.currency_id"/></td>-->
+                                                <!--                                                    <td><span t-field="subscription.price"/></td>-->
+                                                <!--                                                    <td><span t-field="subscription.perc"/></td>-->
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <!--                                            <td>Total  :    <span t-esc="get_total_subscriptions(doc.sub_type_ids)"/></td>-->
+                                        </tr>
+                                        <!--                                            <tr><td><div t-if="doc.barcode" t-field="doc.barcode" t-options="{'widget': 'barcode', 'width': 600, 'height': 120, 'img_style': 'max-height:50pt;max-width:100%;', 'img_align': 'center'}"/></td></tr>-->
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--                        <div>Total Price:-->
+                        <!--                            <span t-esc="get_total_subscriptions(doc.sub_type_ids)"/>-->
+                        <!--                        </div>-->
+                    </div>
+                </t>
             </t>
-        </t>
         </t>
     </template>
 

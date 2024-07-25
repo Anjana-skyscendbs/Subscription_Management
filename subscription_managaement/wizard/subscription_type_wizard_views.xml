@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_subscription_type_wizard_form" model="ir.ui.view">
+        <field name="name">subscription.type.wizard.form</field>
+        <field name="model">subscription.type.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Find Matching Subscribers">
+                <group>
+                    <field name="type_id"/>
+                </group>
+                <footer>
+                    <button name="action_find_matching_records" string="Find Matching Records" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_subscription_type_wizard" model="ir.actions.act_window">
+        <field name="name">Find Matching Subscribers</field>
+        <field name="res_model">subscription.type.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

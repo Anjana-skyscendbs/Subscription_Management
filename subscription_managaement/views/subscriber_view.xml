@@ -14,6 +14,14 @@
                 <!--            </style>-->
                 <!--                create="0" edit="0" delete="0"-->
                 <header>
+                    <button name="open_wizard" string="Open Wizard" type="object" class="oe_highlight"/>
+                    <button name="action_open_subscription_wizard" string="Open Subscriptions" type="object"
+                            class="oe_highlight"/>
+
+                    <button name="%(action_subscription_type_wizard)d" string="Find Matching Subscribers" type="action"
+                            class="btn-primary"/>
+                    <button name="%(action_add_subscription_wizard)d" string="Add Subscriptions" type="action"
+                            class="btn-primary"/>
                     <button name="assign_sequence" string="Assign Sequence" type="object" class="oe_highlight"
                             data-hotkey="o"/>
                     <!--                    <h1>Welcome to Our Channel!!</h1>-->
@@ -24,11 +32,25 @@
                     <button name="browse_rec" string="Browse" type="object" class="oe_highlight" data-hotkey="b"/>
                     <button name="check_orm" string="Check ORM" type="object" class="oe_highlight" data-hotkey="m"/>
                     <field name="state" widget="statusbar" options="{'clickable':1}"/>
-<!--                    <button name="action_renew" string="Renew" type="object" class="oe_highlight"/>-->
+                    <!--                    <button name="action_renew" string="Renew" type="object" class="oe_highlight"/>-->
                     <!--                    <field name="state" widget="statusbar" options="{'clickable':1}"-->
                     <!--                           statusbar_visible="applied,draft,pending,done,left"/>-->
                 </header>
+                <!--                <sheet>-->
+
+                <!-- Your other form elements -->
+                <!--            </sheet>-->
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_related_records"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-list">
+                            <field name="related_records_count" widget="statinfo" string="Related Records"/>
+                        </button>
+                    </div>
+
+
                     <div class="oe_title">
                         <h1>
                             <field name="reg_no" readonly="1"/>
@@ -76,6 +98,7 @@
                                 <field name="partner" widget="many2one_avatar_user"/>
                                 <field name="phone" widget="phone"/>
                                 <field name="sequence"/>
+                                <field name="user_id"/>
                                 <field name="ref"/>
                                 <!--                                <field name="partner_id"/>-->
                                 <!--                                <field name="category_ids"/>-->
@@ -84,6 +107,8 @@
                                 <field name="file_name" invisible="1"/>
                                 <field name="document" filename="file_name"/>
                                 <field name="color" widget="color_picker"/>
+                                <field name="sub_type_ids"/>
+
 
                             </group>
                         </div>
@@ -229,22 +254,22 @@
                 <field name="birthdate" type="col" interval="month"/>
                 <field name="birthdate" type="col" interval="quarter"/>
                 <field name="age" type="measure"/>
-<!--                <field name="reg_no" type="measure"/>-->
+                <!--                <field name="reg_no" type="measure"/>-->
             </pivot>
 
         </field>
     </record>
- <!--            <pivot>-->
-            <!--                <field name="birthdate" type="col" interval="month"/>-->
-            <!--                 <field name="birthdate" type="col" interval="quarter"/>-->
-            <!--&lt;!&ndash;                <field name="gender" type="row"/>&ndash;&gt;-->
-            <!--                <field name="type_id" type="row"/>-->
-            <!--                <field name="age" type="measure"/>-->
-            <!--                &lt;!&ndash;                <field name="state" type="measure"/>&ndash;&gt;-->
-            <!--            </pivot>-->
+    <!--            <pivot>-->
+    <!--                <field name="birthdate" type="col" interval="month"/>-->
+    <!--                 <field name="birthdate" type="col" interval="quarter"/>-->
+    <!--&lt;!&ndash;                <field name="gender" type="row"/>&ndash;&gt;-->
+    <!--                <field name="type_id" type="row"/>-->
+    <!--                <field name="age" type="measure"/>-->
+    <!--                &lt;!&ndash;                <field name="state" type="measure"/>&ndash;&gt;-->
+    <!--            </pivot>-->
 
 
-        <!-- Search view -->
+    <!-- Search view -->
     <record id="view_user_search" model="ir.ui.view">
         <field name="name">view.user.search</field>
         <field name="model">subscription.user</field>
@@ -375,6 +400,14 @@
                                     <a role="menuitem" name="action_confirm" type="object" class="dropdown-item">Draft
                                         State
                                     </a>
+                                    <div role="separator" class="dropdown-divider"/>
+<!--                                    <div class="dropdown-menu" role="menu">-->
+                            <!-- Add your wizard action here -->
+                            <a t-if="widget.editable" role="menuitem" type="object" name="open_wizard" class="dropdown-item">Launch Wizard</a>
+<!--                        </div>-->
+<!--                                        <a  role="menuitem" type="action"-->
+<!--                                           name="action_add_subscription_wizard" class="dropdown-item">Launch Wizard-->
+<!--                                        </a>-->
 
 
                                     <div role="separator" class="dropdown-divider"/>
@@ -382,21 +415,21 @@
                                     <ul class="oe_kanban_colorpicker" data-field="color"/>
                                 </div>
                             </div>
-                             <div class="oe_kanban_bottom_right">
-                    <field name="activity_ids" widget="kanban_activity"/>
-                </div>
+                            <div class="oe_kanban_bottom_right">
+                                <field name="activity_ids" widget="kanban_activity"/>
+                            </div>
                         </div>
                     </t>
                 </templates>
-<!--                 &lt;!&ndash; Footer &ndash;&gt;-->
-<!--    <div class="oe_kanban_footer">-->
-<!--        <div class="oe_kanban_footer_left">-->
-<!--            <field name="create_date"/>-->
-<!--        </div>-->
-<!--        <div class="oe_kanban_footer_right">-->
-<!--            <field name="write_date"/>-->
-<!--        </div>-->
-<!--    </div>-->
+                <!--                 &lt;!&ndash; Footer &ndash;&gt;-->
+                <!--    <div class="oe_kanban_footer">-->
+                <!--        <div class="oe_kanban_footer_left">-->
+                <!--            <field name="create_date"/>-->
+                <!--        </div>-->
+                <!--        <div class="oe_kanban_footer_right">-->
+                <!--            <field name="write_date"/>-->
+                <!--        </div>-->
+                <!--    </div>-->
 
             </kanban>
         </field>
@@ -409,13 +442,13 @@
         <field name="name">Users</field>
         <field name="res_model">subscription.user</field>
         <field name="view_mode">tree,form,search,kanban,graph,calendar,pivot</field>
-<!--        <field name="context">{}</field>-->
-<!--        <field name="context">{'tree_view_ref':'subscription_managaement.view_user_tree'}</field>-->
+        <!--        <field name="context">{}</field>-->
+        <!--        <field name="context">{'tree_view_ref':'subscription_managaement.view_user_tree'}</field>-->
         <!--        <field name="limit">7</field>-->
 
         <!--        # todo 11.When an action is called need to have a default group by on your state field.-->
         <!--                <field name="context">{}</field>-->
-                 <field name="context">{'group_by': 'state'}</field>
+        <field name="context">{'group_by': 'state'}</field>
         <!--        <field name="search_view_id" ref="view_user_search"/>-->
         <!--        <field name="context">{'search_default_age':22, 'search_default_grp_by_type':'Streaming Service','search_default_date':'12/02/2001'}</field>-->
     </record>
@@ -440,6 +473,16 @@
         <field name="context">{'default_gender':'female'}</field>
     </record>
 
+<!--    <record id="action_launch_your_wizard" model="ir.actions.server">-->
+<!--    <field name="name">Launch Wizard</field>-->
+<!--    <field name="model_id" ref="model_add_subscription_wizard"/>-->
+<!--    <field name="state">code</field>-->
+<!--    <field name="code">-->
+<!--action = env.ref('subscription_managaement.action_add_subscription_wizard').read()[0]-->
+<!--action['context'] = env.context-->
+<!--    </field>-->
+
+<!--</record>-->
 
     <menuitem id="menu_subscription" name="Subscription Management"/>
 
@@ -449,6 +492,7 @@
     <menuitem id="menu_reporting" name="Reporting" parent="menu_subscription" sequence="100"/>
 
     <menuitem id="menu_user_user" action="action_user" parent="menu_user"/>
+    <!--        <menuitem id="menu_add_subscription_wiz" action="action_add_subscription_wizard" parent="menu_user"/>-->
 
 
     <!-- Menu of Females -->

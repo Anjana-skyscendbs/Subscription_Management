@@ -1,7 +1,7 @@
 from odoo import models, fields
 
 
-class StudentReportWizard(models.TransientModel):
+class SubscriberReportWizard(models.TransientModel):
     _name = 'subscriber.report.wiz'
 
     type_id = fields.Many2one('subscription.type', 'Subscription')#,domain=[('name','=','Streaming Service')]

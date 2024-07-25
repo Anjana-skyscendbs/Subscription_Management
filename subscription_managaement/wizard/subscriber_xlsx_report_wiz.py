@@ -27,6 +27,7 @@ class SubscriptionxlsxWizard(models.TransientModel):
             #     sheet.merge_range(f"A{row}:F{row}", subscriber.name, bold_format)
             # for sub in subscriber.user_id:
             sheet = workbook.add_worksheet('Subscriber XLSX Report')
+            sheet.insert_image('J1', '/home/anju/Downloads/sky.png')
             sheet.merge_range(0, 0, 0, 8,  'Subscriber XLSX Report', header_format)
             sheet.write(3,0,'Name', title_format)
             sheet.write(3,2,subscriber.name)
