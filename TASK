@@ -1,0 +1,18 @@
+Question  1 : - When Customer create in sales or crm module why by default it add in customer invoices filter ?
+Ans :- Customer invoice filter is used for out_invoice or sales_invoices it means past invoices and future invoices customers add in customer invoice .
+
+Question 2 : - In Order to Upsell menu in sales when order to add in this menu ?
+Ans : - If Delivered quantities is greater than Order Quantities the order is add is order to upsell menu with upsell opportunity tag in sales module.
+
+Question 3 : - Difference Between Lead and Pipelines in CRM.
+Ans : - Lead means an inquiry wich sale my product it called lead.Pipeline describe a system of keeping track of everyone within your sales pipeline.
+
+
+Aspect	                    Leads	                                                    Pipelines (Opportunities)
+Stage	                Initial stage, unqualified prospects	                          Qualified prospects, actively pursued
+Purpose	              Capture and qualify potential customers	                        Manage and close sales deals
+Information	          Basic contact details and initial interest	                    Detailed customer needs, deal value, interactions
+Workflow	            Capture → Qualification → Conversion	                          Conversion → Management → Closure
+Usage	                High volume of inquiries, early-stage filtering	                Active sales management, deal tracking
+        
+
